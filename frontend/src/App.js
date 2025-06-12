@@ -340,35 +340,43 @@ function App() {
     
     setTimeout(() => {
       if (direction === 'right') {
-        // Trigger confetti animation
+        // Trigger confetti animation for ALL users (free and premium)
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 3000);
         
-        // Increment match count for free users
-        if (accountType === 'free') {
-          setMatchCount(prev => prev + 1);
-        }
-        
-        // Create a match with probability and badge
-        const matchBusiness = mockBusinesses[(currentIndex + 1) % mockBusinesses.length];
-        const probability = calculateMatchProbability(currentProfile, matchBusiness);
-        const badge = generateBadge(currentProfile, matchBusiness);
-        
-        const newMatch = {
-          id: Date.now(),
-          business: currentProfile,
-          matchedWith: matchBusiness,
-          probability,
-          badge,
-          timestamp: new Date().toISOString()
-        };
-        
-        setMatches(prev => [newMatch, ...prev]);
-        
-        // Check if free user should be locked out
-        if (accountType === 'free' && (swipeCount + 1 >= 10 || matchCount + 1 >= 1)) {
-          setLastLockoutTime(new Date().toISOString());
-          setIsLockedOut(true);
+        // Only create matches for regular business profiles, not sponsors
+        if (!isCurrentSponsor) {
+          // Increment match count for free users
+          if (accountType === 'free') {
+            setMatchCount(prev => prev + 1);
+          }
+          
+          // Create a match with probability and badge
+          const matchBusiness = mockBusinesses[(currentIndex + 1) % mockBusinesses.length];
+          const probability = calculateMatchProbability(currentProfile, matchBusiness);
+          const badge = generateBadge(currentProfile, matchBusiness);
+          
+          const newMatch = {
+            id: Date.now(),
+            business: currentProfile,
+            matchedWith: matchBusiness,
+            probability,
+            badge,
+            timestamp: new Date().toISOString()
+          };
+          
+          setMatches(prev => [newMatch, ...prev]);
+          
+          // Check if free user should be locked out
+          if (accountType === 'free' && (swipeCount + 1 >= 10 || matchCount + 1 >= 1)) {
+            setLastLockoutTime(new Date().toISOString());
+            setIsLockedOut(true);
+          }
+        } else {
+          // For sponsor profiles, just show celebration without creating match
+          setTimeout(() => {
+            alert('Thanks for your interest! Check out their exclusive offer.');
+          }, 1500);
         }
       }
       
