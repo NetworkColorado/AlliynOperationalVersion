@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './App.css';
 
 // Mock business data with comprehensive profiles
@@ -134,6 +134,7 @@ function App() {
   const [swipeCount, setSwipeCount] = useState(0);
   const [matchCount, setMatchCount] = useState(0);
   const [lastLockoutTime, setLastLockoutTime] = useState(null);
+  const [isLockedOut, setIsLockedOut] = useState(false);
   
   const [userProfile, setUserProfile] = useState({
     companyName: "Your Company",
@@ -149,6 +150,21 @@ function App() {
     partnerships: ["Strategic Alliances"]
   });
   const cardRef = useRef(null);
+
+  // Check lockout status on component mount
+  useEffect(() => {
+    if (lastLockoutTime && accountType === 'free') {
+      const now = new Date().getTime();
+      const lockoutEnd = new Date(lastLockoutTime).getTime() + (24 * 60 * 60 * 1000); // 24 hours
+      if (now < lockoutEnd) {
+        setIsLockedOut(true);
+      } else {
+        setIsLockedOut(false);
+        setSwipeCount(0);
+        setMatchCount(0);
+      }
+    }
+  }, [lastLockoutTime, accountType]);
 
   // Calculate match probability based on partnership compatibility
   const calculateMatchProbability = (business1, business2) => {
@@ -182,22 +198,62 @@ function App() {
     return Math.min(score, 100);
   };
 
-  // Generate special badges based on matching criteria
+  // Enhanced badge generation with more fun names
   const generateBadge = (business1, business2) => {
     const exp1 = business1.yearsInBusiness;
     const exp2 = business2.yearsInBusiness;
+    const userBusiness = userProfile;
     
+    // Title matches
     if (business1.ownerTitle.includes('CEO') && business2.ownerTitle.includes('CEO')) {
       if (exp1 <= 5 && exp2 <= 5) {
         return { name: 'Boss Babies', description: 'Both CEOs with companies under 5 years' };
       }
-      return { name: 'Power CEOs', description: 'Two visionary leaders unite' };
+      return { name: 'Power Titans', description: 'Two visionary CEO leaders unite' };
     }
     
+    if (business1.ownerTitle.includes('Founder') && business2.ownerTitle.includes('Founder')) {
+      return { name: 'Dream Builders', description: 'Two founders building the future' };
+    }
+    
+    if (business1.ownerTitle.includes('Director') && business2.ownerTitle.includes('Director')) {
+      return { name: 'Vision Masters', description: 'Directors with aligned strategic vision' };
+    }
+    
+    // Partnership scope matches
+    if (business1.seekingPartnership === business2.seekingPartnership) {
+      if (business1.seekingPartnership === 'National') {
+        return { name: 'National Champions', description: 'Both seeking nationwide partnerships' };
+      } else {
+        return { name: 'Local Heroes', description: 'Perfect local partnership match' };
+      }
+    }
+    
+    // Industry matches
     if (business1.industry === business2.industry) {
-      return { name: 'Industry Twins', description: 'Same industry powerhouses' };
+      const industryNames = {
+        'Technology': 'Tech Twins',
+        'Marketing & Advertising': 'Marketing Mavericks',
+        'Financial Technology': 'FinTech Force',
+        'Health & Wellness': 'Wellness Warriors',
+        'Cybersecurity': 'Security Squad'
+      };
+      const badgeName = industryNames[business1.industry] || 'Industry Twins';
+      return { name: badgeName, description: `Same industry powerhouses in ${business1.industry}` };
     }
     
+    // Experience level matches
+    if (Math.abs(exp1 - exp2) <= 2) {
+      if (exp1 <= 3 && exp2 <= 3) {
+        return { name: 'Startup Squad', description: 'Both early-stage entrepreneurs' };
+      } else if (exp1 >= 7 && exp2 >= 7) {
+        return { name: 'Veteran Alliance', description: 'Experienced business leaders' };
+      } else {
+        return { name: 'Growth Partners', description: 'Similar experience levels' };
+      }
+    }
+    
+    // Partnership type matches
     const commonPartnerships = business1.partnerships.filter(p => 
       business2.partnerships.includes(p)
     );
@@ -210,19 +266,51 @@ function App() {
       return { name: 'Venture Partners', description: 'Joint venture enthusiasts' };
     }
     
+    if (commonPartnerships.includes('Co-Branding')) {
+      return { name: 'Brand Builders', description: 'Co-branding collaboration experts' };
+    }
+    
+    if (commonPartnerships.includes('Event Collaborations')) {
+      return { name: 'Event Dynamos', description: 'Event collaboration specialists' };
+    }
+    
     return { name: 'Perfect Match', description: 'Great partnership potential' };
+  };
+
+  const canSwipe = () => {
+    if (accountType === 'premium') return true;
+    if (isLockedOut) return false;
+    return swipeCount < 10 && matchCount < 1;
   };
 
   const handleSwipe = useCallback((direction) => {
     if (currentIndex >= mockBusinesses.length) return;
     
+    // Check if user can swipe
+    if (!canSwipe()) {
+      if (accountType === 'free') {
+        setShowUpgradeModal(true);
+      }
+      return;
+    }
+    
     setSwipeDirection(direction);
+    
+    // Increment swipe count for free users
+    if (accountType === 'free') {
+      setSwipeCount(prev => prev + 1);
+    }
     
     setTimeout(() => {
       if (direction === 'right') {
         // Trigger confetti animation
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 3000);
+        
+        // Increment match count for free users
+        if (accountType === 'free') {
+          setMatchCount(prev => prev + 1);
+        }
         
         // Create a match with probability and badge
         const currentBusiness = mockBusinesses[currentIndex];
@@ -240,12 +328,28 @@ function App() {
         };
         
         setMatches(prev => [newMatch, ...prev]);
+        
+        // Check if free user should be locked out
+        if (accountType === 'free' && (swipeCount + 1 >= 10 || matchCount + 1 >= 1)) {
+          setLastLockoutTime(new Date().toISOString());
+          setIsLockedOut(true);
+        }
       }
       
       setCurrentIndex(prev => prev + 1);
       setSwipeDirection('');
     }, 300);
-  }, [currentIndex]);
+  }, [currentIndex, accountType, swipeCount, matchCount]);
+
+  const upgradeToePremium = () => {
+    setAccountType('premium');
+    setSwipeCount(0);
+    setMatchCount(0);
+    setIsLockedOut(false);
+    setLastLockoutTime(null);
+    setShowUpgradeModal(false);
+    alert('🎉 Welcome to Premium! Enjoy unlimited matching!');
+  };
 
   const addMessage = (matchId, message) => {
     const newMessage = {
@@ -326,6 +430,18 @@ function App() {
     return { matchLeaders, dealLeaders };
   };
 
+  const getLockoutTimeRemaining = () => {
+    if (!lastLockoutTime) return '';
+    const now = new Date().getTime();
+    const lockoutEnd = new Date(lastLockoutTime).getTime() + (24 * 60 * 60 * 1000);
+    const remaining = Math.max(0, lockoutEnd - now);
+    
+    const hours = Math.floor(remaining / (1000 * 60 * 60));
+    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    
+    return `${hours}h ${minutes}m`;
+  };
+
   const currentBusiness = mockBusinesses[currentIndex];
 
   const renderMatchmaker = () => {
@@ -347,8 +463,50 @@ function App() {
       );
     }
 
+    // Show lockout screen for free users
+    if (accountType === 'free' && isLockedOut) {
+      return (
+        <div className="flex-1 flex items-center justify-center p-8">
+          <div className="text-center bg-white rounded-lg shadow-xl p-8 max-w-md">
+            <div className="text-6xl mb-4">⏰</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Free Limit Reached</h2>
+            <p className="text-gray-600 mb-4">
+              You've used your free daily limit (10 swipes or 1 match). 
+              Upgrade to Premium for unlimited matching!
+            </p>
+            <div className="bg-gray-100 rounded-lg p-4 mb-6">
+              <p className="text-sm text-gray-600">Time remaining: <span className="font-bold">{getLockoutTimeRemaining()}</span></p>
+            </div>
+            <button
+              onClick={() => setShowUpgradeModal(true)}
+              className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-8 py-3 rounded-full hover:shadow-lg transition-all font-bold"
+            >
+              Upgrade to Premium - $19.99
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="flex-1 flex items-center justify-center p-8 relative">
+        {/* Free User Swipe Counter */}
+        {accountType === 'free' && (
+          <div className="absolute top-4 right-4 bg-white rounded-lg shadow-md p-4 z-10">
+            <div className="text-center">
+              <p className="text-sm text-gray-600">Free Account</p>
+              <p className="text-xs text-gray-500">Swipes: {swipeCount}/10</p>
+              <p className="text-xs text-gray-500">Matches: {matchCount}/1</p>
+              <button
+                onClick={() => setShowUpgradeModal(true)}
+                className="mt-2 text-xs bg-yellow-500 text-white px-3 py-1 rounded-full hover:bg-yellow-600 transition-colors"
+              >
+                Upgrade
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Confetti Animation */}
         {showConfetti && (
           <div className="fixed inset-0 pointer-events-none z-50">
@@ -471,13 +629,23 @@ function App() {
           <div className="flex justify-center space-x-8 mt-8">
             <button 
               onClick={() => handleSwipe('left')}
-              className="w-16 h-16 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white text-2xl transition-all hover:scale-110 shadow-lg"
+              disabled={!canSwipe()}
+              className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl transition-all hover:scale-110 shadow-lg ${
+                canSwipe() 
+                  ? 'bg-red-500 hover:bg-red-600' 
+                  : 'bg-gray-400 cursor-not-allowed'
+              }`}
             >
               ✕
             </button>
             <button 
               onClick={() => handleSwipe('right')}
-              className="w-16 h-16 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center text-white text-2xl transition-all hover:scale-110 shadow-lg"
+              disabled={!canSwipe()}
+              className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl transition-all hover:scale-110 shadow-lg ${
+                canSwipe() 
+                  ? 'bg-green-500 hover:bg-green-600' 
+                  : 'bg-gray-400 cursor-not-allowed'
+              }`}
             >
               ♥
             </button>
@@ -512,8 +680,11 @@ function App() {
                 <div className="ml-auto">
                   <span className={`px-3 py-1 rounded-full text-sm ${
                     match.badge.name === 'Boss Babies' ? 'bg-yellow-100 text-yellow-800' :
-                    match.badge.name === 'Power CEOs' ? 'bg-purple-100 text-purple-800' :
-                    'bg-blue-100 text-blue-800'
+                    match.badge.name === 'Power Titans' ? 'bg-purple-100 text-purple-800' :
+                    match.badge.name === 'Dream Builders' ? 'bg-blue-100 text-blue-800' :
+                    match.badge.name === 'National Champions' ? 'bg-green-100 text-green-800' :
+                    match.badge.name === 'Local Heroes' ? 'bg-orange-100 text-orange-800' :
+                    'bg-indigo-100 text-indigo-800'
                   }`}>
                     {match.badge.name}
                   </span>
@@ -861,7 +1032,15 @@ function App() {
 
   const renderProfile = () => (
     <div className="flex-1 p-8">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">My Profile</h2>
+      <div className="flex items-center space-x-4 mb-6">
+        <h2 className="text-3xl font-bold text-gray-800">My Profile</h2>
+        {accountType === 'premium' && (
+          <span className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full text-sm font-bold flex items-center space-x-2">
+            <span>⭐</span>
+            <span>PREMIUM</span>
+          </span>
+        )}
+      </div>
       
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -887,7 +1066,14 @@ function App() {
                 </label>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold">{userProfile.ownerName}</h3>
+                <div className="flex items-center space-x-3">
+                  <h3 className="text-2xl font-bold">{userProfile.ownerName}</h3>
+                  {accountType === 'premium' && (
+                    <span className="px-2 py-1 bg-yellow-500 text-yellow-900 rounded-full text-xs font-bold">
+                      ⭐ PREMIUM
+                    </span>
+                  )}
+                </div>
                 <p className="text-white/90">{userProfile.ownerTitle}</p>
                 <p className="text-white/80">{userProfile.companyName}</p>
               </div>
@@ -1031,6 +1217,31 @@ function App() {
                     />
                   </div>
                 </div>
+                
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Professional Headshot
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center overflow-hidden">
+                      {userProfile.profileImage ? (
+                        <img src={userProfile.profileImage} alt="Headshot" className="w-full h-full object-cover rounded-full" />
+                      ) : (
+                        <span className="text-gray-400">📸</span>
+                      )}
+                    </div>
+                    <label className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-600 transition-colors">
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={(e) => handleImageUpload(e.target.files[0], 'profile')}
+                      />
+                      Upload Headshot
+                    </label>
+                    <p className="text-sm text-gray-500">Professional photo for your business profile</p>
+                  </div>
+                </div>
               </div>
 
               {/* Business Details */}
@@ -1127,54 +1338,171 @@ function App() {
   const renderSettings = () => (
     <div className="flex-1 p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Settings</h2>
-      <div className="max-w-2xl">
-        <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Partnership Preferences</h3>
-            <div className="space-y-3">
-              {["Strategic Alliances", "Joint Ventures", "Co-Branding", "Affiliate Partnerships", 
-                "Sponsorship Agreements", "Event Collaborations", "Incubator/Accelerator Collaborations"].map((type) => (
-                <label key={type} className="flex items-center space-x-3">
-                  <input type="checkbox" defaultChecked className="h-4 w-4 text-purple-600 rounded" />
-                  <span className="text-gray-700">{type}</span>
-                </label>
-              ))}
+      <div className="max-w-2xl space-y-6">
+        
+        {/* Account Plan */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <span className="mr-2">💎</span>
+            Account Plan
+          </h3>
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="font-medium text-gray-800">
+                Current Plan: <span className={`${accountType === 'premium' ? 'text-yellow-600' : 'text-gray-600'}`}>
+                  {accountType === 'premium' ? 'Premium ⭐' : 'Free'}
+                </span>
+              </p>
+              {accountType === 'free' && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Limited to 10 swipes or 1 match per day
+                </p>
+              )}
+              {accountType === 'premium' && (
+                <p className="text-sm text-green-600 mt-1">
+                  ✓ Unlimited swipes and matches
+                </p>
+              )}
             </div>
+            {accountType === 'free' && (
+              <button
+                onClick={() => setShowUpgradeModal(true)}
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-bold"
+              >
+                Upgrade to Premium - $19.99
+              </button>
+            )}
           </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Geographic Preference</h3>
-            <div className="space-y-2">
-              <label className="flex items-center space-x-3">
-                <input type="radio" name="geographic" defaultChecked className="h-4 w-4 text-purple-600" />
-                <span className="text-gray-700">Local Partnerships</span>
-              </label>
-              <label className="flex items-center space-x-3">
-                <input type="radio" name="geographic" className="h-4 w-4 text-purple-600" />
-                <span className="text-gray-700">National Partnerships</span>
-              </label>
-            </div>
-          </div>
+        </div>
 
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Notifications</h3>
+        {/* Usage Stats for Free Users */}
+        {accountType === 'free' && (
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Daily Usage</h3>
             <div className="space-y-3">
-              <label className="flex items-center space-x-3">
-                <input type="checkbox" defaultChecked className="h-4 w-4 text-purple-600 rounded" />
-                <span className="text-gray-700">New Match Notifications</span>
-              </label>
-              <label className="flex items-center space-x-3">
-                <input type="checkbox" defaultChecked className="h-4 w-4 text-purple-600 rounded" />
-                <span className="text-gray-700">Message Notifications</span>
-              </label>
-              <label className="flex items-center space-x-3">
-                <input type="checkbox" className="h-4 w-4 text-purple-600 rounded" />
-                <span className="text-gray-700">Deal Opportunity Alerts</span>
-              </label>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Swipes Today:</span>
+                <span className="font-medium">{swipeCount}/10</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Matches Today:</span>
+                <span className="font-medium">{matchCount}/1</span>
+              </div>
+              {isLockedOut && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <p className="text-red-700 text-sm">
+                    ⏰ Locked out for: {getLockoutTimeRemaining()}
+                  </p>
+                </div>
+              )}
             </div>
+          </div>
+        )}
+
+        {/* Preferences */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Partnership Preferences</h3>
+          <div className="space-y-3">
+            {["Strategic Alliances", "Joint Ventures", "Co-Branding", "Affiliate Partnerships", 
+              "Sponsorship Agreements", "Event Collaborations", "Incubator/Accelerator Collaborations"].map((type) => (
+              <label key={type} className="flex items-center space-x-3">
+                <input type="checkbox" defaultChecked className="h-4 w-4 text-purple-600 rounded" />
+                <span className="text-gray-700">{type}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Geographic Preference</h3>
+          <div className="space-y-2">
+            <label className="flex items-center space-x-3">
+              <input type="radio" name="geographic" defaultChecked className="h-4 w-4 text-purple-600" />
+              <span className="text-gray-700">Local Partnerships</span>
+            </label>
+            <label className="flex items-center space-x-3">
+              <input type="radio" name="geographic" className="h-4 w-4 text-purple-600" />
+              <span className="text-gray-700">National Partnerships</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Notifications</h3>
+          <div className="space-y-3">
+            <label className="flex items-center space-x-3">
+              <input type="checkbox" defaultChecked className="h-4 w-4 text-purple-600 rounded" />
+              <span className="text-gray-700">New Match Notifications</span>
+            </label>
+            <label className="flex items-center space-x-3">
+              <input type="checkbox" defaultChecked className="h-4 w-4 text-purple-600 rounded" />
+              <span className="text-gray-700">Message Notifications</span>
+            </label>
+            <label className="flex items-center space-x-3">
+              <input type="checkbox" className="h-4 w-4 text-purple-600 rounded" />
+              <span className="text-gray-700">Deal Opportunity Alerts</span>
+            </label>
           </div>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <div className="text-6xl mb-4">⭐</div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">Upgrade to Premium</h3>
+                <p className="text-gray-600">Unlock unlimited business matching!</p>
+              </div>
+              
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span className="text-gray-700">Unlimited swipes per day</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span className="text-gray-700">Unlimited matches</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span className="text-gray-700">No 24-hour lockouts</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span className="text-gray-700">Premium badge on profile</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span className="text-gray-700">Priority customer support</span>
+                </div>
+              </div>
+
+              <div className="text-center mb-6">
+                <div className="text-3xl font-bold text-yellow-600 mb-2">$19.99</div>
+                <p className="text-sm text-gray-500">One-time payment</p>
+              </div>
+
+              <div className="flex space-x-3">
+                <button 
+                  onClick={() => setShowUpgradeModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={upgradeToePremium}
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:shadow-lg transition-all font-bold"
+                >
+                  Upgrade Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
@@ -1196,6 +1524,12 @@ function App() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {accountType === 'premium' && (
+                <span className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full text-xs font-bold flex items-center space-x-1">
+                  <span>⭐</span>
+                  <span>PREMIUM</span>
+                </span>
+              )}
               <div className="flex items-center space-x-2 bg-purple-100 px-4 py-2 rounded-full">
                 <span className="text-purple-600 font-semibold">{matches.length}</span>
                 <span className="text-purple-600 text-sm">Matches</span>
