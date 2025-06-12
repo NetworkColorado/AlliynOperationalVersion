@@ -597,11 +597,11 @@ function App() {
             <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
               <div className="flex items-start justify-between text-white">
                 <div className="flex-1">
-                  <h2 className="text-2xl font-bold mb-1">{currentBusiness.companyName}</h2>
-                  <p className="text-sm opacity-90 leading-relaxed">{currentBusiness.companyDescription}</p>
+                  <h2 className="text-2xl font-bold mb-1">{currentProfile.companyName}</h2>
+                  <p className="text-sm opacity-90 leading-relaxed">{currentProfile.companyDescription}</p>
                 </div>
                 <img 
-                  src={currentBusiness.logo} 
+                  src={currentProfile.logo} 
                   alt="Company Logo"
                   className="w-16 h-16 rounded-xl bg-white/20 object-cover ml-4"
                 />
@@ -612,13 +612,13 @@ function App() {
             <div className="p-6 border-b border-gray-100">
               <div className="flex items-center space-x-4">
                 <img 
-                  src={currentBusiness.profileImage} 
-                  alt={currentBusiness.ownerName}
+                  src={currentProfile.profileImage} 
+                  alt={currentProfile.ownerName}
                   className="w-16 h-16 rounded-full object-cover ring-4 ring-purple-100"
                 />
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800">{currentBusiness.ownerName}</h3>
-                  <p className="text-purple-600 font-medium">{currentBusiness.ownerTitle}</p>
+                  <h3 className="text-xl font-semibold text-gray-800">{currentProfile.ownerName}</h3>
+                  <p className="text-purple-600 font-medium">{currentProfile.ownerTitle}</p>
                 </div>
               </div>
             </div>
@@ -629,11 +629,11 @@ function App() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-lg p-3">
                   <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Industry</p>
-                  <p className="text-sm font-semibold text-gray-800">{currentBusiness.industry}</p>
+                  <p className="text-sm font-semibold text-gray-800">{currentProfile.industry}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
                   <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Experience</p>
-                  <p className="text-sm font-semibold text-gray-800">{currentBusiness.yearsInBusiness} years</p>
+                  <p className="text-sm font-semibold text-gray-800">{currentProfile.yearsInBusiness} years</p>
                 </div>
               </div>
 
@@ -641,7 +641,7 @@ function App() {
               <div>
                 <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Service Areas</p>
                 <div className="flex flex-wrap gap-2">
-                  {currentBusiness.serviceAreas.map((area, index) => (
+                  {currentProfile.serviceAreas.map((area, index) => (
                     <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
                       {area}
                     </span>
@@ -653,11 +653,11 @@ function App() {
               <div>
                 <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Scope</p>
                 <span className={`px-3 py-1 text-sm rounded-full ${
-                  currentBusiness.seekingPartnership === 'National' 
+                  currentProfile.seekingPartnership === 'National' 
                     ? 'bg-green-100 text-green-800' 
                     : 'bg-orange-100 text-orange-800'
                 }`}>
-                  {currentBusiness.seekingPartnership}
+                  {currentProfile.seekingPartnership}
                 </span>
               </div>
 
@@ -665,7 +665,7 @@ function App() {
               <div>
                 <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Interests</p>
                 <div className="grid grid-cols-1 gap-2">
-                  {currentBusiness.partnerships.map((partnership, index) => (
+                  {currentProfile.partnerships.map((partnership, index) => (
                     <div key={index} className="flex items-center space-x-2">
                       <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                       <span className="text-sm text-gray-700">{partnership}</span>
