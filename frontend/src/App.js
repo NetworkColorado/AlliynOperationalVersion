@@ -1946,10 +1946,272 @@ function App() {
     );
   };
 
+  const renderAuthModal = () => {
+    if (authMode === 'signup') {
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold text-2xl">A</span>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Join Alliyn</h2>
+                <p className="text-gray-600">Create your business profile and start matching!</p>
+              </div>
+
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = {
+                  email: formData.get('email'),
+                  password: formData.get('password'),
+                  ownerName: formData.get('ownerName'),
+                  ownerTitle: formData.get('ownerTitle'),
+                  companyName: formData.get('companyName'),
+                  companyDescription: formData.get('companyDescription'),
+                  industry: formData.get('industry'),
+                  yearsInBusiness: formData.get('yearsInBusiness'),
+                  seekingPartnership: formData.get('seekingPartnership'),
+                  serviceAreas: formData.get('serviceAreas'),
+                  partnerships: Array.from(formData.getAll('partnerships'))
+                };
+                handleSignUp(data);
+              }} className="space-y-4">
+                
+                {/* Account Info */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input 
+                    type="email" 
+                    name="email"
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                  <input 
+                    type="password" 
+                    name="password"
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+
+                {/* Personal Info */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input 
+                      type="text" 
+                      name="ownerName"
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                    <input 
+                      type="text" 
+                      name="ownerTitle"
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                {/* Company Info */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                  <input 
+                    type="text" 
+                    name="companyName"
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Company Description</label>
+                  <textarea 
+                    name="companyDescription"
+                    rows="2"
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                  ></textarea>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                    <select 
+                      name="industry"
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    >
+                      <option value="">Select industry</option>
+                      <option value="Technology">Technology</option>
+                      <option value="Marketing & Advertising">Marketing & Advertising</option>
+                      <option value="Financial Technology">Financial Technology</option>
+                      <option value="Cybersecurity">Cybersecurity</option>
+                      <option value="Health & Wellness">Health & Wellness</option>
+                      <option value="Supply Chain Management">Supply Chain Management</option>
+                      <option value="Education Technology">Education Technology</option>
+                      <option value="Renewable Energy">Renewable Energy</option>
+                      <option value="Consulting">Consulting</option>
+                      <option value="Manufacturing">Manufacturing</option>
+                      <option value="Real Estate">Real Estate</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Years in Business</label>
+                    <input 
+                      type="number" 
+                      name="yearsInBusiness"
+                      min="0"
+                      max="100"
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Service Areas (comma-separated)</label>
+                  <input 
+                    type="text" 
+                    name="serviceAreas"
+                    placeholder="e.g., San Francisco, New York, Remote"
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Partnership Scope</label>
+                  <select 
+                    name="seekingPartnership"
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  >
+                    <option value="Local">Local Partnerships</option>
+                    <option value="National">National Partnerships</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Partnership Interests</label>
+                  <div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto">
+                    {["Strategic Alliances", "Joint Ventures", "Co-Branding", "Affiliate Partnerships"].map((type) => (
+                      <label key={type} className="flex items-center space-x-2">
+                        <input 
+                          type="checkbox" 
+                          name="partnerships"
+                          value={type}
+                          className="h-3 w-3 text-purple-600 rounded"
+                        />
+                        <span className="text-xs text-gray-700">{type}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex space-x-3 pt-4">
+                  <button 
+                    type="button"
+                    onClick={() => setAuthMode('signin')}
+                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+                  >
+                    Sign In Instead
+                  </button>
+                  <button 
+                    type="submit"
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all text-sm font-medium"
+                  >
+                    Create Account
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Sign In Modal
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+          <div className="p-6">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold text-2xl">A</span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+              <p className="text-gray-600">Sign in to continue matching with businesses</p>
+            </div>
+
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              handleSignIn(formData.get('email'), formData.get('password'));
+            }} className="space-y-4">
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input 
+                  type="email" 
+                  name="email"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input 
+                  type="password" 
+                  name="password"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+
+              <div className="flex space-x-3 pt-4">
+                <button 
+                  type="button"
+                  onClick={() => setAuthMode('signup')}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Create Account
+                </button>
+                <button 
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                >
+                  Sign In
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
       {/* Authentication Modal */}
       {!isAuthenticated && showAuthModal && renderAuthModal()}
+      
+      {/* Main App */}
+      {isAuthenticated && (
+        <>
+          {/* Header */}
+          <header className="bg-white shadow-sm border-b border-gray-200">
       
       {/* Main App */}
       {isAuthenticated && (
