@@ -796,7 +796,7 @@ function App() {
                   : 'bg-gray-400 cursor-not-allowed'
               }`}
             >
-              {isCurrentSponsor ? '📞' : '♥'}
+              {isCurrentSponsor ? '📞' : '🤝'}
             </button>
           </div>
           
