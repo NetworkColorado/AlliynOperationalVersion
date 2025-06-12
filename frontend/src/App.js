@@ -586,94 +586,141 @@ function App() {
         )}
 
         <div className="relative w-full max-w-md">
-          {/* Business Card */}
-          <div 
-            ref={cardRef}
-            className={`business-card ${swipeDirection ? `swipe-${swipeDirection}` : ''} 
-              bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-105`}
-          >
-            {/* Header with Company Logo and Info */}
-            <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
-              <div className="flex items-start justify-between text-white">
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold mb-1">{currentProfile.companyName}</h2>
-                  <p className="text-sm opacity-90 leading-relaxed">{currentProfile.companyDescription}</p>
+          {/* Sponsor Card */}
+          {isCurrentSponsor ? (
+            <div 
+              ref={cardRef}
+              className={`business-card ${swipeDirection ? `swipe-${swipeDirection}` : ''} 
+                bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-105`}
+            >
+              {/* Sponsor Header */}
+              <div className={`relative h-48 bg-gradient-to-br ${currentProfile.backgroundColor} p-6`}>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-white/20 text-white rounded-full text-xs font-bold backdrop-blur-sm">
+                    {currentProfile.sponsorBadge}
+                  </span>
                 </div>
-                <img 
-                  src={currentProfile.logo} 
-                  alt="Company Logo"
-                  className="w-16 h-16 rounded-xl bg-white/20 object-cover ml-4"
-                />
+                <div className="flex items-start justify-between text-white">
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold mb-1">{currentProfile.companyName}</h2>
+                    <p className="text-sm opacity-90 leading-relaxed">{currentProfile.companyDescription}</p>
+                  </div>
+                  <img 
+                    src={currentProfile.logo} 
+                    alt="Sponsor Logo"
+                    className="w-16 h-16 rounded-xl bg-white/20 object-cover ml-4"
+                  />
+                </div>
+              </div>
+
+              {/* Sponsor Content */}
+              <div className="p-6">
+                <div className="text-center">
+                  <div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-lg p-4 mb-4">
+                    <h3 className="text-lg font-bold text-gray-800 mb-2">Exclusive Offer for Alliyn Members</h3>
+                    <p className="text-sm text-gray-600">Join thousands of successful businesses already using this platform</p>
+                  </div>
+                  
+                  <button className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 px-6 rounded-lg font-bold text-lg hover:shadow-lg transition-all">
+                    {currentProfile.ctaText}
+                  </button>
+                  
+                  <p className="text-xs text-gray-500 mt-3">
+                    Sponsored content • Learn more about partnership opportunities
+                  </p>
+                </div>
               </div>
             </div>
+          ) : (
+            /* Regular Business Card */
+            <div 
+              ref={cardRef}
+              className={`business-card ${swipeDirection ? `swipe-${swipeDirection}` : ''} 
+                bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-105`}
+            >
+              {/* Header with Company Logo and Info */}
+              <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
+                <div className="flex items-start justify-between text-white">
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold mb-1">{currentProfile.companyName}</h2>
+                    <p className="text-sm opacity-90 leading-relaxed">{currentProfile.companyDescription}</p>
+                  </div>
+                  <img 
+                    src={currentProfile.logo} 
+                    alt="Company Logo"
+                    className="w-16 h-16 rounded-xl bg-white/20 object-cover ml-4"
+                  />
+                </div>
+              </div>
 
-            {/* Owner Profile */}
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center space-x-4">
-                <img 
-                  src={currentProfile.profileImage} 
-                  alt={currentProfile.ownerName}
-                  className="w-16 h-16 rounded-full object-cover ring-4 ring-purple-100"
-                />
+              {/* Owner Profile */}
+              <div className="p-6 border-b border-gray-100">
+                <div className="flex items-center space-x-4">
+                  <img 
+                    src={currentProfile.profileImage} 
+                    alt={currentProfile.ownerName}
+                    className="w-16 h-16 rounded-full object-cover ring-4 ring-purple-100"
+                  />
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">{currentProfile.ownerName}</h3>
+                    <p className="text-purple-600 font-medium">{currentProfile.ownerTitle}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Business Details */}
+              <div className="p-6 space-y-4">
+                {/* Industry & Experience */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Industry</p>
+                    <p className="text-sm font-semibold text-gray-800">{currentProfile.industry}</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Experience</p>
+                    <p className="text-sm font-semibold text-gray-800">{currentProfile.yearsInBusiness} years</p>
+                  </div>
+                </div>
+
+                {/* Service Areas */}
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800">{currentProfile.ownerName}</h3>
-                  <p className="text-purple-600 font-medium">{currentProfile.ownerTitle}</p>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Service Areas</p>
+                  <div className="flex flex-wrap gap-2">
+                    {currentProfile.serviceAreas?.map((area, index) => (
+                      <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Partnership Scope */}
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Scope</p>
+                  <span className={`px-3 py-1 text-sm rounded-full ${
+                    currentProfile.seekingPartnership === 'National' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-orange-100 text-orange-800'
+                  }`}>
+                    {currentProfile.seekingPartnership}
+                  </span>
+                </div>
+
+                {/* Partnership Interests */}
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Interests</p>
+                  <div className="grid grid-cols-1 gap-2">
+                    {currentProfile.partnerships?.map((partnership, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span className="text-sm text-gray-700">{partnership}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Business Details */}
-            <div className="p-6 space-y-4">
-              {/* Industry & Experience */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Industry</p>
-                  <p className="text-sm font-semibold text-gray-800">{currentProfile.industry}</p>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Experience</p>
-                  <p className="text-sm font-semibold text-gray-800">{currentProfile.yearsInBusiness} years</p>
-                </div>
-              </div>
-
-              {/* Service Areas */}
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Service Areas</p>
-                <div className="flex flex-wrap gap-2">
-                  {currentProfile.serviceAreas.map((area, index) => (
-                    <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                      {area}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Partnership Scope */}
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Scope</p>
-                <span className={`px-3 py-1 text-sm rounded-full ${
-                  currentProfile.seekingPartnership === 'National' 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-orange-100 text-orange-800'
-                }`}>
-                  {currentProfile.seekingPartnership}
-                </span>
-              </div>
-
-              {/* Partnership Interests */}
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Interests</p>
-                <div className="grid grid-cols-1 gap-2">
-                  {currentProfile.partnerships.map((partnership, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span className="text-sm text-gray-700">{partnership}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
 
           {/* Swipe Buttons */}
           <div className="flex justify-center space-x-8 mt-8">
@@ -686,7 +733,7 @@ function App() {
                   : 'bg-gray-400 cursor-not-allowed'
               }`}
             >
-              ✕
+              {isCurrentSponsor ? '⏭' : '✕'}
             </button>
             <button 
               onClick={() => handleSwipe('right')}
@@ -697,8 +744,21 @@ function App() {
                   : 'bg-gray-400 cursor-not-allowed'
               }`}
             >
-              ♥
+              {isCurrentSponsor ? '📞' : '♥'}
             </button>
+          </div>
+          
+          {/* Advertisement Banner */}
+          <div className="mt-8 bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <h4 className="font-semibold text-gray-800 text-sm">Sponsored by TechCorp Solutions</h4>
+                <p className="text-xs text-gray-600">Enterprise software solutions for growing businesses</p>
+              </div>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded text-xs hover:bg-blue-600 transition-colors">
+                Learn More
+              </button>
+            </div>
           </div>
         </div>
       </div>
