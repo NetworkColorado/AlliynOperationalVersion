@@ -166,6 +166,12 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(true);
+  const [authMode, setAuthMode] = useState('signin'); // 'signin' or 'signup'
+  const [liveProfiles, setLiveProfiles] = useState([...mockBusinesses]);
+  
   // Account Management
   const [accountType, setAccountType] = useState('free'); // 'free' or 'premium'
   const [swipeCount, setSwipeCount] = useState(0);
