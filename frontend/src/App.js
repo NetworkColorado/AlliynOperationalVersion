@@ -1659,7 +1659,7 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <nav className="w-64 bg-white shadow-lg h-screen sticky top-0">
+        <nav className="w-64 bg-white shadow-lg h-screen sticky top-0 overflow-y-auto">
           <div className="p-6">
             <div className="space-y-2">
               {[
@@ -1688,6 +1688,32 @@ function App() {
                   )}
                 </button>
               ))}
+            </div>
+            
+            {/* Sidebar Advertisement */}
+            <div className="mt-8 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg p-4 border border-green-200">
+              <div className="text-center">
+                <div className="text-2xl mb-2">💼</div>
+                <h4 className="font-bold text-sm text-gray-800 mb-2">Business Accelerator</h4>
+                <p className="text-xs text-gray-600 mb-3">Join our 12-week program and scale your business 10x</p>
+                <button className="w-full bg-green-500 text-white py-2 px-3 rounded text-xs font-medium hover:bg-green-600 transition-colors">
+                  Apply Now
+                </button>
+                <p className="text-xs text-gray-400 mt-2">Ad</p>
+              </div>
+            </div>
+
+            {/* Second Ad */}
+            <div className="mt-4 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg p-4 border border-purple-200">
+              <div className="text-center">
+                <div className="text-2xl mb-2">🚀</div>
+                <h4 className="font-bold text-sm text-gray-800 mb-2">Startup Funding</h4>
+                <p className="text-xs text-gray-600 mb-3">Get connected with investors looking for your business</p>
+                <button className="w-full bg-purple-500 text-white py-2 px-3 rounded text-xs font-medium hover:bg-purple-600 transition-colors">
+                  Get Funding
+                </button>
+                <p className="text-xs text-gray-400 mt-2">Sponsored</p>
+              </div>
             </div>
           </div>
         </nav>
