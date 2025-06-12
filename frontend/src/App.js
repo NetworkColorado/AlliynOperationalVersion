@@ -1704,7 +1704,7 @@ function App() {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Alliyn: Business Matchmaker
                 </h1>
-                <p className="text-sm text-gray-500">Part of Obsidian Suites</p>
+                <p className="text-sm text-gray-500">Obsidian Suites</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
