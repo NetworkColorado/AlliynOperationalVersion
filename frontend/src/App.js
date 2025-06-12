@@ -479,7 +479,21 @@ function App() {
     return `${hours}h ${minutes}m`;
   };
 
-  const currentBusiness = mockBusinesses[currentIndex];
+  // Combine businesses and sponsors for swiping
+  const allProfiles = [...mockBusinesses];
+  
+  // Insert sponsors every 4-5 profiles for optimal ad exposure
+  const getProfileAtIndex = (index) => {
+    // Show sponsor every 4th profile
+    if (index > 0 && index % 4 === 0 && sponsorProfiles.length > 0) {
+      const sponsorIndex = Math.floor(index / 4) % sponsorProfiles.length;
+      return sponsorProfiles[sponsorIndex];
+    }
+    return allProfiles[index % allProfiles.length];
+  };
+
+  const currentProfile = getProfileAtIndex(currentIndex);
+  const isCurrentSponsor = currentProfile?.type === 'sponsor';
 
   const renderMatchmaker = () => {
     if (currentIndex >= mockBusinesses.length) {
