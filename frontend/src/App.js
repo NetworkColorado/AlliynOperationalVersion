@@ -232,14 +232,53 @@ function App() {
     setMessages(prev => [...prev, newMessage]);
   };
 
-  const addDeal = (matchId, dealDetails) => {
+  const addDeal = (dealDetails) => {
     const newDeal = {
       id: Date.now(),
-      matchId,
       ...dealDetails,
       timestamp: new Date().toISOString()
     };
     setDeals(prev => [newDeal, ...prev]);
+    setShowAddDealModal(false);
+    setSelectedMatch(null);
+  };
+
+  // Calculate leaderboard stats
+  const getLeaderboardStats = () => {
+    // Match leaders
+    const matchCounts = {};
+    matches.forEach(match => {
+      const company = match.business.companyName;
+      matchCounts[company] = (matchCounts[company] || 0) + 1;
+    });
+
+    // Deal leaders  
+    const dealCounts = {};
+    const dealValues = {};
+    deals.forEach(deal => {
+      const company = deal.companyName || 'Your Company';
+      dealCounts[company] = (dealCounts[company] || 0) + 1;
+      
+      // Extract numeric value from deal value string
+      const value = parseFloat(deal.dealValue?.replace(/[$,]/g, '') || 0);
+      dealValues[company] = (dealValues[company] || 0) + value;
+    });
+
+    const matchLeaders = Object.entries(matchCounts)
+      .map(([company, count]) => ({ company, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
+    const dealLeaders = Object.entries(dealCounts)
+      .map(([company, count]) => ({ 
+        company, 
+        count, 
+        totalValue: dealValues[company] || 0 
+      }))
+      .sort((a, b) => b.count - a.count || b.totalValue - a.totalValue)
+      .slice(0, 5);
+
+    return { matchLeaders, dealLeaders };
   };
 
   const currentBusiness = mockBusinesses[currentIndex];
