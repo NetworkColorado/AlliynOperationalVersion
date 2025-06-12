@@ -350,14 +350,13 @@ function App() {
         }
         
         // Create a match with probability and badge
-        const currentBusiness = mockBusinesses[currentIndex];
         const matchBusiness = mockBusinesses[(currentIndex + 1) % mockBusinesses.length];
-        const probability = calculateMatchProbability(currentBusiness, matchBusiness);
-        const badge = generateBadge(currentBusiness, matchBusiness);
+        const probability = calculateMatchProbability(currentProfile, matchBusiness);
+        const badge = generateBadge(currentProfile, matchBusiness);
         
         const newMatch = {
           id: Date.now(),
-          business: currentBusiness,
+          business: currentProfile,
           matchedWith: matchBusiness,
           probability,
           badge,
