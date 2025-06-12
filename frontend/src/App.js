@@ -470,50 +470,113 @@ function App() {
     </div>
   );
 
-  const renderLeaderboard = () => (
-    <div className="flex-1 p-8">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Leaderboard</h2>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4">
-          <h3 className="text-xl font-semibold">Top Matchers This Month</h3>
-        </div>
-        <div className="p-6">
-          {matches.length === 0 ? (
-            <div className="text-center text-gray-500">
-              <div className="text-6xl mb-4">🏆</div>
-              <p>Start matching to see your ranking!</p>
+  const renderLeaderboard = () => {
+    const { matchLeaders, dealLeaders } = getLeaderboardStats();
+    
+    return (
+      <div className="flex-1 p-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Leaderboard</h2>
+        
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Match Leaders */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4">
+              <h3 className="text-xl font-semibold flex items-center">
+                <span className="mr-2">💝</span>
+                Top Matchers This Month
+              </h3>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {matches.slice(0, 5).map((match, index) => (
-                <div key={match.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                    index === 0 ? 'bg-yellow-500' : 
-                    index === 1 ? 'bg-gray-400' : 
-                    index === 2 ? 'bg-orange-600' : 'bg-blue-500'
-                  }`}>
-                    {index + 1}
-                  </div>
-                  <img 
-                    src={match.business.profileImage} 
-                    alt={match.business.ownerName}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <p className="font-semibold">{match.business.companyName}</p>
-                    <p className="text-sm text-gray-600">{match.probability}% match probability</p>
-                  </div>
-                  <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                    {match.badge.name}
-                  </span>
+            <div className="p-6">
+              {matchLeaders.length === 0 ? (
+                <div className="text-center text-gray-500">
+                  <div className="text-4xl mb-4">🤝</div>
+                  <p>Start matching to see rankings!</p>
                 </div>
-              ))}
+              ) : (
+                <div className="space-y-4">
+                  {matchLeaders.map((leader, index) => (
+                    <div key={leader.company} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                        index === 0 ? 'bg-yellow-500' : 
+                        index === 1 ? 'bg-gray-400' : 
+                        index === 2 ? 'bg-orange-600' : 'bg-blue-500'
+                      }`}>
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold">{leader.company}</p>
+                        <p className="text-sm text-gray-600">{leader.count} matches</p>
+                      </div>
+                      <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                        {leader.count} 🤝
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
+
+          {/* Deal Leaders */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-4">
+              <h3 className="text-xl font-semibold flex items-center">
+                <span className="mr-2">💰</span>
+                Top Deal Closers
+              </h3>
+            </div>
+            <div className="p-6">
+              {dealLeaders.length === 0 ? (
+                <div className="text-center text-gray-500">
+                  <div className="text-4xl mb-4">🏆</div>
+                  <p>Close your first deal to appear here!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {dealLeaders.map((leader, index) => (
+                    <div key={leader.company} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                        index === 0 ? 'bg-green-500' : 
+                        index === 1 ? 'bg-blue-400' : 
+                        index === 2 ? 'bg-indigo-600' : 'bg-teal-500'
+                      }`}>
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold">{leader.company}</p>
+                        <p className="text-sm text-gray-600">{leader.count} deals • ${leader.totalValue.toLocaleString()}</p>
+                      </div>
+                      <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                        {leader.count} 💰
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Overall Stats */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="text-3xl font-bold text-purple-600">{matches.length}</div>
+            <div className="text-gray-600">Total Matches</div>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="text-3xl font-bold text-green-600">{deals.length}</div>
+            <div className="text-gray-600">Deals Closed</div>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="text-3xl font-bold text-blue-600">
+              ${deals.reduce((sum, deal) => sum + (parseFloat(deal.dealValue?.replace(/[$,]/g, '') || 0)), 0).toLocaleString()}
+            </div>
+            <div className="text-gray-600">Total Deal Value</div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderDeals = () => (
     <div className="flex-1 p-8">
