@@ -583,28 +583,19 @@ function App() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-gray-800">Deals Closed</h2>
         <button 
-          onClick={() => {
-            if (matches.length > 0) {
-              const sampleDeal = {
-                dealName: "Sample Partnership Deal",
-                dealValue: "$50,000",
-                partnershipType: "Strategic Alliance",
-                description: "Successful collaboration project"
-              };
-              addDeal(matches[0].id, sampleDeal);
-            }
-          }}
-          className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all"
-          disabled={matches.length === 0}
+          onClick={() => setShowAddDealModal(true)}
+          className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all flex items-center space-x-2"
         >
-          + Add Deal
+          <span>+</span>
+          <span>Add Deal</span>
         </button>
       </div>
       
       {deals.length === 0 ? (
         <div className="text-center text-gray-500 mt-12">
           <div className="text-6xl mb-4">🤝</div>
-          <p>No deals closed yet. Make some matches and close your first deal!</p>
+          <p className="text-lg mb-2">No deals closed yet!</p>
+          <p className="text-sm">Click "Add Deal" to record your first successful partnership</p>
         </div>
       ) : (
         <div className="grid gap-6">
@@ -614,17 +605,182 @@ function App() {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800">{deal.dealName}</h3>
                   <p className="text-green-600 font-bold text-lg">{deal.dealValue}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    with <span className="font-medium">{deal.partnerCompany}</span>
+                  </p>
                 </div>
-                <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                  {deal.partnershipType}
-                </span>
+                <div className="text-right">
+                  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                    {deal.partnershipType}
+                  </span>
+                  <p className="text-xs text-gray-500 mt-2">
+                    {new Date(deal.timestamp).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
               <p className="text-gray-600 mb-3">{deal.description}</p>
-              <p className="text-sm text-gray-500">
-                Closed on {new Date(deal.timestamp).toLocaleDateString()}
-              </p>
+              {deal.matchSource && (
+                <div className="mt-3 p-3 bg-purple-50 rounded-lg">
+                  <p className="text-sm text-purple-700">
+                    <span className="font-medium">Match Source:</span> Found through {deal.matchSource}
+                  </p>
+                </div>
+              )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Add Deal Modal */}
+      {showAddDealModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-800">Add New Deal</h3>
+                <button 
+                  onClick={() => setShowAddDealModal(false)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const dealDetails = {
+                  dealName: formData.get('dealName'),
+                  dealValue: formData.get('dealValue'),
+                  partnerCompany: formData.get('partnerCompany'),
+                  partnershipType: formData.get('partnershipType'),
+                  description: formData.get('description'),
+                  matchSource: formData.get('matchSource'),
+                  companyName: formData.get('companyName') || 'Your Company'
+                };
+                addDeal(dealDetails);
+              }} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Your Company Name
+                  </label>
+                  <input 
+                    type="text" 
+                    name="companyName"
+                    placeholder="Enter your company name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Deal Name
+                  </label>
+                  <input 
+                    type="text" 
+                    name="dealName"
+                    placeholder="e.g., Marketing Partnership Agreement"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Deal Value
+                  </label>
+                  <input 
+                    type="text" 
+                    name="dealValue"
+                    placeholder="e.g., $50,000"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Partner Company
+                  </label>
+                  <input 
+                    type="text" 
+                    name="partnerCompany"
+                    placeholder="Company you partnered with"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Partnership Type
+                  </label>
+                  <select 
+                    name="partnershipType"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Select partnership type</option>
+                    <option value="Strategic Alliances">Strategic Alliances</option>
+                    <option value="Joint Ventures">Joint Ventures</option>
+                    <option value="Co-Branding">Co-Branding</option>
+                    <option value="Affiliate Partnerships">Affiliate Partnerships</option>
+                    <option value="Sponsorship Agreements">Sponsorship Agreements</option>
+                    <option value="Event Collaborations">Event Collaborations</option>
+                    <option value="Incubator/Accelerator Collaborations">Incubator/Accelerator Collaborations</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    How did you find this partner?
+                  </label>
+                  <select 
+                    name="matchSource"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  >
+                    <option value="">Select source (optional)</option>
+                    <option value="Alliyn App Match">Alliyn App Match</option>
+                    <option value="Networking Event">Networking Event</option>
+                    <option value="Referral">Referral</option>
+                    <option value="Cold Outreach">Cold Outreach</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Deal Description
+                  </label>
+                  <textarea 
+                    name="description"
+                    placeholder="Brief description of the partnership deal..."
+                    rows="3"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    required
+                  ></textarea>
+                </div>
+
+                <div className="flex space-x-3 pt-4">
+                  <button 
+                    type="button"
+                    onClick={() => setShowAddDealModal(false)}
+                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:shadow-lg transition-all"
+                  >
+                    Add Deal
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       )}
     </div>
