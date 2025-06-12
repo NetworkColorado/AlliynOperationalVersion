@@ -124,6 +124,8 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [deals, setDeals] = useState([]);
   const [swipeDirection, setSwipeDirection] = useState('');
+  const [showAddDealModal, setShowAddDealModal] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState(null);
   const cardRef = useRef(null);
 
   // Calculate match probability based on partnership compatibility
