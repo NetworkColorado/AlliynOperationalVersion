@@ -279,6 +279,7 @@ function App() {
       reader.readAsDataURL(file);
     }
   };
+  // Calculate leaderboard stats
   const getLeaderboardStats = () => {
     // Match leaders
     const matchCounts = {};
