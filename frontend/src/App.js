@@ -1,6 +1,43 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './App.css';
 
+// Mock sponsor profiles for advertising revenue
+const sponsorProfiles = [
+  {
+    id: 'sponsor1',
+    type: 'sponsor',
+    companyName: "Microsoft for Startups",
+    companyDescription: "Get $150,000 in Azure credits, free Office 365, and startup support programs",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+    sponsorBadge: "Featured Sponsor",
+    ctaText: "Apply for Program",
+    ctaUrl: "#",
+    backgroundColor: "from-blue-600 to-blue-800"
+  },
+  {
+    id: 'sponsor2', 
+    type: 'sponsor',
+    companyName: "Stripe Atlas",
+    companyDescription: "Start your company in minutes. Get a US bank account, incorporate in Delaware, and get your tax ID",
+    logo: "https://images.unsplash.com/photo-1559526324-593bc073d938",
+    sponsorBadge: "Startup Partner",
+    ctaText: "Start Your Company",
+    ctaUrl: "#",
+    backgroundColor: "from-purple-600 to-indigo-800"
+  },
+  {
+    id: 'sponsor3',
+    type: 'sponsor', 
+    companyName: "AWS Activate",
+    companyDescription: "Get up to $100,000 in AWS credits, technical support, and training for your startup",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
+    sponsorBadge: "Cloud Partner",
+    ctaText: "Get AWS Credits",
+    ctaUrl: "#",
+    backgroundColor: "from-orange-600 to-yellow-600"
+  }
+];
+
 // Mock business data with comprehensive profiles
 const mockBusinesses = [
   {
