@@ -127,6 +127,14 @@ function App() {
   const [showAddDealModal, setShowAddDealModal] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  
+  // Account Management
+  const [accountType, setAccountType] = useState('free'); // 'free' or 'premium'
+  const [swipeCount, setSwipeCount] = useState(0);
+  const [matchCount, setMatchCount] = useState(0);
+  const [lastLockoutTime, setLastLockoutTime] = useState(null);
+  
   const [userProfile, setUserProfile] = useState({
     companyName: "Your Company",
     companyDescription: "Enter your company description",
