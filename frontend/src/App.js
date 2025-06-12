@@ -261,7 +261,24 @@ function App() {
     setSelectedMatch(null);
   };
 
-  // Calculate leaderboard stats
+  const updateUserProfile = (updatedProfile) => {
+    setUserProfile(updatedProfile);
+  };
+
+  const handleImageUpload = (file, type) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64Image = e.target.result;
+        if (type === 'profile') {
+          setUserProfile(prev => ({ ...prev, profileImage: base64Image }));
+        } else if (type === 'logo') {
+          setUserProfile(prev => ({ ...prev, logo: base64Image }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const getLeaderboardStats = () => {
     // Match leaders
     const matchCounts = {};
