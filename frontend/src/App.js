@@ -822,7 +822,270 @@ function App() {
     </div>
   );
 
-  const renderSettings = () => (
+  const renderProfile = () => (
+    <div className="flex-1 p-8">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">My Profile</h2>
+      
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          {/* Profile Header */}
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 text-white">
+            <div className="flex items-center space-x-6">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
+                  {userProfile.profileImage ? (
+                    <img src={userProfile.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-3xl">👤</span>
+                  )}
+                </div>
+                <label className="absolute bottom-0 right-0 bg-white text-purple-500 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={(e) => handleImageUpload(e.target.files[0], 'profile')}
+                  />
+                  <span className="text-xs">📷</span>
+                </label>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold">{userProfile.ownerName}</h3>
+                <p className="text-white/90">{userProfile.ownerTitle}</p>
+                <p className="text-white/80">{userProfile.companyName}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Profile Form */}
+          <div className="p-6">
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const updatedProfile = {
+                companyName: formData.get('companyName'),
+                companyDescription: formData.get('companyDescription'),
+                ownerName: formData.get('ownerName'),
+                ownerTitle: formData.get('ownerTitle'),
+                industry: formData.get('industry'),
+                yearsInBusiness: parseInt(formData.get('yearsInBusiness')),
+                seekingPartnership: formData.get('seekingPartnership'),
+                serviceAreas: formData.get('serviceAreas').split(',').map(area => area.trim()),
+                partnerships: Array.from(formData.getAll('partnerships')),
+                logo: userProfile.logo,
+                profileImage: userProfile.profileImage
+              };
+              updateUserProfile(updatedProfile);
+              alert('Profile updated successfully!');
+            }} className="space-y-6">
+              
+              {/* Company Information */}
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <span className="mr-2">🏢</span>
+                  Company Information
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Company Name
+                    </label>
+                    <input 
+                      type="text" 
+                      name="companyName"
+                      defaultValue={userProfile.companyName}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Industry
+                    </label>
+                    <select 
+                      name="industry"
+                      defaultValue={userProfile.industry}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required
+                    >
+                      <option value="Technology">Technology</option>
+                      <option value="Marketing & Advertising">Marketing & Advertising</option>
+                      <option value="Financial Technology">Financial Technology</option>
+                      <option value="Cybersecurity">Cybersecurity</option>
+                      <option value="Health & Wellness">Health & Wellness</option>
+                      <option value="Supply Chain Management">Supply Chain Management</option>
+                      <option value="Education Technology">Education Technology</option>
+                      <option value="Renewable Energy">Renewable Energy</option>
+                      <option value="Consulting">Consulting</option>
+                      <option value="Manufacturing">Manufacturing</option>
+                      <option value="Real Estate">Real Estate</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Company Description
+                  </label>
+                  <textarea 
+                    name="companyDescription"
+                    defaultValue={userProfile.companyDescription}
+                    rows="3"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    required
+                  ></textarea>
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Company Logo
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+                      {userProfile.logo ? (
+                        <img src={userProfile.logo} alt="Logo" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-gray-400">🏢</span>
+                      )}
+                    </div>
+                    <label className="bg-purple-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-purple-600 transition-colors">
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={(e) => handleImageUpload(e.target.files[0], 'logo')}
+                      />
+                      Upload Logo
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Personal Information */}
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <span className="mr-2">👤</span>
+                  Personal Information
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Full Name
+                    </label>
+                    <input 
+                      type="text" 
+                      name="ownerName"
+                      defaultValue={userProfile.ownerName}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Job Title
+                    </label>
+                    <input 
+                      type="text" 
+                      name="ownerTitle"
+                      defaultValue={userProfile.ownerTitle}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Business Details */}
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <span className="mr-2">📊</span>
+                  Business Details
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Years in Business
+                    </label>
+                    <input 
+                      type="number" 
+                      name="yearsInBusiness"
+                      defaultValue={userProfile.yearsInBusiness}
+                      min="0"
+                      max="100"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Partnership Scope
+                    </label>
+                    <select 
+                      name="seekingPartnership"
+                      defaultValue={userProfile.seekingPartnership}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required
+                    >
+                      <option value="Local">Local Partnerships</option>
+                      <option value="National">National Partnerships</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Service Areas (comma-separated)
+                  </label>
+                  <input 
+                    type="text" 
+                    name="serviceAreas"
+                    defaultValue={userProfile.serviceAreas.join(', ')}
+                    placeholder="e.g., San Francisco, Oakland, San Jose"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Partnership Preferences */}
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <span className="mr-2">🤝</span>
+                  Partnership Interests
+                </h4>
+                <div className="grid md:grid-cols-2 gap-3">
+                  {["Strategic Alliances", "Joint Ventures", "Co-Branding", "Affiliate Partnerships", 
+                    "Sponsorship Agreements", "Event Collaborations", "Incubator/Accelerator Collaborations"].map((type) => (
+                    <label key={type} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        name="partnerships"
+                        value={type}
+                        defaultChecked={userProfile.partnerships.includes(type)}
+                        className="h-4 w-4 text-purple-600 rounded focus:ring-purple-500"
+                      />
+                      <span className="text-sm text-gray-700">{type}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Save Button */}
+              <div className="flex justify-end pt-6 border-t border-gray-200">
+                <button 
+                  type="submit"
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-lg hover:shadow-lg transition-all font-medium"
+                >
+                  Save Profile
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
     <div className="flex-1 p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Settings</h2>
       <div className="max-w-2xl">
