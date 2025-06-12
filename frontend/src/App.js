@@ -126,6 +126,20 @@ function App() {
   const [swipeDirection, setSwipeDirection] = useState('');
   const [showAddDealModal, setShowAddDealModal] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [userProfile, setUserProfile] = useState({
+    companyName: "Your Company",
+    companyDescription: "Enter your company description",
+    logo: "",
+    ownerName: "Your Name",
+    ownerTitle: "Your Title",
+    profileImage: "",
+    serviceAreas: ["Your City"],
+    industry: "Your Industry",
+    yearsInBusiness: 1,
+    seekingPartnership: "Local",
+    partnerships: ["Strategic Alliances"]
+  });
   const cardRef = useRef(null);
 
   // Calculate match probability based on partnership compatibility
