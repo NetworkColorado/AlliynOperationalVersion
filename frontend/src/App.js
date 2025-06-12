@@ -493,7 +493,7 @@ function App() {
   };
 
   // Combine businesses and sponsors for swiping
-  const allProfiles = [...mockBusinesses];
+  const allProfiles = [...liveProfiles];
   
   // Insert sponsors every 4-5 profiles for optimal ad exposure
   const getProfileAtIndex = (index) => {
@@ -507,6 +507,44 @@ function App() {
 
   const currentProfile = getProfileAtIndex(currentIndex);
   const isCurrentSponsor = currentProfile?.type === 'sponsor';
+
+  // Authentication functions
+  const handleSignUp = (formData) => {
+    const newProfile = {
+      id: Date.now(),
+      companyName: formData.companyName,
+      companyDescription: formData.companyDescription,
+      logo: "",
+      ownerName: formData.ownerName,
+      ownerTitle: formData.ownerTitle,
+      profileImage: "",
+      serviceAreas: formData.serviceAreas.split(',').map(area => area.trim()),
+      industry: formData.industry,
+      yearsInBusiness: parseInt(formData.yearsInBusiness),
+      seekingPartnership: formData.seekingPartnership,
+      partnerships: formData.partnerships || ["Strategic Alliances"],
+      email: formData.email
+    };
+    
+    // Add to live profiles
+    setLiveProfiles(prev => [...prev, newProfile]);
+    
+    // Update user profile
+    setUserProfile(newProfile);
+    
+    // Authenticate user
+    setIsAuthenticated(true);
+    setShowAuthModal(false);
+    
+    alert('🎉 Welcome to Alliyn! Your profile is now live and ready for matching!');
+  };
+
+  const handleSignIn = (email, password) => {
+    // Simulate sign-in (in real app, this would validate credentials)
+    setIsAuthenticated(true);
+    setShowAuthModal(false);
+    alert('Welcome back to Alliyn!');
+  };
 
   const renderMatchmaker = () => {
     if (currentIndex >= mockBusinesses.length) {
