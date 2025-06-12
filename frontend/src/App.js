@@ -212,6 +212,10 @@ function App() {
     
     setTimeout(() => {
       if (direction === 'right') {
+        // Trigger confetti animation
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 3000);
+        
         // Create a match with probability and badge
         const currentBusiness = mockBusinesses[currentIndex];
         const matchBusiness = mockBusinesses[(currentIndex + 1) % mockBusinesses.length];
