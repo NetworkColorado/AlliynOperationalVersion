@@ -14,6 +14,56 @@
   opacity: 0;
 }
 
+/* Confetti Animation */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #ff6b6b;
+  animation: confetti-fall 3s linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Match celebration overlay */
+.match-celebration {
+  animation: match-bounce 0.6s ease-out;
+  z-index: 1001;
+}
+
+@keyframes match-bounce {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* Smooth gradient animations */
 @keyframes gradient-shift {
   0% {
@@ -171,6 +221,32 @@ img:not([src]) {
   }
 }
 
+/* Profile image upload hover effects */
+.profile-upload-hover {
+  transition: all 0.3s ease;
+}
+
+.profile-upload-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Form animations */
+.form-section {
+  animation: slide-in 0.5s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .business-card {
@@ -186,6 +262,11 @@ img:not([src]) {
   .sidebar.open {
     transform: translateX(0);
   }
+  
+  .confetti-piece {
+    width: 8px;
+    height: 8px;
+  }
 }
 
 /* Typography enhancements */
@@ -198,7 +279,9 @@ img:not([src]) {
 
 /* Focus states for accessibility */
 button:focus,
-input:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: 2px solid #667eea;
   outline-offset: 2px;
 }
@@ -226,4 +309,25 @@ input:focus {
 
 .shadow-elegant-hover:hover {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Image upload styling */
+.image-upload-zone {
+  border: 2px dashed #d1d5db;
+  transition: all 0.3s ease;
+}
+
+.image-upload-zone:hover {
+  border-color: #8b5cf6;
+  background-color: #faf5ff;
+}
+
+/* Profile header gradient */
+.profile-header-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }

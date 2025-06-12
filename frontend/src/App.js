@@ -279,6 +279,7 @@ function App() {
       reader.readAsDataURL(file);
     }
   };
+
   // Calculate leaderboard stats
   const getLeaderboardStats = () => {
     // Match leaders
@@ -339,7 +340,35 @@ function App() {
     }
 
     return (
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex items-center justify-center p-8 relative">
+        {/* Confetti Animation */}
+        {showConfetti && (
+          <div className="fixed inset-0 pointer-events-none z-50">
+            <div className="confetti-container">
+              {[...Array(50)].map((_, i) => (
+                <div
+                  key={i}
+                  className="confetti-piece"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    backgroundColor: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b', '#6c5ce7'][Math.floor(Math.random() * 7)]
+                  }}
+                />
+              ))}
+            </div>
+            <div className="fixed inset-0 flex items-center justify-center">
+              <div className="match-celebration bg-white rounded-lg p-8 shadow-2xl">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">It's a Match!</h3>
+                  <p className="text-gray-600">Great partnership potential detected!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="relative w-full max-w-md">
           {/* Business Card */}
           <div 
@@ -1086,6 +1115,8 @@ function App() {
       </div>
     </div>
   );
+
+  const renderSettings = () => (
     <div className="flex-1 p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Settings</h2>
       <div className="max-w-2xl">
@@ -1176,6 +1207,7 @@ function App() {
                 { id: 'messages', name: 'Messages', icon: '💬' },
                 { id: 'leaderboard', name: 'Leaderboard', icon: '🏆' },
                 { id: 'deals', name: 'Deals Closed', icon: '🤝' },
+                { id: 'profile', name: 'My Profile', icon: '👤' },
                 { id: 'settings', name: 'Settings', icon: '⚙️' }
               ].map((tab) => (
                 <button
@@ -1206,6 +1238,7 @@ function App() {
           {activeTab === 'messages' && renderMessages()}
           {activeTab === 'leaderboard' && renderLeaderboard()}
           {activeTab === 'deals' && renderDeals()}
+          {activeTab === 'profile' && renderProfile()}
           {activeTab === 'settings' && renderSettings()}
         </main>
       </div>
