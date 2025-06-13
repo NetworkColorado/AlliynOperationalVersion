@@ -338,7 +338,52 @@ function App() {
     return 0.6;
   };
 
-  // Payment utility functions
+  // Admin authentication functions
+  const handleAdminLogin = () => {
+    const ADMIN_EMAIL = 'thenetworkcolorado@gmail.com';
+    const ADMIN_PASSWORD = 'SuccessS2289';
+    
+    if (adminCredentials.email === ADMIN_EMAIL && adminCredentials.password === ADMIN_PASSWORD) {
+      setIsAdmin(true);
+      setShowAdminLogin(false);
+      setShowAdminPanel(true);
+      alert('✅ Admin login successful! Welcome to the admin panel.');
+    } else {
+      alert('❌ Invalid admin credentials. Please try again.');
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdmin(false);
+    setShowAdminPanel(false);
+    setAdminCredentials({ email: '', password: '' });
+    alert('Admin logged out successfully.');
+  };
+
+  // Admin user management functions
+  const waivePremiumFee = (userId) => {
+    if (confirm('Waive premium fee and upgrade this user to Premium?')) {
+      // In real app, this would make API call to backend
+      setAccountType('premium');
+      alert(`✅ User ${userId} has been upgraded to Premium (fee waived by admin).`);
+    }
+  };
+
+  const deactivatePremiumAccount = (userId) => {
+    if (confirm('Deactivate premium account for this user?')) {
+      setAccountType('free');
+      alert(`⚠️ User ${userId} premium account has been deactivated.`);
+    }
+  };
+
+  const deleteAccount = (userId) => {
+    if (confirm('⚠️ DANGER: This will permanently delete the user account. This action cannot be undone!\n\nAre you sure?')) {
+      if (confirm('This is your final confirmation. Delete account?')) {
+        // In real app, this would delete from backend
+        alert(`🗑️ User ${userId} account has been permanently deleted.`);
+      }
+    }
+  };
   const handlePremiumUpgrade = () => {
     // In a real app, this would integrate with Stripe, PayPal, etc.
     if (confirm('Upgrade to Premium for $19.99/month?\n\n✓ Unlimited swipes and matches\n✓ No daily limits\n✓ Premium badge\n✓ Priority support')) {
