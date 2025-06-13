@@ -2237,6 +2237,7 @@ function App() {
                     { id: 'leaderboard', name: 'Leaderboard', icon: '🏆' },
                     { id: 'deals', name: 'Deals Closed', icon: '🤝' },
                     { id: 'profile', name: 'My Profile', icon: '👤' },
+                    { id: 'sponsor', name: 'Become a Sponsor', icon: '💰' },
                     { id: 'settings', name: 'Settings', icon: '⚙️' }
                   ].map((tab) => (
                     <button
