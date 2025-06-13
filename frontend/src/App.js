@@ -2221,26 +2221,44 @@ function App() {
           <div>
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Request a Quote</h3>
             <div className="bg-white rounded-lg shadow-lg p-6">
-              <form onSubmit={(e) => {
+              <form onSubmit={async (e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const sponsorData = {
-                  id: Date.now(),
-                  companyName: formData.get('companyName'),
-                  contactName: formData.get('contactName'),
+                  company_name: formData.get('companyName'),
+                  contact_name: formData.get('contactName'),
                   email: formData.get('email'),
-                  phone: formData.get('phone'),
-                  website: formData.get('website'),
+                  phone: formData.get('phone') || '',
+                  website: formData.get('website') || '',
                   industry: formData.get('industry'),
-                  packageType: formData.get('packageType'),
-                  budget: formData.get('budget'),
+                  package_type: formData.get('packageType'),
+                  budget: formData.get('budget') || '',
                   goals: formData.get('goals'),
-                  additionalInfo: formData.get('additionalInfo'),
-                  timestamp: new Date().toISOString()
+                  additional_info: formData.get('additionalInfo') || ''
                 };
-                setSponsorshipRequests(prev => [sponsorData, ...prev]);
-                alert('🎉 Thank you for your interest! Our team will contact you within 24 hours with a custom quote.');
-                e.target.reset();
+                
+                try {
+                  const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/sponsorship`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(sponsorData)
+                  });
+                  
+                  if (response.ok) {
+                    const result = await response.json();
+                    // Update local state for immediate UI feedback
+                    setSponsorshipRequests(prev => [result, ...prev]);
+                    alert(`🎉 Thank you for your interest! Our team will contact you within 24 hours with a custom quote. Estimated monthly cost: $${result.estimated_quote}`);
+                    e.target.reset();
+                  } else {
+                    throw new Error('Failed to submit request');
+                  }
+                } catch (error) {
+                  alert('❌ Error submitting request. Please try again or contact us directly.');
+                  console.error('Sponsorship submission error:', error);
+                }
               }} className="space-y-4">
                 
                 <div className="grid md:grid-cols-2 gap-4">
