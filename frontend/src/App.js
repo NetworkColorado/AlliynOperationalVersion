@@ -1541,10 +1541,14 @@ function App() {
             {/* Admin Access */}
             <div className="mt-4 pt-4 border-t border-gray-200 text-center">
               <button
-                onClick={() => setShowAdminLogin(true)}
-                className="text-xs text-gray-400 hover:text-gray-600 transition-colors underline"
+                onClick={enterAdminMode}
+                className={`text-xs transition-colors underline ${
+                  isAdminMode 
+                    ? 'text-red-600 hover:text-red-800' 
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
               >
-                Admin Access
+                {isAdminMode ? '🔐 Admin Mode Active' : 'Admin Access'}
               </button>
             </div>
           </div>
