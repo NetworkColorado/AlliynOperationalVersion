@@ -2020,6 +2020,393 @@ function App() {
     </div>
   );
 
+  const renderSponsor = () => (
+    <div className="flex-1 p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">Become a Sponsor</h2>
+          <p className="text-xl text-gray-600 mb-2">Reach thousands of business professionals every day</p>
+          <p className="text-gray-500">Connect with decision-makers actively seeking partnerships</p>
+        </div>
+
+        {/* Stats Banner */}
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-8 text-white mb-8">
+          <div className="grid md:grid-cols-4 gap-6 text-center">
+            <div>
+              <div className="text-3xl font-bold mb-2">10,000+</div>
+              <div className="text-sm opacity-90">Monthly Active Users</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-2">2,500+</div>
+              <div className="text-sm opacity-90">Business Matches Made</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-2">95%</div>
+              <div className="text-sm opacity-90">C-Level Executives</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-2">$2.5M+</div>
+              <div className="text-sm opacity-90">Deals Closed Monthly</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Sponsorship Packages */}
+          <div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Advertising Packages</h3>
+            
+            {/* Basic Package */}
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 mb-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800">Basic Sponsor</h4>
+                  <p className="text-gray-600">Perfect for growing businesses</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-purple-600">$500</div>
+                  <div className="text-sm text-gray-500">/month</div>
+                </div>
+              </div>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Sidebar banner ads (2 rotations/day)</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Profile card in swipe deck (1 in 10 profiles)</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Monthly performance report</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Basic analytics dashboard</span>
+                </li>
+              </ul>
+              <button className="w-full bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 transition-colors font-medium">
+                Get Quote - Basic
+              </button>
+            </div>
+
+            {/* Premium Package */}
+            <div className="bg-white rounded-lg shadow-lg border-2 border-purple-500 p-6 mb-6 relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span className="bg-purple-500 text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</span>
+              </div>
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800">Premium Sponsor</h4>
+                  <p className="text-gray-600">Maximum visibility and engagement</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-purple-600">$1,500</div>
+                  <div className="text-sm text-gray-500">/month</div>
+                </div>
+              </div>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Everything in Basic package</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Popup ads between swipes (1 in 5 interactions)</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Featured leaderboard placement</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Profile card priority (1 in 4 profiles)</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Advanced analytics & targeting</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Dedicated account manager</span>
+                </li>
+              </ul>
+              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium">
+                Get Quote - Premium
+              </button>
+            </div>
+
+            {/* Enterprise Package */}
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800">Enterprise Sponsor</h4>
+                  <p className="text-gray-600">Custom solutions for large organizations</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-purple-600">Custom</div>
+                  <div className="text-sm text-gray-500">pricing</div>
+                </div>
+              </div>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Everything in Premium package</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Exclusive app integrations</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Co-branded event opportunities</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Direct API access for leads</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="text-green-500">✓</span>
+                  <span>Custom creative development</span>
+                </li>
+              </ul>
+              <button className="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900 transition-colors font-medium">
+                Contact Sales
+              </button>
+            </div>
+          </div>
+
+          {/* Quote Request Form */}
+          <div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Request a Quote</h3>
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const sponsorData = {
+                  id: Date.now(),
+                  companyName: formData.get('companyName'),
+                  contactName: formData.get('contactName'),
+                  email: formData.get('email'),
+                  phone: formData.get('phone'),
+                  website: formData.get('website'),
+                  industry: formData.get('industry'),
+                  packageType: formData.get('packageType'),
+                  budget: formData.get('budget'),
+                  goals: formData.get('goals'),
+                  additionalInfo: formData.get('additionalInfo'),
+                  timestamp: new Date().toISOString()
+                };
+                setSponsorshipRequests(prev => [sponsorData, ...prev]);
+                alert('🎉 Thank you for your interest! Our team will contact you within 24 hours with a custom quote.');
+                e.target.reset();
+              }} className="space-y-4">
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Company Name *</label>
+                    <input 
+                      type="text" 
+                      name="companyName"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      placeholder="Your company name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Contact Name *</label>
+                    <input 
+                      type="text" 
+                      name="contactName"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      placeholder="Your full name"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                    <input 
+                      type="email" 
+                      name="email"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      placeholder="your@company.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <input 
+                      type="tel" 
+                      name="phone"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      placeholder="(555) 123-4567"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Company Website</label>
+                  <input 
+                    type="url" 
+                    name="website"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="https://yourcompany.com"
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Industry *</label>
+                    <select 
+                      name="industry"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    >
+                      <option value="">Select your industry</option>
+                      <option value="Technology">Technology</option>
+                      <option value="Financial Services">Financial Services</option>
+                      <option value="Healthcare">Healthcare</option>
+                      <option value="Marketing & Advertising">Marketing & Advertising</option>
+                      <option value="Professional Services">Professional Services</option>
+                      <option value="Real Estate">Real Estate</option>
+                      <option value="Education">Education</option>
+                      <option value="Manufacturing">Manufacturing</option>
+                      <option value="Retail & E-commerce">Retail & E-commerce</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Interested Package *</label>
+                    <select 
+                      name="packageType"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    >
+                      <option value="">Select a package</option>
+                      <option value="Basic - $500/month">Basic - $500/month</option>
+                      <option value="Premium - $1,500/month">Premium - $1,500/month</option>
+                      <option value="Enterprise - Custom">Enterprise - Custom</option>
+                      <option value="Custom Package">Custom Package</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Budget Range</label>
+                  <select 
+                    name="budget"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  >
+                    <option value="">Select budget range</option>
+                    <option value="$500 - $1,000">$500 - $1,000</option>
+                    <option value="$1,000 - $2,500">$1,000 - $2,500</option>
+                    <option value="$2,500 - $5,000">$2,500 - $5,000</option>
+                    <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                    <option value="$10,000+">$10,000+</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Advertising Goals *</label>
+                  <textarea 
+                    name="goals"
+                    rows="3"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    placeholder="What are you hoping to achieve with your sponsorship? (e.g., brand awareness, lead generation, partnership opportunities)"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Additional Information</label>
+                  <textarea 
+                    name="additionalInfo"
+                    rows="3"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    placeholder="Any specific requirements, target demographics, or questions you have..."
+                  ></textarea>
+                </div>
+
+                <button 
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-lg hover:shadow-lg transition-all font-bold text-lg"
+                >
+                  🚀 Request Custom Quote
+                </button>
+              </form>
+            </div>
+
+            {/* Contact Information */}
+            <div className="mt-6 bg-gray-50 rounded-lg p-6">
+              <h4 className="font-bold text-gray-800 mb-4">Need to talk to someone?</h4>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-2">
+                  <span>📧</span>
+                  <span>sponsors@alliyn.com</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span>📞</span>
+                  <span>(555) 123-ALLY</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span>⏰</span>
+                  <span>Monday - Friday, 9 AM - 6 PM PST</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Sponsorship Requests (Admin View) */}
+        {sponsorshipRequests.length > 0 && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Quote Requests</h3>
+            <div className="grid gap-4">
+              {sponsorshipRequests.slice(0, 3).map((request) => (
+                <div key={request.id} className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-800">{request.companyName}</h4>
+                      <p className="text-gray-600">{request.contactName} • {request.email}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
+                        {request.packageType}
+                      </span>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {new Date(request.timestamp).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p><span className="font-medium">Industry:</span> {request.industry}</p>
+                      <p><span className="font-medium">Budget:</span> {request.budget || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p><span className="font-medium">Website:</span> {request.website || 'Not provided'}</p>
+                      <p><span className="font-medium">Phone:</span> {request.phone || 'Not provided'}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-sm"><span className="font-medium">Goals:</span> {request.goals}</p>
+                    {request.additionalInfo && (
+                      <p className="text-sm mt-2"><span className="font-medium">Additional Info:</span> {request.additionalInfo}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   const renderSettings = () => (
     <div className="flex-1 p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Settings</h2>
