@@ -203,6 +203,10 @@ function App() {
   const [sponsorshipRequests, setSponsorshipRequests] = useState([]);
   const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
   
+  // Filtering state
+  const [filteredProfiles, setFilteredProfiles] = useState([...mockBusinesses]);
+  const [isFilteringProfiles, setIsFilteringProfiles] = useState(false);
+  
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(true);
