@@ -191,7 +191,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "MongoDB connection and data persistence"
     - "React application startup"
     - "Business matching interface"
   stuck_tasks: []
