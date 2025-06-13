@@ -228,6 +228,219 @@ def test_mongodb_connection():
         print(f"MongoDB connection test failed: {str(e)}")
         return False
 
+def test_create_sponsorship_request():
+    """Test creating a sponsorship request"""
+    # Create a unique sponsorship request
+    company_name = f"TestCompany-{uuid.uuid4()}"
+    payload = {
+        "company_name": company_name,
+        "contact_name": "Test Contact",
+        "email": "test@example.com",
+        "phone": "555-123-4567",
+        "website": "https://example.com",
+        "industry": "Technology",
+        "package_type": "Premium",
+        "budget": "$1,500-$2,000",
+        "goals": "Increase brand visibility",
+        "additional_info": "Test sponsorship request"
+    }
+    
+    response = requests.post(f"{BACKEND_URL}/sponsorship", json=payload)
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "id" in data, "Response missing 'id' field"
+    assert "company_name" in data, "Response missing 'company_name' field"
+    assert "estimated_quote" in data, "Response missing 'estimated_quote' field"
+    assert data["company_name"] == company_name, f"Expected company_name '{company_name}', got '{data['company_name']}'"
+    
+    # Verify industry multiplier was applied (Technology has 1.2 multiplier)
+    assert data["estimated_quote"] == 1800, f"Expected estimated_quote 1800 (1500 * 1.2), got {data['estimated_quote']}"
+    
+    print("Created sponsorship request:", data)
+    return True
+
+def test_get_sponsorship_requests():
+    """Test retrieving all sponsorship requests"""
+    # First create a new sponsorship request to ensure there's at least one
+    company_name = f"TestCompany-{uuid.uuid4()}"
+    payload = {
+        "company_name": company_name,
+        "contact_name": "Test Contact",
+        "email": "test@example.com",
+        "industry": "Financial Services",
+        "package_type": "Basic",
+        "goals": "Increase brand visibility"
+    }
+    
+    create_response = requests.post(f"{BACKEND_URL}/sponsorship", json=payload)
+    assert create_response.status_code == 200, "Failed to create test sponsorship request"
+    
+    # Now get all sponsorship requests
+    response = requests.get(f"{BACKEND_URL}/sponsorship")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert isinstance(data, list), "Response is not a list"
+    assert len(data) > 0, "Expected at least one sponsorship request"
+    
+    # Check if our newly created sponsorship request is in the list
+    found = False
+    for request in data:
+        if request["company_name"] == company_name:
+            found = True
+            break
+    
+    assert found, f"Newly created sponsorship request with company_name '{company_name}' not found in response"
+    
+    print(f"Retrieved {len(data)} sponsorship requests")
+    return True
+
+def test_sponsorship_stats():
+    """Test sponsorship statistics endpoint"""
+    response = requests.get(f"{BACKEND_URL}/sponsorship/stats")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "total_requests" in data, "Response missing 'total_requests' field"
+    assert "industry_breakdown" in data, "Response missing 'industry_breakdown' field"
+    assert "package_breakdown" in data, "Response missing 'package_breakdown' field"
+    
+    # Verify data types
+    assert isinstance(data["total_requests"], int), "total_requests is not an integer"
+    assert isinstance(data["industry_breakdown"], list), "industry_breakdown is not a list"
+    assert isinstance(data["package_breakdown"], list), "package_breakdown is not a list"
+    
+    print("Sponsorship stats:", data)
+    return True
+
+def test_admin_sponsorship():
+    """Test admin sponsorship creation and retrieval"""
+    # Create a unique admin sponsorship
+    business_name = f"AdminTestBusiness-{uuid.uuid4()}"
+    payload = {
+        "business_name": business_name,
+        "offer_name": "Test Offer",
+        "offer": "50% off for new customers",
+        "website": "https://example.com",
+        "logo_url": "https://example.com/logo.png",
+        "media_url": "https://example.com/video.mp4",
+        "release_date": "2025-01-01",
+        "release_time": "12:00"
+    }
+    
+    response = requests.post(f"{BACKEND_URL}/admin/sponsorship", json=payload)
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "id" in data, "Response missing 'id' field"
+    assert "business_name" in data, "Response missing 'business_name' field"
+    assert data["business_name"] == business_name, f"Expected business_name '{business_name}', got '{data['business_name']}'"
+    
+    # Now get all admin sponsorships
+    response = requests.get(f"{BACKEND_URL}/admin/sponsorship")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert isinstance(data, list), "Response is not a list"
+    assert len(data) > 0, "Expected at least one admin sponsorship"
+    
+    # Check if our newly created admin sponsorship is in the list
+    found = False
+    for sponsorship in data:
+        if sponsorship["business_name"] == business_name:
+            found = True
+            break
+    
+    assert found, f"Newly created admin sponsorship with business_name '{business_name}' not found in response"
+    
+    print(f"Retrieved {len(data)} admin sponsorships")
+    return True
+
+def test_admin_user_management():
+    """Test admin user management endpoints"""
+    # Generate a unique user ID
+    user_id = str(uuid.uuid4())
+    
+    # Test user upgrade
+    response = requests.post(f"{BACKEND_URL}/admin/user/{user_id}/upgrade")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "user_id" in data, "Response missing 'user_id' field"
+    assert "account_type" in data, "Response missing 'account_type' field"
+    assert data["user_id"] == user_id, f"Expected user_id '{user_id}', got '{data['user_id']}'"
+    assert data["account_type"] == "premium", f"Expected account_type 'premium', got '{data['account_type']}'"
+    
+    # Test user downgrade
+    response = requests.post(f"{BACKEND_URL}/admin/user/{user_id}/downgrade")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "user_id" in data, "Response missing 'user_id' field"
+    assert "account_type" in data, "Response missing 'account_type' field"
+    assert data["user_id"] == user_id, f"Expected user_id '{user_id}', got '{data['user_id']}'"
+    assert data["account_type"] == "free", f"Expected account_type 'free', got '{data['account_type']}'"
+    
+    # Test user deletion
+    response = requests.delete(f"{BACKEND_URL}/admin/user/{user_id}")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "user_id" in data, "Response missing 'user_id' field"
+    assert "status" in data, "Response missing 'status' field"
+    assert data["user_id"] == user_id, f"Expected user_id '{user_id}', got '{data['user_id']}'"
+    assert data["status"] == "deleted", f"Expected status 'deleted', got '{data['status']}'"
+    
+    print("Admin user management tests passed")
+    return True
+
+def test_admin_stats():
+    """Test admin statistics endpoint"""
+    response = requests.get(f"{BACKEND_URL}/admin/stats")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "total_sponsorships" in data, "Response missing 'total_sponsorships' field"
+    assert "total_sponsorship_requests" in data, "Response missing 'total_sponsorship_requests' field"
+    assert "total_users" in data, "Response missing 'total_users' field"
+    assert "premium_users" in data, "Response missing 'premium_users' field"
+    assert "free_users" in data, "Response missing 'free_users' field"
+    
+    # Verify data types
+    assert isinstance(data["total_sponsorships"], int), "total_sponsorships is not an integer"
+    assert isinstance(data["total_sponsorship_requests"], int), "total_sponsorship_requests is not an integer"
+    
+    print("Admin stats:", data)
+    return True
+
 def run_all_tests():
     """Run all tests"""
     tests = [
@@ -237,6 +450,12 @@ def run_all_tests():
         ("Error Handling", test_error_handling),
         ("CORS Headers", test_cors_headers),
         ("MongoDB Connection", test_mongodb_connection),
+        ("Create Sponsorship Request", test_create_sponsorship_request),
+        ("Get Sponsorship Requests", test_get_sponsorship_requests),
+        ("Sponsorship Stats", test_sponsorship_stats),
+        ("Admin Sponsorship", test_admin_sponsorship),
+        ("Admin User Management", test_admin_user_management),
+        ("Admin Stats", test_admin_stats),
     ]
     
     for test_name, test_func in tests:
