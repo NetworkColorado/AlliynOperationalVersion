@@ -183,7 +183,38 @@ const mockBusinesses = [
 ];
 
 function App() {
-  // Settings utility functions
+  // Payment utility functions
+  const handlePremiumUpgrade = () => {
+    // In a real app, this would integrate with Stripe, PayPal, etc.
+    if (confirm('Upgrade to Premium for $19.99/month?\n\n✓ Unlimited swipes and matches\n✓ No daily limits\n✓ Premium badge\n✓ Priority support')) {
+      setAccountType('premium');
+      setSwipeCount(0);
+      setMatchCount(0);
+      setLastLockoutTime(null);
+      setShowUpgradeModal(false);
+      alert('🎉 Welcome to Premium! Your account has been upgraded successfully.\n\nYou now have unlimited access to all features!');
+    }
+  };
+
+  const handlePaymentMethod = (method) => {
+    // In a real app, this would handle different payment methods
+    switch(method) {
+      case 'stripe':
+        alert('🔄 Redirecting to Stripe payment...\n\nIn a production app, this would open Stripe Checkout.');
+        handlePremiumUpgrade();
+        break;
+      case 'paypal':
+        alert('🔄 Redirecting to PayPal...\n\nIn a production app, this would open PayPal payment flow.');
+        handlePremiumUpgrade();
+        break;
+      case 'apple':
+        alert('🍎 Processing Apple Pay...\n\nIn a production app, this would use Apple Pay API.');
+        handlePremiumUpgrade();
+        break;
+      default:
+        handlePremiumUpgrade();
+    }
+  };
   const saveSettings = () => {
     // In a real app, this would save to backend
     localStorage.setItem('alliyn_user_settings', JSON.stringify({
