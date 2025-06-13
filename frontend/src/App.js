@@ -487,6 +487,43 @@ function App() {
   const [adminSponsorships, setAdminSponsorships] = useState([]);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false); // Track if we're in admin login mode
+  const [currentAdminPage, setCurrentAdminPage] = useState('dashboard'); // dashboard, sponsorships, users
+  const [allUsers, setAllUsers] = useState([
+    // Mock users for demo - in real app this would come from backend
+    {
+      id: 1,
+      name: 'John Smith',
+      email: 'john@techstartup.com',
+      company: 'Tech Startup Inc',
+      accountType: 'free',
+      joinDate: '2025-06-01',
+      lastActive: '2025-06-13',
+      industry: 'Technology',
+      status: 'active'
+    },
+    {
+      id: 2,
+      name: 'Sarah Johnson',
+      email: 'sarah@healthcorp.com',
+      company: 'HealthCorp Solutions',
+      accountType: 'premium',
+      joinDate: '2025-06-05',
+      lastActive: '2025-06-12',
+      industry: 'Healthcare & Medical',
+      status: 'active'
+    },
+    {
+      id: 3,
+      name: 'Mike Wilson',
+      email: 'mike@financialgroup.com',
+      company: 'Financial Group LLC',
+      accountType: 'free',
+      joinDate: '2025-06-08',
+      lastActive: '2025-06-11',
+      industry: 'Financial Services',
+      status: 'active'
+    }
+  ]);
   
   // Sponsor profiles state
   const [sponsorProfiles, setSponsorProfiles] = useState([]);
