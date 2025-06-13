@@ -199,6 +199,10 @@ function App() {
   const [currentMatchTitle, setCurrentMatchTitle] = useState('');
   const [profilePreviewMode, setProfilePreviewMode] = useState(false);
   
+  // Sponsorship state
+  const [sponsorshipRequests, setSponsorshipRequests] = useState([]);
+  const [showSponsorshipModal, setShowSponsorshipModal] = useState(false);
+  
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(true);
