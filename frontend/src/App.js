@@ -2065,23 +2065,14 @@ function App() {
               <div className="space-x-4">
                 <button 
                   type="button"
-                  onClick={() => {
-                    // Reset to original values - you could implement this
-                    alert('Changes discarded');
-                  }}
+                  onClick={discardProfileChanges}
                   className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Discard Changes
                 </button>
                 <button 
                   type="button"
-                  onClick={() => {
-                    // Update live profiles if this is the current user
-                    setLiveProfiles(prev => prev.map(profile => 
-                      profile.id === userProfile.id ? userProfile : profile
-                    ));
-                    alert('✅ Profile updated successfully!');
-                  }}
+                  onClick={saveProfile}
                   className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
                 >
                   💾 Save Changes
