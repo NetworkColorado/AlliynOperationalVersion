@@ -418,6 +418,13 @@ function App() {
   const [filteredProfiles, setFilteredProfiles] = useState([...mockBusinesses]);
   const [isFilteringProfiles, setIsFilteringProfiles] = useState(false);
   
+  // Admin state
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [adminCredentials, setAdminCredentials] = useState({ email: '', password: '' });
+  const [adminSponsorships, setAdminSponsorships] = useState([]);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(true);
