@@ -2295,6 +2295,7 @@ function App() {
               {activeTab === 'leaderboard' && renderLeaderboard()}
               {activeTab === 'deals' && renderDeals()}
               {activeTab === 'profile' && renderProfile()}
+              {activeTab === 'sponsor' && renderSponsor()}
               {activeTab === 'settings' && renderSettings()}
             </main>
           </div>
