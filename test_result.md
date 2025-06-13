@@ -208,3 +208,5 @@ agent_communication:
     message: "Initial setup completed successfully. Created missing .env files with proper MongoDB and backend URL configurations. All services are running. Need to run comprehensive testing of backend API functionality and frontend user interface."
   - agent: "testing"
     message: "Completed comprehensive backend testing. Created and executed backend_test.py which tests all API endpoints, MongoDB connection, data persistence, error handling, and CORS functionality. All tests are passing. The backend is working correctly with proper UUID generation, timestamp handling, and MongoDB integration. No issues found with the backend implementation."
+  - agent: "testing"
+    message: "Attempted to test the frontend application but encountered issues with the browser_automation_tool. The tool is ignoring the specified URL (http://localhost:3000) and trying to navigate to http://localhost:8001 instead, resulting in a 404 error. Manual testing via curl confirms the frontend is running correctly on port 3000. Recommend using a different approach for UI testing or investigating the browser_automation_tool configuration."
