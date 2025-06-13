@@ -1816,6 +1816,364 @@ function App() {
           ))}
         </div>
       )}
+
+      {/* Admin Login Modal */}
+      {showAdminLogin && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <div className="text-4xl mb-4">🔐</div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">Admin Access</h3>
+                <p className="text-gray-600">Enter admin credentials to continue</p>
+              </div>
+              
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                handleAdminLogin();
+              }}>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Admin Email</label>
+                    <input 
+                      type="email" 
+                      value={adminCredentials.email}
+                      onChange={(e) => setAdminCredentials(prev => ({ ...prev, email: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      placeholder="admin@alliyn.com"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Admin Password</label>
+                    <input 
+                      type="password" 
+                      value={adminCredentials.password}
+                      onChange={(e) => setAdminCredentials(prev => ({ ...prev, password: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      placeholder="Enter admin password"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex space-x-3 mt-6">
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setShowAdminLogin(false);
+                      setAdminCredentials({ email: '', password: '' });
+                    }}
+                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                  >
+                    Login as Admin
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Panel */}
+      {showAdminPanel && isAdmin && (
+        <div className="fixed inset-0 bg-gray-100 z-50 overflow-y-auto">
+          <div className="min-h-screen">
+            {/* Admin Header */}
+            <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
+              <div className="max-w-7xl mx-auto px-6 py-4">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-4">
+                    <h1 className="text-2xl font-bold text-gray-800">🛠️ Admin Panel</h1>
+                    <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">Administrator</span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm text-gray-600">Welcome, Admin</span>
+                    <button
+                      onClick={handleAdminLogout}
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <div className="max-w-7xl mx-auto px-6 py-8">
+              <div className="grid lg:grid-cols-2 gap-8">
+                
+                {/* Sponsorship Management */}
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span className="mr-2">📢</span>
+                    Sponsorship Management
+                  </h2>
+                  
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const sponsorship = {
+                      id: Date.now(),
+                      businessName: formData.get('businessName'),
+                      offerName: formData.get('offerName'),
+                      offer: formData.get('offer'),
+                      website: formData.get('website'),
+                      logo: formData.get('logo') ? URL.createObjectURL(formData.get('logo')) : '',
+                      media: formData.get('media') ? URL.createObjectURL(formData.get('media')) : '',
+                      releaseDate: formData.get('releaseDate'),
+                      releaseTime: formData.get('releaseTime'),
+                      status: new Date(formData.get('releaseDate') + 'T' + formData.get('releaseTime')) <= new Date() ? 'active' : 'scheduled'
+                    };
+                    
+                    setAdminSponsorships(prev => [sponsorship, ...prev]);
+                    
+                    // Add to live sponsors if releasing now
+                    if (sponsorship.status === 'active') {
+                      setSponsorProfiles(prev => [...prev, {
+                        id: sponsorship.id,
+                        type: 'sponsor',
+                        companyName: sponsorship.businessName,
+                        title: sponsorship.offerName,
+                        description: sponsorship.offer,
+                        website: sponsorship.website,
+                        logo: sponsorship.logo,
+                        profileImage: sponsorship.media
+                      }]);
+                    }
+                    
+                    alert('✅ Sponsorship created successfully!');
+                    e.target.reset();
+                  }} className="space-y-4">
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Business Name *</label>
+                        <input 
+                          type="text" 
+                          name="businessName"
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                          placeholder="Sponsor Business Name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Offer Name *</label>
+                        <input 
+                          type="text" 
+                          name="offerName"
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                          placeholder="Special Offer Title"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Offer Description *</label>
+                      <textarea 
+                        name="offer"
+                        rows="3"
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 resize-none"
+                        placeholder="Describe the offer or promotion..."
+                      ></textarea>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Website Link</label>
+                      <input 
+                        type="url" 
+                        name="website"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                        placeholder="https://sponsor-website.com"
+                      />
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Company Logo</label>
+                        <input 
+                          type="file" 
+                          name="logo"
+                          accept="image/*"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Media (Video/Image)</label>
+                        <input 
+                          type="file" 
+                          name="media"
+                          accept="image/*,video/*"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Release Date</label>
+                        <input 
+                          type="date" 
+                          name="releaseDate"
+                          defaultValue={new Date().toISOString().split('T')[0]}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Release Time</label>
+                        <input 
+                          type="time" 
+                          name="releaseTime"
+                          defaultValue="09:00"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <button 
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium"
+                    >
+                      🚀 Create Sponsorship
+                    </button>
+                  </form>
+                  
+                  {/* Active Sponsorships */}
+                  {adminSponsorships.length > 0 && (
+                    <div className="mt-6">
+                      <h3 className="font-semibold text-gray-800 mb-3">Recent Sponsorships</h3>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {adminSponsorships.slice(0, 5).map((sponsorship) => (
+                          <div key={sponsorship.id} className="p-3 bg-gray-50 rounded-lg border">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h4 className="font-medium text-sm text-gray-800">{sponsorship.businessName}</h4>
+                                <p className="text-xs text-gray-600">{sponsorship.offerName}</p>
+                              </div>
+                              <span className={`px-2 py-1 rounded-full text-xs ${
+                                sponsorship.status === 'active' 
+                                  ? 'bg-green-100 text-green-800' 
+                                  : 'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {sponsorship.status}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* User Management */}
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span className="mr-2">👥</span>
+                    User Management
+                  </h2>
+                  
+                  {/* Current User Info */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                    <h3 className="font-semibold text-blue-800 mb-3">Current User Account</h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Name:</span>
+                        <span className="font-medium text-blue-900">{userProfile.ownerName || 'Test User'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Company:</span>
+                        <span className="font-medium text-blue-900">{userProfile.companyName || 'Test Company'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Account Type:</span>
+                        <span className={`font-medium px-2 py-1 rounded-full text-xs ${
+                          accountType === 'premium' 
+                            ? 'bg-yellow-100 text-yellow-800' 
+                            : 'bg-gray-100 text-gray-800'
+                        }`}>
+                          {accountType.toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Industry:</span>
+                        <span className="font-medium text-blue-900">{userProfile.industry || 'Not specified'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Swipes Used:</span>
+                        <span className="font-medium text-blue-900">{swipeCount}/10 (free limit)</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Matches:</span>
+                        <span className="font-medium text-blue-900">{matchCount}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Admin Actions */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-gray-800 mb-3">Admin Actions</h3>
+                    
+                    <button
+                      onClick={() => waivePremiumFee('current-user')}
+                      className="w-full px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium flex items-center justify-center space-x-2"
+                    >
+                      <span>⭐</span>
+                      <span>Waive Premium Fee & Upgrade User</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => deactivatePremiumAccount('current-user')}
+                      className="w-full px-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium flex items-center justify-center space-x-2"
+                    >
+                      <span>⏸️</span>
+                      <span>Deactivate Premium Account</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => deleteAccount('current-user')}
+                      className="w-full px-4 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium flex items-center justify-center space-x-2"
+                    >
+                      <span>🗑️</span>
+                      <span>Delete Account (Permanent)</span>
+                    </button>
+                  </div>
+                  
+                  {/* User Statistics */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <h3 className="font-semibold text-gray-800 mb-3">Platform Statistics</h3>
+                    <div className="grid grid-cols-2 gap-4 text-center">
+                      <div className="bg-purple-50 p-3 rounded-lg">
+                        <div className="text-2xl font-bold text-purple-600">{liveProfiles.length}</div>
+                        <div className="text-xs text-purple-700">Total Users</div>
+                      </div>
+                      <div className="bg-green-50 p-3 rounded-lg">
+                        <div className="text-2xl font-bold text-green-600">{matches.length}</div>
+                        <div className="text-xs text-green-700">Total Matches</div>
+                      </div>
+                      <div className="bg-yellow-50 p-3 rounded-lg">
+                        <div className="text-2xl font-bold text-yellow-600">1</div>
+                        <div className="text-xs text-yellow-700">Premium Users</div>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">{sponsorshipRequests.length}</div>
+                        <div className="text-xs text-blue-700">Sponsor Requests</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
