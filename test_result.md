@@ -198,6 +198,18 @@ frontend:
         agent: "main"
         comment: "Successfully implemented comprehensive sponsorship system with quote forms starting at $500/month. Includes: 3-tier pricing (Basic $500, Premium $1,500, Enterprise custom), industry-based quote calculation, full backend API with MongoDB storage, frontend integration with form submission, automatic quote estimation, and comprehensive testing. All sponsorship tests passing."
 
+  - task: "Location-based partnership filtering"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Successfully implemented geographic filtering for partnerships. Local partnerships now show only businesses within 20 miles using Haversine distance calculation. Includes coordinate system for major cities, visual filtering indicators, settings integration, and maintains all existing functionality. Users can choose Local (20-mile radius) or National (no geographic limits) partnership scope."
+
   - task: "UI/UX improvements and feature enhancements"
     implemented: true
     working: true
