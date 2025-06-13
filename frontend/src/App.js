@@ -347,6 +347,8 @@ function App() {
       setIsAdmin(true);
       setShowAdminLogin(false);
       setShowAdminPanel(true);
+      setIsAdminMode(false); // Exit admin mode since we're now logged in
+      setShowAuthModal(false); // Close the main auth modal
       alert('✅ Admin login successful! Welcome to the admin panel.');
     } else {
       alert('❌ Invalid admin credentials. Please try again.');
@@ -356,8 +358,21 @@ function App() {
   const handleAdminLogout = () => {
     setIsAdmin(false);
     setShowAdminPanel(false);
+    setIsAdminMode(false);
     setAdminCredentials({ email: '', password: '' });
+    setShowAuthModal(true); // Return to main login
     alert('Admin logged out successfully.');
+  };
+
+  const enterAdminMode = () => {
+    setIsAdminMode(true);
+    setShowAdminLogin(true);
+  };
+
+  const exitAdminMode = () => {
+    setIsAdminMode(false);
+    setShowAdminLogin(false);
+    setAdminCredentials({ email: '', password: '' });
   };
 
   // Admin user management functions
