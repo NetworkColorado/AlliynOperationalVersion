@@ -2344,7 +2344,16 @@ function App() {
                   <span>Basic analytics dashboard</span>
                 </li>
               </ul>
-              <button className="w-full bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 transition-colors font-medium">
+              <button 
+                onClick={() => {
+                  // Scroll to quote form
+                  const quoteForm = document.querySelector('.quote-form-section');
+                  if (quoteForm) {
+                    quoteForm.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="w-full bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 transition-colors font-medium"
+              >
                 Get Quote - Basic
               </button>
             </div>
