@@ -340,10 +340,10 @@ function App() {
 
   // Admin authentication functions
   const handleAdminLogin = () => {
-    const ADMIN_EMAIL = 'thenetworkcolorado@gmail.com';
-    const ADMIN_PASSWORD = 'SuccessS2289';
+    const ADMIN_PIN = '123456789';
     
-    if (adminCredentials.email === ADMIN_EMAIL && adminCredentials.password === ADMIN_PASSWORD) {
+    // Check if PIN matches (using the password field)
+    if (adminCredentials.password === ADMIN_PIN) {
       setIsAdmin(true);
       setShowAdminLogin(false);
       setShowAdminPanel(true);
@@ -351,7 +351,7 @@ function App() {
       setShowAuthModal(false); // Close the main auth modal
       alert('✅ Admin login successful! Welcome to the admin panel.');
     } else {
-      alert('❌ Invalid admin credentials. Please check your email and password.');
+      alert('❌ Invalid admin PIN. Please enter the correct PIN: 123456789');
       // Clear the form but stay in admin mode
       setAdminCredentials({ email: '', password: '' });
     }
