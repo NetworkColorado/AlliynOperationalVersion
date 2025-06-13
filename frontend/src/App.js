@@ -1502,19 +1502,39 @@ function App() {
               </div>
 
               <div className="flex space-x-3 pt-4">
-                <button 
-                  type="button"
-                  onClick={() => setAuthMode('signup')}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Create Account
-                </button>
-                <button 
-                  type="submit"
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
-                >
-                  Sign In
-                </button>
+                {!isAdminMode ? (
+                  <>
+                    <button 
+                      type="button"
+                      onClick={() => setAuthMode('signup')}
+                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      Create Account
+                    </button>
+                    <button 
+                      type="submit"
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                    >
+                      Sign In
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      type="button"
+                      onClick={exitAdminMode}
+                      className="flex-1 px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit"
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                    >
+                      🔐 Admin Login
+                    </button>
+                  </>
+                )}
               </div>
             </form>
             
