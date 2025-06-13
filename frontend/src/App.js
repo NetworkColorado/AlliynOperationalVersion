@@ -1619,9 +1619,123 @@ function App() {
             <span>PREMIUM</span>
           </span>
         )}
+        <button
+          onClick={() => setProfilePreviewMode(!profilePreviewMode)}
+          className={`px-4 py-2 rounded-lg transition-all ${
+            profilePreviewMode 
+              ? 'bg-purple-500 text-white' 
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+        >
+          {profilePreviewMode ? '✏️ Edit Profile' : '👀 Preview Profile'}
+        </button>
       </div>
       
-      <div className="max-w-4xl mx-auto">
+      {profilePreviewMode ? (
+        /* Profile Preview Mode */
+        <div className="max-w-md mx-auto">
+          <h3 className="text-xl font-bold text-center mb-6 text-purple-600">
+            How others see your profile:
+          </h3>
+          <div className="business-card bg-white rounded-3xl shadow-2xl overflow-hidden">
+            {/* Header with Company Logo and Info */}
+            <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
+              <div className="flex items-start justify-between text-white">
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold mb-1">{userProfile.companyName}</h2>
+                  <p className="text-sm opacity-90 leading-relaxed">{userProfile.companyDescription}</p>
+                </div>
+                {userProfile.logo ? (
+                  <img 
+                    src={userProfile.logo} 
+                    alt="Company Logo"
+                    className="w-16 h-16 rounded-xl bg-white/20 object-cover ml-4"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-xl bg-white/20 ml-4 flex items-center justify-center">
+                    <span className="text-white">🏢</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Owner Profile */}
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex items-center space-x-4">
+                {userProfile.profileImage ? (
+                  <img 
+                    src={userProfile.profileImage} 
+                    alt={userProfile.ownerName}
+                    className="w-16 h-16 rounded-full object-cover ring-4 ring-purple-100"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-gray-200 ring-4 ring-purple-100 flex items-center justify-center">
+                    <span className="text-2xl">👤</span>
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800">{userProfile.ownerName}</h3>
+                  <p className="text-purple-600 font-medium">{userProfile.ownerTitle}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Business Details */}
+            <div className="p-6 space-y-4">
+              {/* Industry & Experience */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Industry</p>
+                  <p className="text-sm font-semibold text-gray-800">{userProfile.industry}</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Experience</p>
+                  <p className="text-sm font-semibold text-gray-800">{userProfile.yearsInBusiness} years</p>
+                </div>
+              </div>
+
+              {/* Service Areas */}
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Service Areas</p>
+                <div className="flex flex-wrap gap-2">
+                  {userProfile.serviceAreas?.map((area, index) => (
+                    <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                      {area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Partnership Scope */}
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Scope</p>
+                <span className={`px-3 py-1 text-sm rounded-full ${
+                  userProfile.seekingPartnership === 'National' 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-orange-100 text-orange-800'
+                }`}>
+                  {userProfile.seekingPartnership}
+                </span>
+              </div>
+
+              {/* Partnership Interests */}
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Interests</p>
+                <div className="grid grid-cols-1 gap-2">
+                  {userProfile.partnerships?.map((partnership, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">{partnership}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Profile Edit Mode */
+        <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {/* Profile Header */}
           <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 text-white">
