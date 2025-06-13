@@ -2722,16 +2722,61 @@ function App() {
         
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Geographic Preference</h3>
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label className="flex items-center space-x-3">
-              <input type="radio" name="geographic" defaultChecked className="h-4 w-4 text-purple-600" />
-              <span className="text-gray-700">Local Partnerships</span>
+              <input 
+                type="radio" 
+                name="geographic" 
+                value="Local"
+                checked={userProfile.seekingPartnership === 'Local'}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, seekingPartnership: e.target.value }))}
+                className="h-4 w-4 text-purple-600" 
+              />
+              <div>
+                <span className="text-gray-700">Local Partnerships</span>
+                <p className="text-xs text-gray-500">Within your geographic area</p>
+              </div>
             </label>
             <label className="flex items-center space-x-3">
-              <input type="radio" name="geographic" className="h-4 w-4 text-purple-600" />
-              <span className="text-gray-700">National Partnerships</span>
+              <input 
+                type="radio" 
+                name="geographic" 
+                value="National"
+                checked={userProfile.seekingPartnership === 'National'}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, seekingPartnership: e.target.value }))}
+                className="h-4 w-4 text-purple-600" 
+              />
+              <div>
+                <span className="text-gray-700">National Partnerships</span>
+                <p className="text-xs text-gray-500">Nationwide and international</p>
+              </div>
             </label>
           </div>
+          
+          {userProfile.seekingPartnership === 'Local' && (
+            <div className="mt-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <h4 className="text-sm font-medium text-purple-800 mb-3">Local Partnership Settings</h4>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm text-purple-700 mb-1">Search Radius</label>
+                  <select className="w-full px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm">
+                    <option value="10">Within 10 miles</option>
+                    <option value="20" selected>Within 20 miles (Recommended)</option>
+                    <option value="50">Within 50 miles</option>
+                    <option value="100">Within 100 miles</option>
+                  </select>
+                  <p className="text-xs text-purple-600 mt-1">
+                    Currently showing {filteredProfiles.length} businesses within range
+                  </p>
+                </div>
+                <div className="text-xs text-purple-600">
+                  <p>✓ Prioritizes businesses in your service areas</p>
+                  <p>✓ Includes businesses open to your location</p>
+                  <p>✓ Shows remote-friendly companies</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
