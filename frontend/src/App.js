@@ -2903,7 +2903,7 @@ function App() {
               <div className="p-6">
                 <div className="space-y-2">
                   {[
-                    { id: 'matchmaker', name: 'Matchmaker', icon: '💝' },
+                    { id: 'matchmaker', name: 'Matchmaker', icon: '💼' },
                     { id: 'messages', name: 'Messages', icon: '💬' },
                     { id: 'leaderboard', name: 'Leaderboard', icon: '🏆' },
                     { id: 'deals', name: 'Deals Closed', icon: '🤝' },
