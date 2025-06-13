@@ -183,6 +183,161 @@ const mockBusinesses = [
 ];
 
 function App() {
+  // Advanced matching probability algorithm
+  const calculateAdvancedMatchProbability = (userProfile, businessProfile) => {
+    let score = 0;
+    let maxScore = 0;
+
+    // 1. Industry Similarity and Synergy (25% of total score)
+    maxScore += 25;
+    const industryScore = calculateIndustryCompatibility(userProfile.industry, businessProfile.industry);
+    score += industryScore * 25;
+
+    // 2. Partnership Interests Alignment (20% of total score)
+    maxScore += 20;
+    const partnershipScore = calculatePartnershipAlignment(userProfile.partnerships || [], businessProfile.partnerships || []);
+    score += partnershipScore * 20;
+
+    // 3. Geographic Compatibility (15% of total score)
+    maxScore += 15;
+    const geographicScore = calculateGeographicCompatibility(userProfile, businessProfile);
+    score += geographicScore * 15;
+
+    // 4. Experience Level Match (15% of total score)
+    maxScore += 15;
+    const experienceScore = calculateExperienceCompatibility(userProfile.yearsInBusiness, businessProfile.yearsInBusiness);
+    score += experienceScore * 15;
+
+    // 5. Service Area Overlap (10% of total score)
+    maxScore += 10;
+    const serviceAreaScore = calculateServiceAreaOverlap(userProfile.serviceAreas || [], businessProfile.serviceAreas || []);
+    score += serviceAreaScore * 10;
+
+    // 6. Profile Keywords and Description Match (10% of total score)
+    maxScore += 10;
+    const keywordScore = calculateKeywordMatch(userProfile, businessProfile);
+    score += keywordScore * 10;
+
+    // 7. Partnership Scope Compatibility (5% of total score)
+    maxScore += 5;
+    const scopeScore = calculateScopeCompatibility(userProfile.seekingPartnership, businessProfile.seekingPartnership);
+    score += scopeScore * 5;
+
+    return Math.round((score / maxScore) * 100);
+  };
+
+  const calculateIndustryCompatibility = (industry1, industry2) => {
+    if (industry1 === industry2) return 1.0; // Perfect match
+
+    // Define industry synergy matrix - industries that work well together
+    const industrySynergies = {
+      'Technology': ['Healthcare & Medical', 'Financial Services', 'Education', 'Manufacturing', 'Retail & E-commerce'],
+      'Healthcare & Medical': ['Technology', 'Insurance', 'Legal Services', 'Professional Services'],
+      'Financial Services': ['Technology', 'Insurance', 'Legal Services', 'Real Estate', 'Professional Services'],
+      'Legal Services': ['Insurance', 'Financial Services', 'Real Estate', 'Healthcare & Medical', 'Professional Services'],
+      'Insurance': ['Legal Services', 'Financial Services', 'Healthcare & Medical', 'Real Estate', 'Consulting'],
+      'Real Estate': ['Financial Services', 'Legal Services', 'Construction', 'Insurance'],
+      'Marketing & Advertising': ['Technology', 'Retail & E-commerce', 'Entertainment & Media', 'Hospitality & Tourism'],
+      'Manufacturing': ['Technology', 'Transportation & Logistics', 'Construction', 'Energy & Utilities'],
+      'Retail & E-commerce': ['Technology', 'Marketing & Advertising', 'Transportation & Logistics'],
+      'Construction': ['Real Estate', 'Manufacturing', 'Energy & Utilities', 'Professional Services'],
+      'Transportation & Logistics': ['Manufacturing', 'Retail & E-commerce', 'Technology'],
+      'Education': ['Technology', 'Professional Services', 'Non-Profit'],
+      'Consulting': ['Professional Services', 'Technology', 'Financial Services', 'Insurance'],
+      'Professional Services': ['Legal Services', 'Financial Services', 'Consulting', 'Healthcare & Medical'],
+      'Entertainment & Media': ['Marketing & Advertising', 'Technology', 'Hospitality & Tourism'],
+      'Hospitality & Tourism': ['Entertainment & Media', 'Marketing & Advertising', 'Food & Beverage'],
+      'Food & Beverage': ['Hospitality & Tourism', 'Retail & E-commerce', 'Agriculture'],
+      'Energy & Utilities': ['Manufacturing', 'Construction', 'Technology'],
+      'Non-Profit': ['Education', 'Professional Services', 'Healthcare & Medical'],
+      'Agriculture': ['Food & Beverage', 'Technology', 'Manufacturing']
+    };
+
+    const synergistic = industrySynergies[industry1]?.includes(industry2) || 
+                       industrySynergies[industry2]?.includes(industry1);
+    
+    return synergistic ? 0.8 : 0.3; // High synergy or low compatibility
+  };
+
+  const calculatePartnershipAlignment = (partnerships1, partnerships2) => {
+    if (partnerships1.length === 0 || partnerships2.length === 0) return 0.5;
+    
+    const overlap = partnerships1.filter(p => partnerships2.includes(p));
+    const union = [...new Set([...partnerships1, ...partnerships2])];
+    
+    return overlap.length / union.length; // Jaccard similarity
+  };
+
+  const calculateGeographicCompatibility = (profile1, profile2) => {
+    // If either wants National partnerships, they're compatible
+    if (profile1.seekingPartnership === 'National' || profile2.seekingPartnership === 'National') {
+      return 1.0;
+    }
+    
+    // Both want Local partnerships - check service areas
+    if (profile1.seekingPartnership === 'Local' && profile2.seekingPartnership === 'Local') {
+      return calculateServiceAreaOverlap(profile1.serviceAreas || [], profile2.serviceAreas || []);
+    }
+    
+    return 0.7; // Mixed preferences
+  };
+
+  const calculateExperienceCompatibility = (years1, years2) => {
+    const diff = Math.abs(years1 - years2);
+    
+    // Perfect match for similar experience levels
+    if (diff <= 2) return 1.0;
+    if (diff <= 5) return 0.8;
+    if (diff <= 10) return 0.6;
+    
+    // Different experience levels can still be valuable (mentor/mentee relationships)
+    return 0.4;
+  };
+
+  const calculateServiceAreaOverlap = (areas1, areas2) => {
+    if (areas1.length === 0 || areas2.length === 0) return 0.5;
+    
+    // Check for remote work
+    const hasRemote1 = areas1.some(area => area.toLowerCase().includes('remote'));
+    const hasRemote2 = areas2.some(area => area.toLowerCase().includes('remote'));
+    
+    if (hasRemote1 || hasRemote2) return 1.0;
+    
+    const overlap = areas1.filter(area => 
+      areas2.some(area2 => 
+        area.toLowerCase().includes(area2.toLowerCase()) || 
+        area2.toLowerCase().includes(area.toLowerCase())
+      )
+    );
+    
+    return overlap.length > 0 ? 0.9 : 0.2;
+  };
+
+  const calculateKeywordMatch = (profile1, profile2) => {
+    const keywords1 = extractKeywords(profile1.companyDescription || '');
+    const keywords2 = extractKeywords(profile2.companyDescription || '');
+    
+    if (keywords1.length === 0 || keywords2.length === 0) return 0.3;
+    
+    const overlap = keywords1.filter(keyword => keywords2.includes(keyword));
+    return Math.min(overlap.length / Math.max(keywords1.length, keywords2.length), 1.0);
+  };
+
+  const extractKeywords = (text) => {
+    const commonWords = ['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'we', 'our', 'is', 'are', 'a', 'an'];
+    return text.toLowerCase()
+      .replace(/[^\w\s]/g, '')
+      .split(/\s+/)
+      .filter(word => word.length > 3 && !commonWords.includes(word))
+      .slice(0, 10); // Top 10 keywords
+  };
+
+  const calculateScopeCompatibility = (scope1, scope2) => {
+    if (scope1 === scope2) return 1.0;
+    if (scope1 === 'National' || scope2 === 'National') return 0.8;
+    return 0.6;
+  };
+
   // Payment utility functions
   const handlePremiumUpgrade = () => {
     // In a real app, this would integrate with Stripe, PayPal, etc.
