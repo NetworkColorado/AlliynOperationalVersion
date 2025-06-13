@@ -1464,7 +1464,7 @@ function App() {
                   <img 
                     src={currentProfile.profileImage} 
                     alt={currentProfile.ownerName}
-                    className="w-16 h-16 rounded-full object-cover ring-4 ring-purple-100"
+                    className="w-20 h-20 rounded-full object-cover ring-4 ring-purple-100"
                   />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-800">{currentProfile.ownerName}</h3>
