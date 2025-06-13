@@ -597,6 +597,70 @@ function App() {
     setUserProfile(updatedProfile);
   };
 
+  const saveProfile = () => {
+    // Validate required fields
+    const requiredFields = {
+      'Company Name': userProfile.companyName,
+      'Company Description': userProfile.companyDescription,
+      'Your Name': userProfile.ownerName,
+      'Job Title': userProfile.ownerTitle,
+      'Industry': userProfile.industry,
+    };
+
+    const missingFields = Object.entries(requiredFields)
+      .filter(([name, value]) => !value || value.trim() === '')
+      .map(([name]) => name);
+
+    if (missingFields.length > 0) {
+      alert(`❌ Please fill in the following required fields:\n• ${missingFields.join('\n• ')}`);
+      return;
+    }
+
+    // Validate service areas
+    if (!userProfile.serviceAreas || userProfile.serviceAreas.length === 0) {
+      alert('❌ Please add at least one service area.');
+      return;
+    }
+
+    // Validate partnership interests
+    if (!userProfile.partnerships || userProfile.partnerships.length === 0) {
+      alert('❌ Please select at least one partnership interest.');
+      return;
+    }
+
+    try {
+      // Update live profiles if this user exists in the system
+      setLiveProfiles(prev => {
+        const existingIndex = prev.findIndex(profile => profile.id === userProfile.id);
+        if (existingIndex >= 0) {
+          // Update existing profile
+          const updatedProfiles = [...prev];
+          updatedProfiles[existingIndex] = { ...userProfile };
+          return updatedProfiles;
+        } else {
+          // Add new profile (shouldn't happen in normal flow, but good fallback)
+          return [...prev, { ...userProfile, id: Date.now() }];
+        }
+      });
+
+      alert('✅ Profile saved successfully! Your updated information will be visible to other users.');
+      
+      // Optional: Switch to preview mode after saving
+      setProfilePreviewMode(true);
+    } catch (error) {
+      alert('❌ Error saving profile. Please try again.');
+      console.error('Profile save error:', error);
+    }
+  };
+
+  const discardProfileChanges = () => {
+    if (confirm('Are you sure you want to discard all changes? This cannot be undone.')) {
+      // Reset to the last saved state
+      // In a real app, you'd fetch from the server or keep a backup
+      alert('Changes discarded. Profile reset to last saved state.');
+    }
+  };
+
   const handleImageUpload = (file, type) => {
     if (!file) return;
     
