@@ -2399,7 +2399,15 @@ function App() {
                   <span>Dedicated account manager</span>
                 </li>
               </ul>
-              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium">
+              <button 
+                onClick={() => {
+                  const quoteForm = document.querySelector('.quote-form-section');
+                  if (quoteForm) {
+                    quoteForm.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium"
+              >
                 Get Quote - Premium
               </button>
             </div>
