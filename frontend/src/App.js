@@ -1912,9 +1912,16 @@ function App() {
                 value={userProfile.companyDescription}
                 onChange={(e) => setUserProfile(prev => ({ ...prev, companyDescription: e.target.value }))}
                 rows="4"
+                maxLength="500"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                placeholder="Describe what your company does and what makes it unique..."
+                placeholder="Describe what your company does and what makes it unique. This will be the first thing potential partners see!"
               ></textarea>
+              <div className="flex justify-between items-center mt-1">
+                <p className="text-sm text-gray-500">This description appears prominently on your profile card</p>
+                <span className="text-sm text-gray-400">
+                  {userProfile.companyDescription?.length || 0}/500
+                </span>
+              </div>
             </div>
 
             {/* Business Details */}
