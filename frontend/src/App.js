@@ -470,6 +470,9 @@ function App() {
   const [adminSponsorships, setAdminSponsorships] = useState([]);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   
+  // Sponsor profiles state
+  const [sponsorProfiles, setSponsorProfiles] = useState([]);
+  
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(true);
