@@ -645,6 +645,19 @@ function App() {
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false); // Track if we're in admin login mode
   const [currentAdminPage, setCurrentAdminPage] = useState('dashboard'); // dashboard, sponsorships, users
+  
+  // Enhanced admin state
+  const [showCreateSponsorshipModal, setShowCreateSponsorshipModal] = useState(false);
+  const [newSponsorshipData, setNewSponsorshipData] = useState({
+    companyName: '',
+    offer: '',
+    website: '',
+    logoUrl: '',
+    mediaUrl: '',
+    placement: [],
+    releaseDate: new Date().toISOString().split('T')[0],
+    releaseTime: '12:00'
+  });
   const [allUsers, setAllUsers] = useState([
     // Mock users for demo - in real app this would come from backend
     {
