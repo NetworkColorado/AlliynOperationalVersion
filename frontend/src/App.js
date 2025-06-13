@@ -995,6 +995,15 @@ function App() {
           </div>
         )}
 
+        {/* Match Title Display */}
+        {showMatchTitle && (
+          <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+            <div className="match-title bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full shadow-2xl">
+              <h3 className="text-2xl font-bold text-center">{currentMatchTitle}</h3>
+            </div>
+          </div>
+        )}
+
         {/* Confetti Animation */}
         {showConfetti && (
           <div className="fixed inset-0 pointer-events-none z-50">
