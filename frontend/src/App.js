@@ -1824,7 +1824,23 @@ function App() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       required
                     >
+                      <option value="Health & Medical">Health & Medical</option>
+                      <option value="Retail">Retail</option>
+                      <option value="Insurance">Insurance</option>
+                      <option value="Real Estate">Real Estate</option>
+                      <option value="Finance & Banking">Finance & Banking</option>
                       <option value="Technology">Technology</option>
+                      <option value="Automotive & Transportation">Automotive & Transportation</option>
+                      <option value="Energy & Utilities">Energy & Utilities</option>
+                      <option value="Construction & Home Development">Construction & Home Development</option>
+                      <option value="Food & Beverage">Food & Beverage</option>
+                      <option value="Manufacturing">Manufacturing</option>
+                      <option value="Education">Education</option>
+                      <option value="Content Creation and Photography">Content Creation and Photography</option>
+                      <option value="Hospitality & Leisure">Hospitality & Leisure</option>
+                      <option value="Agriculture & Forestry">Agriculture & Forestry</option>
+                      <option value="Consumer Goods">Consumer Goods</option>
+                      <option value="Waste Management & Environmental Services">Waste Management & Environmental Services</option>
                       <option value="Marketing & Advertising">Marketing & Advertising</option>
                       <option value="Financial Technology">Financial Technology</option>
                       <option value="Cybersecurity">Cybersecurity</option>
@@ -1833,8 +1849,6 @@ function App() {
                       <option value="Education Technology">Education Technology</option>
                       <option value="Renewable Energy">Renewable Energy</option>
                       <option value="Consulting">Consulting</option>
-                      <option value="Manufacturing">Manufacturing</option>
-                      <option value="Real Estate">Real Estate</option>
                       <option value="Other">Other</option>
                     </select>
                   </div>
