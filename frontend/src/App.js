@@ -183,6 +183,31 @@ const mockBusinesses = [
 ];
 
 function App() {
+  // Settings utility functions
+  const saveSettings = () => {
+    // In a real app, this would save to backend
+    localStorage.setItem('alliyn_user_settings', JSON.stringify({
+      seekingPartnership: userProfile.seekingPartnership,
+      serviceAreas: userProfile.serviceAreas,
+      partnerships: userProfile.partnerships,
+      industry: userProfile.industry,
+      accountType: accountType
+    }));
+    alert('✅ Settings saved successfully!');
+  };
+
+  const resetSettings = () => {
+    if (confirm('Are you sure you want to reset all settings to default values?')) {
+      setUserProfile(prev => ({
+        ...prev,
+        seekingPartnership: 'National',
+        serviceAreas: ['San Francisco'],
+        partnerships: []
+      }));
+      alert('Settings reset to defaults.');
+    }
+  };
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matches, setMatches] = useState([]);
   const [activeTab, setActiveTab] = useState('matchmaker');
