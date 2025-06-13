@@ -411,6 +411,30 @@ function App() {
     }
   };
 
+  const banUser = (userId) => {
+    const user = allUsers.find(u => u.id === userId);
+    if (confirm(`⚠️ Ban ${user?.name} from the platform?\n\nThis will prevent them from accessing the app due to terms violation. They can appeal this decision.`)) {
+      setAllUsers(prev => prev.map(user => 
+        user.id === userId 
+          ? { ...user, status: 'banned', bannedBy: 'admin', bannedDate: new Date().toISOString(), bannedReason: 'Terms of Service Violation' }
+          : user
+      ));
+      alert(`🚫 User ${user?.name} has been banned from the platform.`);
+    }
+  };
+
+  const unbanUser = (userId) => {
+    const user = allUsers.find(u => u.id === userId);
+    if (confirm(`Unban ${user?.name} and restore their access to the platform?`)) {
+      setAllUsers(prev => prev.map(user => 
+        user.id === userId 
+          ? { ...user, status: 'active', unbannedBy: 'admin', unbannedDate: new Date().toISOString() }
+          : user
+      ));
+      alert(`✅ User ${user?.name} has been unbanned and can now access the platform.`);
+    }
+  };
+
   // Enhanced sponsorship management
   const createSponsorship = async (sponsorshipData) => {
     return new Promise((resolve) => {
