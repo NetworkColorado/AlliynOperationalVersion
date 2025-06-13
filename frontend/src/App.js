@@ -1416,14 +1416,38 @@ function App() {
     // Sign In Modal
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div className={`rounded-lg shadow-xl max-w-md w-full ${isAdminMode ? 'bg-red-50 border-2 border-red-500' : 'bg-white'}`}>
           <div className="p-6">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-2xl">A</span>
+            {/* Admin Mode Banner */}
+            {isAdminMode && (
+              <div className="bg-red-500 text-white px-4 py-2 rounded-lg mb-4 text-center">
+                <div className="flex items-center justify-center space-x-2">
+                  <span>🔐</span>
+                  <span className="font-bold">ADMIN LOGIN MODE</span>
+                </div>
+                <button
+                  onClick={exitAdminMode}
+                  className="mt-2 text-xs underline hover:no-underline"
+                >
+                  ← Exit Admin Mode
+                </button>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-              <p className="text-gray-600">Sign in to continue matching with businesses</p>
+            )}
+            
+            <div className="text-center mb-6">
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                isAdminMode 
+                  ? 'bg-gradient-to-r from-red-500 to-red-600' 
+                  : 'bg-gradient-to-r from-purple-500 to-pink-500'
+              }`}>
+                <span className="text-white font-bold text-2xl">{isAdminMode ? '🔐' : 'A'}</span>
+              </div>
+              <h2 className={`text-2xl font-bold mb-2 ${isAdminMode ? 'text-red-800' : 'text-gray-800'}`}>
+                {isAdminMode ? 'Admin Access Required' : 'Welcome Back'}
+              </h2>
+              <p className={`${isAdminMode ? 'text-red-600' : 'text-gray-600'}`}>
+                {isAdminMode ? 'Enter admin credentials to access admin panel' : 'Sign in to continue matching with businesses'}
+              </p>
             </div>
 
             <form onSubmit={(e) => {
