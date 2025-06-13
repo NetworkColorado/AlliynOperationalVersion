@@ -1,6 +1,34 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './App.css';
 
+// Popup ads for monetization
+const adPopups = [
+  {
+    id: 'popup1',
+    title: '🚀 Scale Your Business Fast!',
+    description: 'Join 10,000+ entrepreneurs using our proven growth system',
+    cta: 'Get 30% Off Today',
+    image: 'https://images.unsplash.com/photo-1556745757-8d76bdb6984b',
+    backgroundColor: 'from-blue-500 to-purple-600'
+  },
+  {
+    id: 'popup2',
+    title: '💰 Business Funding Available',
+    description: 'Get up to $500K funding for your business expansion',
+    cta: 'Apply in 5 Minutes',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
+    backgroundColor: 'from-green-500 to-teal-600'
+  },
+  {
+    id: 'popup3',
+    title: '📈 Free Marketing Audit',
+    description: 'Discover how to 3x your revenue with expert strategies',
+    cta: 'Get Free Audit',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f',
+    backgroundColor: 'from-orange-500 to-red-600'
+  }
+];
+
 // Mock sponsor profiles for advertising revenue
 const sponsorProfiles = [
   {
