@@ -351,7 +351,9 @@ function App() {
       setShowAuthModal(false); // Close the main auth modal
       alert('✅ Admin login successful! Welcome to the admin panel.');
     } else {
-      alert('❌ Invalid admin credentials. Please try again.');
+      alert('❌ Invalid admin credentials. Please check your email and password.');
+      // Clear the form but stay in admin mode
+      setAdminCredentials({ email: '', password: '' });
     }
   };
 
@@ -366,12 +368,12 @@ function App() {
 
   const enterAdminMode = () => {
     setIsAdminMode(true);
-    setShowAdminLogin(true);
+    // Clear any existing credentials
+    setAdminCredentials({ email: '', password: '' });
   };
 
   const exitAdminMode = () => {
     setIsAdminMode(false);
-    setShowAdminLogin(false);
     setAdminCredentials({ email: '', password: '' });
   };
 
