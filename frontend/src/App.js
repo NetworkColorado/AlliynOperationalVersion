@@ -1499,7 +1499,6 @@ function App() {
                   }`}
                   placeholder={isAdminMode ? 'Admin password' : 'Enter your password'}
                 />
-                />
               </div>
 
               <div className="flex space-x-3 pt-4">
