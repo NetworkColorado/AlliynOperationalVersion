@@ -598,18 +598,35 @@ function App() {
   };
 
   const handleImageUpload = (file, type) => {
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64Image = e.target.result;
-        if (type === 'profile') {
-          setUserProfile(prev => ({ ...prev, profileImage: base64Image }));
-        } else if (type === 'logo') {
-          setUserProfile(prev => ({ ...prev, logo: base64Image }));
-        }
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file (PNG, JPG, GIF, etc.)');
+      return;
     }
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size must be less than 5MB. Please choose a smaller image.');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64Image = e.target.result;
+      if (type === 'profile') {
+        setUserProfile(prev => ({ ...prev, profileImage: base64Image }));
+        alert('✅ Profile photo updated! Remember to save your changes.');
+      } else if (type === 'logo') {
+        setUserProfile(prev => ({ ...prev, logo: base64Image }));
+        alert('✅ Company logo updated! Remember to save your changes.');
+      }
+    };
+    reader.onerror = () => {
+      alert('❌ Error reading the image file. Please try again.');
+    };
+    reader.readAsDataURL(file);
   };
 
   // Calculate leaderboard stats
