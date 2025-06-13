@@ -557,34 +557,7 @@ function App() {
 
   // Calculate match probability based on partnership compatibility
   const calculateMatchProbability = (business1, business2) => {
-    let score = 0;
-    
-    // Partnership type compatibility
-    const commonPartnerships = business1.partnerships.filter(p => 
-      business2.partnerships.includes(p)
-    );
-    score += commonPartnerships.length * 25;
-    
-    // Geographic compatibility
-    if (business1.seekingPartnership === business2.seekingPartnership) score += 20;
-    
-    // Industry synergy (some industries work well together)
-    const synergies = {
-      'Technology': ['Marketing & Advertising', 'Financial Technology', 'Education Technology'],
-      'Marketing & Advertising': ['Technology', 'Health & Wellness', 'Supply Chain Management'],
-      'Financial Technology': ['Technology', 'Cybersecurity'],
-      'Cybersecurity': ['Technology', 'Financial Technology'],
-      'Health & Wellness': ['Marketing & Advertising', 'Supply Chain Management']
-    };
-    
-    if (synergies[business1.industry]?.includes(business2.industry)) score += 20;
-    
-    // Experience level compatibility
-    const exp1 = business1.yearsInBusiness;
-    const exp2 = business2.yearsInBusiness;
-    if (Math.abs(exp1 - exp2) <= 3) score += 15;
-    
-    return Math.min(score, 100);
+    return calculateAdvancedMatchProbability(business1, business2);
   };
 
   // Enhanced badge generation with more fun names and match titles
