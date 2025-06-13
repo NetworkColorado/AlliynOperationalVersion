@@ -35,6 +35,34 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+class SponsorshipRequest(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    company_name: str
+    contact_name: str
+    email: str
+    phone: str = ""
+    website: str = ""
+    industry: str
+    package_type: str
+    budget: str = ""
+    goals: str
+    additional_info: str = ""
+    status: str = "pending"  # pending, contacted, closed
+    estimated_quote: int = 500
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class SponsorshipRequestCreate(BaseModel):
+    company_name: str
+    contact_name: str
+    email: str
+    phone: str = ""
+    website: str = ""
+    industry: str
+    package_type: str
+    budget: str = ""
+    goals: str
+    additional_info: str = ""
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
