@@ -290,8 +290,8 @@ function App() {
     updateFilteredProfiles();
   }, [userProfile.seekingPartnership, userProfile.serviceAreas, liveProfiles, isAuthenticated]);
 
-  // Combine businesses and sponsors for swiping
-  const allProfiles = [...liveProfiles];
+  // Combine filtered businesses and sponsors for swiping
+  const allProfiles = [...filteredProfiles];
   
   // Insert sponsors every 4-5 profiles for optimal ad exposure
   const getProfileAtIndex = (index) => {
