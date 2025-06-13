@@ -497,23 +497,38 @@ function App() {
       setSwipeCount(prev => prev + 1);
     }
     
+    // Show popup ads occasionally (every 5 swipes for engagement)
+    if (currentIndex > 0 && currentIndex % 5 === 0 && Math.random() > 0.5) {
+      const randomAd = adPopups[Math.floor(Math.random() * adPopups.length)];
+      setCurrentAdPopup(randomAd);
+      setShowAdPopup(true);
+    }
+    
     setTimeout(() => {
       if (direction === 'right') {
-        // Trigger confetti animation for ALL users (free and premium)
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
-        
         // Only create matches for regular business profiles, not sponsors
         if (!isCurrentSponsor) {
-          // Increment match count for free users
-          if (accountType === 'free') {
-            setMatchCount(prev => prev + 1);
-          }
-          
           // Create a match with probability and badge
           const matchBusiness = allProfiles[(currentIndex + 1) % allProfiles.length];
           const probability = calculateMatchProbability(currentProfile, matchBusiness);
           const badge = generateBadge(currentProfile, matchBusiness);
+          
+          // Show match title first
+          setCurrentMatchTitle(badge.matchTitle);
+          setShowMatchTitle(true);
+          
+          // Then show confetti
+          setTimeout(() => {
+            setShowConfetti(true);
+            setShowMatchTitle(false);
+          }, 1500);
+          
+          setTimeout(() => setShowConfetti(false), 4500);
+          
+          // Increment match count for free users
+          if (accountType === 'free') {
+            setMatchCount(prev => prev + 1);
+          }
           
           const newMatch = {
             id: Date.now(),
@@ -533,6 +548,8 @@ function App() {
           }
         } else {
           // For sponsor profiles, just show celebration without creating match
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 3000);
           setTimeout(() => {
             alert('Thanks for your interest! Check out their exclusive offer.');
           }, 1500);
