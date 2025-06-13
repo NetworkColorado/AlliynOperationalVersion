@@ -246,6 +246,23 @@ function App() {
     }
   }, [lastLockoutTime, accountType]);
 
+  // Load sponsorship requests on component mount
+  useEffect(() => {
+    const loadSponsorshipRequests = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/sponsorship`);
+        if (response.ok) {
+          const requests = await response.json();
+          setSponsorshipRequests(requests);
+        }
+      } catch (error) {
+        console.error('Error loading sponsorship requests:', error);
+      }
+    };
+
+    loadSponsorshipRequests();
+  }, []);
+
   // Combine businesses and sponsors for swiping
   const allProfiles = [...liveProfiles];
   
