@@ -469,6 +469,7 @@ function App() {
   const [adminCredentials, setAdminCredentials] = useState({ email: '', password: '' });
   const [adminSponsorships, setAdminSponsorships] = useState([]);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false); // Track if we're in admin login mode
   
   // Sponsor profiles state
   const [sponsorProfiles, setSponsorProfiles] = useState([]);
