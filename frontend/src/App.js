@@ -2923,7 +2923,33 @@ function App() {
 
               <div className="text-center mb-6">
                 <div className="text-3xl font-bold text-yellow-600 mb-2">$19.99</div>
-                <p className="text-sm text-gray-500">One-time payment</p>
+                <p className="text-sm text-gray-500">per month</p>
+              </div>
+
+              <div className="space-y-3 mb-6">
+                <button 
+                  onClick={() => handlePaymentMethod('stripe')}
+                  className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium flex items-center justify-center space-x-2"
+                >
+                  <span>💳</span>
+                  <span>Pay with Credit Card</span>
+                </button>
+                
+                <button 
+                  onClick={() => handlePaymentMethod('paypal')}
+                  className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center space-x-2"
+                >
+                  <span>🅿️</span>
+                  <span>Pay with PayPal</span>
+                </button>
+                
+                <button 
+                  onClick={() => handlePaymentMethod('apple')}
+                  className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium flex items-center justify-center space-x-2"
+                >
+                  <span>🍎</span>
+                  <span>Pay with Apple Pay</span>
+                </button>
               </div>
 
               <div className="flex space-x-3">
