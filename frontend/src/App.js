@@ -665,6 +665,46 @@ function App() {
     }
   };
 
+  // Sponsorship utility functions
+  const calculateCustomQuote = (packageType, industry, budget) => {
+    let basePrice = 500; // Starting at $500/month
+    
+    if (packageType.includes('Premium')) {
+      basePrice = 1500;
+    } else if (packageType.includes('Enterprise')) {
+      basePrice = 3000;
+    }
+
+    // Industry multipliers
+    const industryMultipliers = {
+      'Technology': 1.2,
+      'Financial Services': 1.3,
+      'Healthcare': 1.1,
+      'Professional Services': 1.0,
+      'Real Estate': 1.1,
+      'Other': 1.0
+    };
+
+    const multiplier = industryMultipliers[industry] || 1.0;
+    return Math.round(basePrice * multiplier);
+  };
+
+  const getSponsorshipStats = () => {
+    return {
+      totalRequests: sponsorshipRequests.length,
+      avgBudget: sponsorshipRequests.length > 0 
+        ? sponsorshipRequests.reduce((sum, req) => {
+            const budget = req.budget?.replace(/[^\d]/g, '') || '500';
+            return sum + parseInt(budget);
+          }, 0) / sponsorshipRequests.length
+        : 0,
+      topIndustries: sponsorshipRequests.reduce((acc, req) => {
+        acc[req.industry] = (acc[req.industry] || 0) + 1;
+        return acc;
+      }, {})
+    };
+  };
+
   const handleImageUpload = (file, type) => {
     if (!file) return;
     
