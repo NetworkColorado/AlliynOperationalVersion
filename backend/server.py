@@ -173,6 +173,63 @@ async def get_sponsorship_stats():
         "package_breakdown": package_stats
     }
 
+# Admin endpoints (protected by admin authentication in production)
+@api_router.post("/admin/sponsorship", response_model=AdminSponsorship)
+async def create_admin_sponsorship(input: AdminSponsorshipCreate):
+    sponsorship_dict = input.dict()
+    sponsorship_obj = AdminSponsorship(**sponsorship_dict)
+    await db.admin_sponsorships.insert_one(sponsorship_obj.dict())
+    return sponsorship_obj
+
+@api_router.get("/admin/sponsorship", response_model=List[AdminSponsorship])
+async def get_admin_sponsorships():
+    sponsorships = await db.admin_sponsorships.find().sort("timestamp", -1).to_list(1000)
+    return [AdminSponsorship(**sponsorship) for sponsorship in sponsorships]
+
+@api_router.post("/admin/user/{user_id}/upgrade")
+async def admin_upgrade_user(user_id: str):
+    # In production, this would update user in database
+    result = {
+        "user_id": user_id,
+        "account_type": "premium",
+        "upgraded_by": "admin",
+        "upgrade_date": datetime.utcnow().isoformat()
+    }
+    return result
+
+@api_router.post("/admin/user/{user_id}/downgrade")
+async def admin_downgrade_user(user_id: str):
+    result = {
+        "user_id": user_id,
+        "account_type": "free",
+        "downgraded_by": "admin",
+        "downgrade_date": datetime.utcnow().isoformat()
+    }
+    return result
+
+@api_router.delete("/admin/user/{user_id}")
+async def admin_delete_user(user_id: str):
+    result = {
+        "user_id": user_id,
+        "status": "deleted",
+        "deleted_by": "admin",
+        "delete_date": datetime.utcnow().isoformat()
+    }
+    return result
+
+@api_router.get("/admin/stats")
+async def get_admin_stats():
+    total_sponsorships = await db.admin_sponsorships.count_documents({})
+    total_sponsorship_requests = await db.sponsorship_requests.count_documents({})
+    
+    return {
+        "total_sponsorships": total_sponsorships,
+        "total_sponsorship_requests": total_sponsorship_requests,
+        "total_users": 1,  # Placeholder - in real app would count actual users
+        "premium_users": 1,  # Placeholder
+        "free_users": 0     # Placeholder
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
