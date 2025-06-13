@@ -1735,7 +1735,10 @@ function App() {
         </div>
       ) : (
         /* Profile Edit Mode */
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto">{/* Profile content will be here */}</div>
+      )}
+    </div>
+  );
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {/* Profile Header */}
           <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 text-white">
