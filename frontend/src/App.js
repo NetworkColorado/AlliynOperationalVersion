@@ -1449,6 +1449,16 @@ function App() {
                 </button>
               </div>
             </form>
+            
+            {/* Admin Access */}
+            <div className="mt-4 pt-4 border-t border-gray-200 text-center">
+              <button
+                onClick={() => setShowAdminLogin(true)}
+                className="text-xs text-gray-400 hover:text-gray-600 transition-colors underline"
+              >
+                Admin Access
+              </button>
+            </div>
           </div>
         </div>
       </div>
