@@ -1807,97 +1807,58 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           <h3 className="text-xl font-bold text-center mb-8 text-purple-600">
             Edit Your Business Profile
           </h3>
           
-          <form className="bg-white rounded-lg shadow-lg p-8 space-y-8">
-            {/* Help Banner */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-              <div className="flex items-start space-x-3">
-                <span className="text-purple-500 text-xl">💡</span>
-                <div>
-                  <h4 className="font-semibold text-purple-800 mb-1">Profile Tips</h4>
-                  <p className="text-sm text-purple-700">
-                    A complete profile gets 3x more matches! Make sure to fill out all sections and add high-quality photos.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Profile Images Section */}
-            <div className="border-b border-gray-200 pb-8">
-              <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
-                <span className="mr-2">📸</span>
-                Profile Images
-              </h3>
-              <div className="grid md:grid-cols-2 gap-8">
-              {/* Company Logo Upload */}
+          <div className="bg-white rounded-lg shadow-lg p-8 space-y-6">
+            {/* Profile Images */}
+            <div className="grid md:grid-cols-2 gap-8 pb-6 border-b">
               <div className="text-center">
-                <h4 className="text-lg font-semibold text-gray-800 mb-4">Company Logo</h4>
+                <h4 className="font-semibold text-gray-800 mb-4">Company Logo</h4>
                 <div className="mb-4 flex justify-center">
                   {userProfile.logo ? (
-                    <img 
-                      src={userProfile.logo} 
-                      alt="Company Logo"
-                      className="w-32 h-32 rounded-xl object-cover border-4 border-purple-100"
-                    />
+                    <img src={userProfile.logo} alt="Logo" className="w-24 h-24 rounded-xl object-cover border-4 border-purple-100" />
                   ) : (
-                    <div className="w-32 h-32 rounded-xl bg-gray-200 border-4 border-purple-100 flex items-center justify-center">
-                      <span className="text-4xl">🏢</span>
+                    <div className="w-24 h-24 rounded-xl bg-gray-200 border-4 border-purple-100 flex items-center justify-center">
+                      <span className="text-2xl">🏢</span>
                     </div>
                   )}
                 </div>
                 <label className="cursor-pointer bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors inline-block">
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden"
-                    onChange={(e) => handleImageUpload(e.target.files[0], 'logo')}
-                  />
-                  📷 Upload Logo
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e.target.files[0], 'logo')} />
+                  📷 Upload
                 </label>
               </div>
-
-              {/* Profile Photo Upload */}
               <div className="text-center">
-                <h4 className="text-lg font-semibold text-gray-800 mb-4">Your Photo</h4>
+                <h4 className="font-semibold text-gray-800 mb-4">Your Photo</h4>
                 <div className="mb-4 flex justify-center">
                   {userProfile.profileImage ? (
-                    <img 
-                      src={userProfile.profileImage} 
-                      alt="Profile"
-                      className="w-32 h-32 rounded-full object-cover border-4 border-purple-100"
-                    />
+                    <img src={userProfile.profileImage} alt="Profile" className="w-24 h-24 rounded-full object-cover border-4 border-purple-100" />
                   ) : (
-                    <div className="w-32 h-32 rounded-full bg-gray-200 border-4 border-purple-100 flex items-center justify-center">
-                      <span className="text-4xl">👤</span>
+                    <div className="w-24 h-24 rounded-full bg-gray-200 border-4 border-purple-100 flex items-center justify-center">
+                      <span className="text-2xl">👤</span>
                     </div>
                   )}
                 </div>
                 <label className="cursor-pointer bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors inline-block">
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden"
-                    onChange={(e) => handleImageUpload(e.target.files[0], 'profile')}
-                  />
-                  📷 Upload Photo
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e.target.files[0], 'profile')} />
+                  📷 Upload
                 </label>
               </div>
             </div>
 
-            {/* Personal Information */}
-            <div className="grid md:grid-cols-2 gap-6">
+            {/* Basic Information */}
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Your Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
                 <input 
                   type="text" 
                   value={userProfile.ownerName}
                   onChange={(e) => setUserProfile(prev => ({ ...prev, ownerName: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="Enter your full name"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  placeholder="Your full name"
                 />
               </div>
               <div>
@@ -1906,21 +1867,20 @@ function App() {
                   type="text" 
                   value={userProfile.ownerTitle}
                   onChange={(e) => setUserProfile(prev => ({ ...prev, ownerTitle: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="e.g., CEO, Founder, Director"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  placeholder="e.g., CEO, Founder"
                 />
               </div>
             </div>
 
-            {/* Company Information */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
               <input 
                 type="text" 
                 value={userProfile.companyName}
                 onChange={(e) => setUserProfile(prev => ({ ...prev, companyName: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="Enter your company name"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                placeholder="Your company name"
               />
             </div>
 
@@ -1929,54 +1889,25 @@ function App() {
               <textarea 
                 value={userProfile.companyDescription}
                 onChange={(e) => setUserProfile(prev => ({ ...prev, companyDescription: e.target.value }))}
-                rows="4"
-                maxLength="500"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                placeholder="Describe what your company does and what makes it unique. This will be the first thing potential partners see!"
+                rows="3"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 resize-none"
+                placeholder="Describe what your company does..."
               ></textarea>
-              <div className="flex justify-between items-center mt-1">
-                <p className="text-sm text-gray-500">This description appears prominently on your profile card</p>
-                <span className="text-sm text-gray-400">
-                  {userProfile.companyDescription?.length || 0}/500
-                </span>
-              </div>
             </div>
 
-            {/* Business Details */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
                 <select 
                   value={userProfile.industry}
                   onChange={(e) => setUserProfile(prev => ({ ...prev, industry: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                 >
-                  <option value="">Select your industry</option>
-                  <option value="Health & Medical">Health & Medical</option>
-                  <option value="Retail">Retail</option>
-                  <option value="Insurance">Insurance</option>
-                  <option value="Real Estate">Real Estate</option>
-                  <option value="Finance & Banking">Finance & Banking</option>
+                  <option value="">Select industry</option>
                   <option value="Technology">Technology</option>
-                  <option value="Automotive & Transportation">Automotive & Transportation</option>
-                  <option value="Energy & Utilities">Energy & Utilities</option>
-                  <option value="Construction & Home Development">Construction & Home Development</option>
-                  <option value="Food & Beverage">Food & Beverage</option>
-                  <option value="Manufacturing">Manufacturing</option>
-                  <option value="Education">Education</option>
-                  <option value="Content Creation and Photography">Content Creation and Photography</option>
-                  <option value="Hospitality & Leisure">Hospitality & Leisure</option>
-                  <option value="Agriculture & Forestry">Agriculture & Forestry</option>
-                  <option value="Consumer Goods">Consumer Goods</option>
-                  <option value="Waste Management & Environmental Services">Waste Management & Environmental Services</option>
-                  <option value="Marketing & Advertising">Marketing & Advertising</option>
-                  <option value="Financial Technology">Financial Technology</option>
-                  <option value="Cybersecurity">Cybersecurity</option>
-                  <option value="Health & Wellness">Health & Wellness</option>
-                  <option value="Supply Chain Management">Supply Chain Management</option>
-                  <option value="Education Technology">Education Technology</option>
-                  <option value="Renewable Energy">Renewable Energy</option>
-                  <option value="Consulting">Consulting</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Marketing">Marketing</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
@@ -1985,16 +1916,13 @@ function App() {
                 <input 
                   type="number" 
                   min="0"
-                  max="100"
                   value={userProfile.yearsInBusiness}
                   onChange={(e) => setUserProfile(prev => ({ ...prev, yearsInBusiness: parseInt(e.target.value) || 0 }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="0"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
                 />
               </div>
             </div>
 
-            {/* Service Areas */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Service Areas</label>
               <input 
@@ -2004,56 +1932,44 @@ function App() {
                   ...prev, 
                   serviceAreas: e.target.value.split(',').map(area => area.trim()).filter(area => area) 
                 }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="e.g., San Francisco, New York, Remote (comma-separated)"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                placeholder="e.g., San Francisco, New York (comma-separated)"
               />
-              <p className="text-sm text-gray-500 mt-1">Separate multiple areas with commas</p>
             </div>
 
-            {/* Partnership Scope */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Partnership Scope</label>
+              <label className="block text-sm font-medium text-gray-700 mb-3">Partnership Scope</label>
               <div className="space-y-2">
                 <label className="flex items-center space-x-3">
                   <input 
                     type="radio" 
-                    name="partnershipScope"
+                    name="scope"
                     value="Local"
                     checked={userProfile.seekingPartnership === 'Local'}
                     onChange={(e) => setUserProfile(prev => ({ ...prev, seekingPartnership: e.target.value }))}
                     className="h-4 w-4 text-purple-600"
                   />
-                  <span className="text-gray-700">Local Partnerships (within your region)</span>
+                  <span>Local Partnerships</span>
                 </label>
                 <label className="flex items-center space-x-3">
                   <input 
                     type="radio" 
-                    name="partnershipScope"
+                    name="scope"
                     value="National"
                     checked={userProfile.seekingPartnership === 'National'}
                     onChange={(e) => setUserProfile(prev => ({ ...prev, seekingPartnership: e.target.value }))}
                     className="h-4 w-4 text-purple-600"
                   />
-                  <span className="text-gray-700">National Partnerships (across the country)</span>
+                  <span>National Partnerships</span>
                 </label>
               </div>
             </div>
 
-            {/* Partnership Interests */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-4">Partnership Interests</label>
-              <div className="grid md:grid-cols-2 gap-3">
-                {[
-                  "Strategic Alliances",
-                  "Joint Ventures", 
-                  "Co-Branding",
-                  "Affiliate Partnerships",
-                  "Sponsorship Agreements",
-                  "Event Collaborations",
-                  "Incubator/Accelerator Collaborations",
-                  "Referral Partnerships"
-                ].map((type) => (
-                  <label key={type} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="block text-sm font-medium text-gray-700 mb-3">Partnership Interests</label>
+              <div className="grid grid-cols-2 gap-2">
+                {["Strategic Alliances", "Joint Ventures", "Co-Branding", "Affiliate Partnerships"].map((type) => (
+                  <label key={type} className="flex items-center space-x-2">
                     <input 
                       type="checkbox" 
                       checked={userProfile.partnerships?.includes(type) || false}
@@ -2072,39 +1988,29 @@ function App() {
                       }}
                       className="h-4 w-4 text-purple-600 rounded"
                     />
-                    <span className="text-gray-700 text-sm">{type}</span>
+                    <span className="text-sm">{type}</span>
                   </label>
                 ))}
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+            <div className="flex justify-between pt-6 border-t">
               <button 
                 type="button"
                 onClick={() => setProfilePreviewMode(true)}
-                className="px-6 py-3 border border-purple-500 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium"
+                className="px-6 py-2 border border-purple-500 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
               >
-                👀 Preview Profile
+                👀 Preview
               </button>
-              <div className="space-x-4">
-                <button 
-                  type="button"
-                  onClick={discardProfileChanges}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Discard Changes
-                </button>
-                <button 
-                  type="button"
-                  onClick={saveProfile}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
-                >
-                  💾 Save Changes
-                </button>
-              </div>
+              <button 
+                type="button"
+                onClick={saveProfile}
+                className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+              >
+                💾 Save Changes
+              </button>
             </div>
-          </form>
+          </div>
         </div>
       )}
     </div>
