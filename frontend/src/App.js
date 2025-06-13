@@ -1826,19 +1826,6 @@ function App() {
               </div>
             </div>
 
-            {/* Help Banner */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-              <div className="flex items-start space-x-3">
-                <span className="text-purple-500 text-xl">💡</span>
-                <div>
-                  <h4 className="font-semibold text-purple-800 mb-1">Profile Tips</h4>
-                  <p className="text-sm text-purple-700">
-                    A complete profile gets 3x more matches! Make sure to fill out all sections and add high-quality photos.
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* Profile Images Section */}
             <div className="border-b border-gray-200 pb-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
