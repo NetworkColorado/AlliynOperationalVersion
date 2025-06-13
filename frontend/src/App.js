@@ -722,6 +722,124 @@ function App() {
     };
   };
 
+  // Geographic utility functions for location-based filtering
+  const getLocationCoordinates = async (location) => {
+    // In a real app, you'd use a geocoding service like Google Maps API
+    // For demo purposes, using approximate coordinates for major cities
+    const cityCoordinates = {
+      'san francisco': { lat: 37.7749, lng: -122.4194 },
+      'new york': { lat: 40.7128, lng: -74.0060 },
+      'los angeles': { lat: 34.0522, lng: -118.2437 },
+      'chicago': { lat: 41.8781, lng: -87.6298 },
+      'houston': { lat: 29.7604, lng: -95.3698 },
+      'phoenix': { lat: 33.4484, lng: -112.0740 },
+      'philadelphia': { lat: 39.9526, lng: -75.1652 },
+      'denver': { lat: 39.7392, lng: -104.9903 },
+      'seattle': { lat: 47.6062, lng: -122.3321 },
+      'miami': { lat: 25.7617, lng: -80.1918 },
+      'boston': { lat: 42.3601, lng: -71.0589 },
+      'austin': { lat: 30.2672, lng: -97.7431 },
+      'dallas': { lat: 32.7767, lng: -96.7970 },
+      'orange county': { lat: 33.7175, lng: -117.8311 },
+      'san diego': { lat: 32.7157, lng: -117.1611 },
+      'portland': { lat: 45.5152, lng: -122.6784 },
+      'vancouver': { lat: 49.2827, lng: -123.1207 },
+      'tampa': { lat: 27.9506, lng: -82.4572 },
+      'orlando': { lat: 28.5383, lng: -81.3792 },
+      'milwaukee': { lat: 43.0389, lng: -87.9065 },
+      'madison': { lat: 43.0731, lng: -89.4012 },
+      'salt lake city': { lat: 40.7608, lng: -111.8910 },
+      'remote': { lat: 0, lng: 0 } // Special case for remote work
+    };
+    
+    const normalized = location.toLowerCase().trim();
+    return cityCoordinates[normalized] || null;
+  };
+
+  const calculateDistance = (lat1, lng1, lat2, lng2) => {
+    // Haversine formula to calculate distance between two points on Earth
+    const R = 3959; // Earth's radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLng/2) * Math.sin(dLng/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in miles
+  };
+
+  const isWithinLocalRange = async (userAreas, businessAreas, maxDistance = 20) => {
+    // If either business operates remotely, they can match with anyone
+    if (userAreas.some(area => area.toLowerCase().includes('remote')) || 
+        businessAreas.some(area => area.toLowerCase().includes('remote'))) {
+      return true;
+    }
+
+    // Check if any of the user's service areas are within range of business areas
+    for (const userArea of userAreas) {
+      const userCoords = await getLocationCoordinates(userArea);
+      if (!userCoords) continue;
+
+      for (const businessArea of businessAreas) {
+        const businessCoords = await getLocationCoordinates(businessArea);
+        if (!businessCoords) continue;
+
+        // Special case: if coordinates are (0,0) it means remote
+        if (userCoords.lat === 0 || businessCoords.lat === 0) return true;
+
+        const distance = calculateDistance(
+          userCoords.lat, userCoords.lng,
+          businessCoords.lat, businessCoords.lng
+        );
+
+        if (distance <= maxDistance) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  // Filter profiles based on partnership preferences
+  const getFilteredProfiles = async () => {
+    if (!userProfile.seekingPartnership || !userProfile.serviceAreas) {
+      return liveProfiles; // No filtering if preferences not set
+    }
+
+    // If user seeks National partnerships, show all profiles
+    if (userProfile.seekingPartnership === 'National') {
+      return liveProfiles;
+    }
+
+    // If user seeks Local partnerships, filter by geographic proximity
+    if (userProfile.seekingPartnership === 'Local') {
+      const filteredProfiles = [];
+      
+      for (const profile of liveProfiles) {
+        // Only show profiles that also seek local partnerships or are within range
+        if (profile.seekingPartnership === 'National') {
+          // National businesses can match with local businesses
+          filteredProfiles.push(profile);
+        } else if (profile.seekingPartnership === 'Local') {
+          // Check if they're within 20 miles of each other
+          const isWithinRange = await isWithinLocalRange(
+            userProfile.serviceAreas || [],
+            profile.serviceAreas || [],
+            20
+          );
+          if (isWithinRange) {
+            filteredProfiles.push(profile);
+          }
+        }
+      }
+      
+      return filteredProfiles;
+    }
+
+    return liveProfiles;
+  };
+
   const handleImageUpload = (file, type) => {
     if (!file) return;
     
