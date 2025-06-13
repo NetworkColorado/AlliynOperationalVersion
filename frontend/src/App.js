@@ -1282,6 +1282,21 @@ function App() {
           </div>
         )}
 
+        {/* Filtering Status Indicator */}
+        <div className="absolute top-4 left-4 bg-white rounded-lg shadow-md p-4 z-10">
+          <div className="text-center">
+            <p className="text-sm font-medium text-gray-700">
+              {userProfile.seekingPartnership === 'Local' ? '📍 Local Partnerships' : '🌍 National Partnerships'}
+            </p>
+            <p className="text-xs text-gray-500">
+              {isFilteringProfiles ? 'Filtering...' : `${filteredProfiles.length} businesses available`}
+            </p>
+            {userProfile.seekingPartnership === 'Local' && (
+              <p className="text-xs text-purple-600 mt-1">Within 20 miles of your areas</p>
+            )}
+          </div>
+        </div>
+
         {/* Match Title Display */}
         {showMatchTitle && (
           <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
