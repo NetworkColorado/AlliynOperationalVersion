@@ -165,6 +165,11 @@ function App() {
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showAdPopup, setShowAdPopup] = useState(false);
+  const [currentAdPopup, setCurrentAdPopup] = useState(null);
+  const [showMatchTitle, setShowMatchTitle] = useState(false);
+  const [currentMatchTitle, setCurrentMatchTitle] = useState('');
+  const [profilePreviewMode, setProfilePreviewMode] = useState(false);
   
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
