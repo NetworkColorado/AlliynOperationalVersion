@@ -2356,6 +2356,37 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Popup Advertisement Modal */}
+      {showAdPopup && currentAdPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden">
+            <div className={`relative h-48 bg-gradient-to-r ${currentAdPopup.backgroundColor} p-6`}>
+              <button 
+                onClick={() => setShowAdPopup(false)}
+                className="absolute top-4 right-4 text-white/80 hover:text-white text-2xl font-bold"
+              >
+                ×
+              </button>
+              <div className="text-white h-full flex flex-col justify-center">
+                <h3 className="text-2xl font-bold mb-2">{currentAdPopup.title}</h3>
+                <p className="text-white/90">{currentAdPopup.description}</p>
+              </div>
+            </div>
+            <div className="p-6">
+              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg font-bold text-lg hover:shadow-lg transition-all mb-3">
+                {currentAdPopup.cta}
+              </button>
+              <button 
+                onClick={() => setShowAdPopup(false)}
+                className="w-full text-gray-500 text-sm hover:text-gray-700 transition-colors"
+              >
+                Maybe later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
