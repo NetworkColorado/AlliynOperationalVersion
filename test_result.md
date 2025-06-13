@@ -199,7 +199,8 @@ test_plan:
   current_focus:
     - "React application startup"
     - "Business matching interface"
-  stuck_tasks: []
+  stuck_tasks: 
+    - "Business matching interface"
   test_all: true
   test_priority: "high_first"
 
