@@ -178,13 +178,16 @@ frontend:
     implemented: true
     working: "NA"
     file: "/app/frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Complex React app with business matching, authentication, messaging - needs comprehensive testing"
+      - working: "NA"
+        agent: "testing"
+        comment: "Unable to test the business matching interface due to issues with the browser_automation_tool. The tool is ignoring the specified URL (http://localhost:3000) and trying to navigate to http://localhost:8001 instead, resulting in a 404 error."
 
 metadata:
   created_by: "main_agent"
