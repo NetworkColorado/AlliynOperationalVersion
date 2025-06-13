@@ -1726,10 +1726,288 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className="text-center text-gray-500 mt-12">
-          <div className="text-6xl mb-4">👤</div>
-          <p>Profile editing interface would go here</p>
-          <p className="text-sm mt-2">This is a simplified version - click Preview to see how your profile looks to others!</p>
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-xl font-bold text-center mb-8 text-purple-600">
+            Edit Your Business Profile
+          </h3>
+          
+          <form className="bg-white rounded-lg shadow-lg p-8 space-y-8">
+            {/* Profile Images Section */}
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Company Logo Upload */}
+              <div className="text-center">
+                <h4 className="text-lg font-semibold text-gray-800 mb-4">Company Logo</h4>
+                <div className="mb-4 flex justify-center">
+                  {userProfile.logo ? (
+                    <img 
+                      src={userProfile.logo} 
+                      alt="Company Logo"
+                      className="w-32 h-32 rounded-xl object-cover border-4 border-purple-100"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 rounded-xl bg-gray-200 border-4 border-purple-100 flex items-center justify-center">
+                      <span className="text-4xl">🏢</span>
+                    </div>
+                  )}
+                </div>
+                <label className="cursor-pointer bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors inline-block">
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden"
+                    onChange={(e) => handleImageUpload(e.target.files[0], 'logo')}
+                  />
+                  📷 Upload Logo
+                </label>
+              </div>
+
+              {/* Profile Photo Upload */}
+              <div className="text-center">
+                <h4 className="text-lg font-semibold text-gray-800 mb-4">Your Photo</h4>
+                <div className="mb-4 flex justify-center">
+                  {userProfile.profileImage ? (
+                    <img 
+                      src={userProfile.profileImage} 
+                      alt="Profile"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-purple-100"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-gray-200 border-4 border-purple-100 flex items-center justify-center">
+                      <span className="text-4xl">👤</span>
+                    </div>
+                  )}
+                </div>
+                <label className="cursor-pointer bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors inline-block">
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden"
+                    onChange={(e) => handleImageUpload(e.target.files[0], 'profile')}
+                  />
+                  📷 Upload Photo
+                </label>
+              </div>
+            </div>
+
+            {/* Personal Information */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Your Full Name</label>
+                <input 
+                  type="text" 
+                  value={userProfile.ownerName}
+                  onChange={(e) => setUserProfile(prev => ({ ...prev, ownerName: e.target.value }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
+                <input 
+                  type="text" 
+                  value={userProfile.ownerTitle}
+                  onChange={(e) => setUserProfile(prev => ({ ...prev, ownerTitle: e.target.value }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="e.g., CEO, Founder, Director"
+                />
+              </div>
+            </div>
+
+            {/* Company Information */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+              <input 
+                type="text" 
+                value={userProfile.companyName}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, companyName: e.target.value }))}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="Enter your company name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Company Description</label>
+              <textarea 
+                value={userProfile.companyDescription}
+                onChange={(e) => setUserProfile(prev => ({ ...prev, companyDescription: e.target.value }))}
+                rows="4"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                placeholder="Describe what your company does and what makes it unique..."
+              ></textarea>
+            </div>
+
+            {/* Business Details */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                <select 
+                  value={userProfile.industry}
+                  onChange={(e) => setUserProfile(prev => ({ ...prev, industry: e.target.value }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="">Select your industry</option>
+                  <option value="Health & Medical">Health & Medical</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Insurance">Insurance</option>
+                  <option value="Real Estate">Real Estate</option>
+                  <option value="Finance & Banking">Finance & Banking</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Automotive & Transportation">Automotive & Transportation</option>
+                  <option value="Energy & Utilities">Energy & Utilities</option>
+                  <option value="Construction & Home Development">Construction & Home Development</option>
+                  <option value="Food & Beverage">Food & Beverage</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Education">Education</option>
+                  <option value="Content Creation and Photography">Content Creation and Photography</option>
+                  <option value="Hospitality & Leisure">Hospitality & Leisure</option>
+                  <option value="Agriculture & Forestry">Agriculture & Forestry</option>
+                  <option value="Consumer Goods">Consumer Goods</option>
+                  <option value="Waste Management & Environmental Services">Waste Management & Environmental Services</option>
+                  <option value="Marketing & Advertising">Marketing & Advertising</option>
+                  <option value="Financial Technology">Financial Technology</option>
+                  <option value="Cybersecurity">Cybersecurity</option>
+                  <option value="Health & Wellness">Health & Wellness</option>
+                  <option value="Supply Chain Management">Supply Chain Management</option>
+                  <option value="Education Technology">Education Technology</option>
+                  <option value="Renewable Energy">Renewable Energy</option>
+                  <option value="Consulting">Consulting</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Years in Business</label>
+                <input 
+                  type="number" 
+                  min="0"
+                  max="100"
+                  value={userProfile.yearsInBusiness}
+                  onChange={(e) => setUserProfile(prev => ({ ...prev, yearsInBusiness: parseInt(e.target.value) || 0 }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+
+            {/* Service Areas */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Service Areas</label>
+              <input 
+                type="text" 
+                value={userProfile.serviceAreas?.join(', ') || ''}
+                onChange={(e) => setUserProfile(prev => ({ 
+                  ...prev, 
+                  serviceAreas: e.target.value.split(',').map(area => area.trim()).filter(area => area) 
+                }))}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="e.g., San Francisco, New York, Remote (comma-separated)"
+              />
+              <p className="text-sm text-gray-500 mt-1">Separate multiple areas with commas</p>
+            </div>
+
+            {/* Partnership Scope */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Partnership Scope</label>
+              <div className="space-y-2">
+                <label className="flex items-center space-x-3">
+                  <input 
+                    type="radio" 
+                    name="partnershipScope"
+                    value="Local"
+                    checked={userProfile.seekingPartnership === 'Local'}
+                    onChange={(e) => setUserProfile(prev => ({ ...prev, seekingPartnership: e.target.value }))}
+                    className="h-4 w-4 text-purple-600"
+                  />
+                  <span className="text-gray-700">Local Partnerships (within your region)</span>
+                </label>
+                <label className="flex items-center space-x-3">
+                  <input 
+                    type="radio" 
+                    name="partnershipScope"
+                    value="National"
+                    checked={userProfile.seekingPartnership === 'National'}
+                    onChange={(e) => setUserProfile(prev => ({ ...prev, seekingPartnership: e.target.value }))}
+                    className="h-4 w-4 text-purple-600"
+                  />
+                  <span className="text-gray-700">National Partnerships (across the country)</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Partnership Interests */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-4">Partnership Interests</label>
+              <div className="grid md:grid-cols-2 gap-3">
+                {[
+                  "Strategic Alliances",
+                  "Joint Ventures", 
+                  "Co-Branding",
+                  "Affiliate Partnerships",
+                  "Sponsorship Agreements",
+                  "Event Collaborations",
+                  "Incubator/Accelerator Collaborations",
+                  "Referral Partnerships"
+                ].map((type) => (
+                  <label key={type} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                    <input 
+                      type="checkbox" 
+                      checked={userProfile.partnerships?.includes(type) || false}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setUserProfile(prev => ({ 
+                            ...prev, 
+                            partnerships: [...(prev.partnerships || []), type]
+                          }));
+                        } else {
+                          setUserProfile(prev => ({ 
+                            ...prev, 
+                            partnerships: (prev.partnerships || []).filter(p => p !== type)
+                          }));
+                        }
+                      }}
+                      className="h-4 w-4 text-purple-600 rounded"
+                    />
+                    <span className="text-gray-700 text-sm">{type}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+              <button 
+                type="button"
+                onClick={() => setProfilePreviewMode(true)}
+                className="px-6 py-3 border border-purple-500 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium"
+              >
+                👀 Preview Profile
+              </button>
+              <div className="space-x-4">
+                <button 
+                  type="button"
+                  onClick={() => {
+                    // Reset to original values - you could implement this
+                    alert('Changes discarded');
+                  }}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Discard Changes
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => {
+                    // Update live profiles if this is the current user
+                    setLiveProfiles(prev => prev.map(profile => 
+                      profile.id === userProfile.id ? userProfile : profile
+                    ));
+                    alert('✅ Profile updated successfully!');
+                  }}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                >
+                  💾 Save Changes
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       )}
     </div>
