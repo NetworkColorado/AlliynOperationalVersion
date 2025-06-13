@@ -328,57 +328,104 @@ function App() {
     return Math.min(score, 100);
   };
 
-  // Enhanced badge generation with more fun names
+  // Enhanced badge generation with more fun names and match titles
   const generateBadge = (business1, business2) => {
     const exp1 = business1.yearsInBusiness;
     const exp2 = business2.yearsInBusiness;
     
-    // Title matches
+    // Title matches with fun names
     if (business1.ownerTitle.includes('CEO') && business2.ownerTitle.includes('CEO')) {
       if (exp1 <= 5 && exp2 <= 5) {
-        return { name: 'Boss Babies', description: 'Both CEOs with companies under 5 years' };
+        return { 
+          name: 'Boss Babies', 
+          description: 'Both CEOs with companies under 5 years',
+          matchTitle: '👶 Boss Babies in Action!'
+        };
       }
-      return { name: 'Power Titans', description: 'Two visionary CEO leaders unite' };
+      return { 
+        name: 'Power Titans', 
+        description: 'Two visionary CEO leaders unite',
+        matchTitle: '👑 CEO Power Duo!'
+      };
     }
     
     if (business1.ownerTitle.includes('Founder') && business2.ownerTitle.includes('Founder')) {
-      return { name: 'Dream Builders', description: 'Two founders building the future' };
+      return { 
+        name: 'Dream Builders', 
+        description: 'Two founders building the future',
+        matchTitle: '🚀 Founder Force Unite!'
+      };
     }
     
     if (business1.ownerTitle.includes('Director') && business2.ownerTitle.includes('Director')) {
-      return { name: 'Vision Masters', description: 'Directors with aligned strategic vision' };
+      return { 
+        name: 'Vision Masters', 
+        description: 'Directors with aligned strategic vision',
+        matchTitle: '🎯 Director Dynasty!'
+      };
     }
     
     // Partnership scope matches
     if (business1.seekingPartnership === business2.seekingPartnership) {
       if (business1.seekingPartnership === 'National') {
-        return { name: 'National Champions', description: 'Both seeking nationwide partnerships' };
+        return { 
+          name: 'National Champions', 
+          description: 'Both seeking nationwide partnerships',
+          matchTitle: '🌟 National Network Activated!'
+        };
       } else {
-        return { name: 'Local Heroes', description: 'Perfect local partnership match' };
+        return { 
+          name: 'Local Heroes', 
+          description: 'Perfect local partnership match',
+          matchTitle: '🏘️ Local Legends Connected!'
+        };
       }
     }
     
     // Industry matches
     if (business1.industry === business2.industry) {
-      const industryNames = {
-        'Technology': 'Tech Twins',
-        'Marketing & Advertising': 'Marketing Mavericks',
-        'Financial Technology': 'FinTech Force',
-        'Health & Wellness': 'Wellness Warriors',
-        'Cybersecurity': 'Security Squad'
+      const industryTitles = {
+        'Technology': { name: 'Tech Twins', title: '💻 Tech Titans Collide!' },
+        'Health & Medical': { name: 'Health Heroes', title: '🏥 Medical Mavericks!' },
+        'Finance & Banking': { name: 'Money Masters', title: '💰 Finance Force!' },
+        'Real Estate': { name: 'Property Pros', title: '🏘️ Real Estate Royalty!' },
+        'Food & Beverage': { name: 'Culinary Champions', title: '🍽️ Food Empire Builders!' },
+        'Automotive & Transportation': { name: 'Mobility Masters', title: '🚗 Transport Titans!' },
+        'Content Creation and Photography': { name: 'Creative Collective', title: '📸 Content Kings!' }
       };
-      const badgeName = industryNames[business1.industry] || 'Industry Twins';
-      return { name: badgeName, description: `Same industry powerhouses in ${business1.industry}` };
+      
+      const industryData = industryTitles[business1.industry] || { 
+        name: 'Industry Twins', 
+        title: '🏢 Industry Leaders Unite!' 
+      };
+      
+      return { 
+        name: industryData.name, 
+        description: `Same industry powerhouses in ${business1.industry}`,
+        matchTitle: industryData.title
+      };
     }
     
     // Experience level matches
     if (Math.abs(exp1 - exp2) <= 2) {
       if (exp1 <= 3 && exp2 <= 3) {
-        return { name: 'Startup Squad', description: 'Both early-stage entrepreneurs' };
+        return { 
+          name: 'Startup Squad', 
+          description: 'Both early-stage entrepreneurs',
+          matchTitle: '🌱 Startup Squad Assembled!'
+        };
       } else if (exp1 >= 7 && exp2 >= 7) {
-        return { name: 'Veteran Alliance', description: 'Experienced business leaders' };
+        return { 
+          name: 'Veteran Alliance', 
+          description: 'Experienced business leaders',
+          matchTitle: '🏆 Veteran Powerhouse!'
+        };
       } else {
-        return { name: 'Growth Partners', description: 'Similar experience levels' };
+        return { 
+          name: 'Growth Partners', 
+          description: 'Similar experience levels',
+          matchTitle: '📈 Growth Gang Connected!'
+        };
       }
     }
     
@@ -388,22 +435,42 @@ function App() {
     );
     
     if (commonPartnerships.includes('Strategic Alliances')) {
-      return { name: 'Alliance Masters', description: 'Strategic partnership specialists' };
+      return { 
+        name: 'Alliance Masters', 
+        description: 'Strategic partnership specialists',
+        matchTitle: '🤝 Strategic Alliance Activated!'
+      };
     }
     
     if (commonPartnerships.includes('Joint Ventures')) {
-      return { name: 'Venture Partners', description: 'Joint venture enthusiasts' };
+      return { 
+        name: 'Venture Partners', 
+        description: 'Joint venture enthusiasts',
+        matchTitle: '🚀 Venture Squad Ready!'
+      };
     }
     
     if (commonPartnerships.includes('Co-Branding')) {
-      return { name: 'Brand Builders', description: 'Co-branding collaboration experts' };
+      return { 
+        name: 'Brand Builders', 
+        description: 'Co-branding collaboration experts',
+        matchTitle: '🎨 Brand Builder Brigade!'
+      };
     }
     
     if (commonPartnerships.includes('Event Collaborations')) {
-      return { name: 'Event Dynamos', description: 'Event collaboration specialists' };
+      return { 
+        name: 'Event Dynamos', 
+        description: 'Event collaboration specialists',
+        matchTitle: '🎉 Event Empire Builders!'
+      };
     }
     
-    return { name: 'Perfect Match', description: 'Great partnership potential' };
+    return { 
+      name: 'Perfect Match', 
+      description: 'Great partnership potential',
+      matchTitle: '✨ Perfect Partnership Found!'
+    };
   };
 
   const canSwipe = () => {
