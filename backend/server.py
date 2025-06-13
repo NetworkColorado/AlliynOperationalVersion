@@ -63,6 +63,43 @@ class SponsorshipRequestCreate(BaseModel):
     goals: str
     additional_info: str = ""
 
+# Admin Models
+class AdminSponsorship(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    business_name: str
+    offer_name: str
+    offer: str
+    website: str = ""
+    logo_url: str = ""
+    media_url: str = ""
+    release_date: str
+    release_time: str
+    status: str = "scheduled"  # scheduled, active, paused, expired
+    created_by: str = "admin"
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class AdminSponsorshipCreate(BaseModel):
+    business_name: str
+    offer_name: str
+    offer: str
+    website: str = ""
+    logo_url: str = ""
+    media_url: str = ""
+    release_date: str
+    release_time: str
+
+class UserAccount(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    company: str
+    email: str
+    account_type: str = "free"  # free, premium
+    industry: str = ""
+    status: str = "active"  # active, suspended, deleted
+    created_date: datetime = Field(default_factory=datetime.utcnow)
+    premium_granted_by: str = ""
+    premium_granted_date: datetime = None
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
