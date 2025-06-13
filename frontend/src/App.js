@@ -2453,7 +2453,7 @@ function App() {
           </div>
 
           {/* Quote Request Form */}
-          <div>
+          <div className="quote-form-section">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Request a Quote</h3>
             <div className="bg-white rounded-lg shadow-lg p-6">
               <form onSubmit={async (e) => {
