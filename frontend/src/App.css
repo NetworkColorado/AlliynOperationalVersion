@@ -14,6 +14,47 @@
   opacity: 0;
 }
 
+/* Match title animation */
+.match-title {
+  animation: match-title-bounce 1.5s ease-out;
+}
+
+@keyframes match-title-bounce {
+  0% {
+    transform: scale(0.3) translateY(-50px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) translateY(0px);
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}
+
+/* Enhanced popup animations */
+.popup-enter {
+  animation: popup-slide-in 0.4s ease-out;
+}
+
+@keyframes popup-slide-in {
+  from {
+    transform: scale(0.7) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}
+
+/* Profile preview mode styling */
+.profile-preview {
+  transform: scale(0.9);
+  margin: 0 auto;
+}
+
 /* Confetti Animation */
 .confetti-container {
   position: fixed;
