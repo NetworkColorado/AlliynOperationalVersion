@@ -80,6 +80,62 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
+# Sponsorship endpoints
+@api_router.post("/sponsorship", response_model=SponsorshipRequest)
+async def create_sponsorship_request(input: SponsorshipRequestCreate):
+    # Calculate estimated quote based on package type and industry
+    estimated_quote = 500  # Base price
+    
+    if "Premium" in input.package_type:
+        estimated_quote = 1500
+    elif "Enterprise" in input.package_type:
+        estimated_quote = 3000
+    
+    # Industry multipliers
+    industry_multipliers = {
+        'Technology': 1.2,
+        'Financial Services': 1.3,
+        'Healthcare': 1.1,
+        'Real Estate': 1.1
+    }
+    
+    multiplier = industry_multipliers.get(input.industry, 1.0)
+    estimated_quote = int(estimated_quote * multiplier)
+    
+    sponsorship_dict = input.dict()
+    sponsorship_obj = SponsorshipRequest(**sponsorship_dict, estimated_quote=estimated_quote)
+    await db.sponsorship_requests.insert_one(sponsorship_obj.dict())
+    return sponsorship_obj
+
+@api_router.get("/sponsorship", response_model=List[SponsorshipRequest])
+async def get_sponsorship_requests():
+    requests = await db.sponsorship_requests.find().sort("timestamp", -1).to_list(1000)
+    return [SponsorshipRequest(**request) for request in requests]
+
+@api_router.get("/sponsorship/stats")
+async def get_sponsorship_stats():
+    total_requests = await db.sponsorship_requests.count_documents({})
+    
+    # Get industry breakdown
+    pipeline = [
+        {"$group": {"_id": "$industry", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    industry_stats = await db.sponsorship_requests.aggregate(pipeline).to_list(100)
+    
+    # Get package breakdown
+    pipeline = [
+        {"$group": {"_id": "$package_type", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}}
+    ]
+    package_stats = await db.sponsorship_requests.aggregate(pipeline).to_list(100)
+    
+    return {
+        "total_requests": total_requests,
+        "industry_breakdown": industry_stats,
+        "package_breakdown": package_stats
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
