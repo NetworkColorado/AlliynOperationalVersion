@@ -435,34 +435,101 @@ function App() {
     }
   };
 
-  // Enhanced sponsorship management
+  // Enhanced sponsorship management with backend integration
   const createSponsorship = async (sponsorshipData) => {
-    return new Promise((resolve) => {
+    try {
+      // Send to backend first
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/sponsorship`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          business_name: sponsorshipData.companyName,
+          offer_name: sponsorshipData.offerName || sponsorshipData.companyName,
+          offer: sponsorshipData.offer,
+          website: sponsorshipData.website || '',
+          logo_url: sponsorshipData.logoUrl || '',
+          media_url: sponsorshipData.mediaUrl || '',
+          release_date: sponsorshipData.releaseDate || new Date().toISOString().split('T')[0],
+          release_time: sponsorshipData.releaseTime || '12:00'
+        })
+      });
+
+      if (response.ok) {
+        const backendSponsorship = await response.json();
+        
+        // Create local version with 30-day expiry
+        const newSponsorship = {
+          id: backendSponsorship.id,
+          ...sponsorshipData,
+          createdDate: new Date().toISOString(),
+          expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+          status: 'active',
+          createdBy: 'admin'
+        };
+        
+        setAdminSponsorships(prev => [newSponsorship, ...prev]);
+        
+        // Add to live sponsors immediately based on placement
+        const sponsorProfile = {
+          id: newSponsorship.id,
+          type: 'sponsor',
+          companyName: newSponsorship.companyName,
+          companyDescription: newSponsorship.offer,
+          title: newSponsorship.offer,
+          description: `Special offer from ${newSponsorship.companyName}`,
+          website: newSponsorship.website,
+          logo: newSponsorship.logoUrl,
+          placement: newSponsorship.placement || ['matchmaker'], // Default to matchmaker if no placement specified
+          expiryDate: newSponsorship.expiryDate,
+          backgroundColor: "from-blue-600 to-purple-800",
+          sponsorBadge: "Featured Sponsor",
+          ctaText: "Learn More",
+          ctaUrl: newSponsorship.website
+        };
+        
+        setSponsorProfiles(prev => [...prev, sponsorProfile]);
+        
+        return newSponsorship;
+      } else {
+        throw new Error('Failed to create sponsorship in backend');
+      }
+    } catch (error) {
+      console.error('Error creating sponsorship:', error);
+      // Fallback to local storage if backend fails
       const newSponsorship = {
         id: Date.now(),
         ...sponsorshipData,
         createdDate: new Date().toISOString(),
-        expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+        expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         status: 'active',
         createdBy: 'admin'
       };
       
       setAdminSponsorships(prev => [newSponsorship, ...prev]);
       
-      // Add to live sponsors immediately
-      setSponsorProfiles(prev => [...prev, {
+      const sponsorProfile = {
         id: newSponsorship.id,
         type: 'sponsor',
         companyName: newSponsorship.companyName,
+        companyDescription: newSponsorship.offer,
         title: newSponsorship.offer,
         description: `Special offer from ${newSponsorship.companyName}`,
-        website: newSponsorship.link,
-        placement: newSponsorship.placement,
-        expiryDate: newSponsorship.expiryDate
-      }]);
+        website: newSponsorship.website,
+        logo: newSponsorship.logoUrl,
+        placement: newSponsorship.placement || ['matchmaker'],
+        expiryDate: newSponsorship.expiryDate,
+        backgroundColor: "from-blue-600 to-purple-800",
+        sponsorBadge: "Featured Sponsor",
+        ctaText: "Learn More",
+        ctaUrl: newSponsorship.website
+      };
       
-      resolve(newSponsorship);
-    });
+      setSponsorProfiles(prev => [...prev, sponsorProfile]);
+      
+      return newSponsorship;
+    }
   };
 
   // Auto-remove expired ads
