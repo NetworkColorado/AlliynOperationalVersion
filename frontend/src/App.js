@@ -2257,6 +2257,22 @@ function App() {
               </button>
             </div>
           </div>
+
+          {/* Settings Actions */}
+          <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+            <button
+              onClick={resetSettings}
+              className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              🔄 Reset to Defaults
+            </button>
+            <button
+              onClick={saveSettings}
+              className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+            >
+              💾 Save Settings
+            </button>
+          </div>
         </div>
       )}
     </div>
