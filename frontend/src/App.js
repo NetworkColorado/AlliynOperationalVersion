@@ -2182,9 +2182,25 @@ function App() {
                 >
                   <option value="">Select industry</option>
                   <option value="Technology">Technology</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Marketing">Marketing</option>
+                  <option value="Healthcare & Medical">Healthcare & Medical</option>
+                  <option value="Financial Services">Financial Services</option>
+                  <option value="Professional Services">Professional Services</option>
+                  <option value="Real Estate">Real Estate</option>
+                  <option value="Marketing & Advertising">Marketing & Advertising</option>
+                  <option value="Education">Education</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Retail & E-commerce">Retail & E-commerce</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Food & Beverage">Food & Beverage</option>
+                  <option value="Transportation & Logistics">Transportation & Logistics</option>
+                  <option value="Energy & Utilities">Energy & Utilities</option>
+                  <option value="Insurance">Insurance</option>
+                  <option value="Legal Services">Legal Services</option>
+                  <option value="Consulting">Consulting</option>
+                  <option value="Hospitality & Tourism">Hospitality & Tourism</option>
+                  <option value="Non-Profit">Non-Profit</option>
+                  <option value="Entertainment & Media">Entertainment & Media</option>
+                  <option value="Agriculture">Agriculture</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
