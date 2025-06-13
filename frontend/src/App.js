@@ -267,6 +267,29 @@ function App() {
     loadSponsorshipRequests();
   }, []);
 
+  // Update filtered profiles when user preferences change
+  useEffect(() => {
+    const updateFilteredProfiles = async () => {
+      if (!userProfile.seekingPartnership || !isAuthenticated) {
+        setFilteredProfiles(liveProfiles);
+        return;
+      }
+
+      setIsFilteringProfiles(true);
+      try {
+        const filtered = await getFilteredProfiles();
+        setFilteredProfiles(filtered);
+      } catch (error) {
+        console.error('Error filtering profiles:', error);
+        setFilteredProfiles(liveProfiles); // Fallback to all profiles
+      } finally {
+        setIsFilteringProfiles(false);
+      }
+    };
+
+    updateFilteredProfiles();
+  }, [userProfile.seekingPartnership, userProfile.serviceAreas, liveProfiles, isAuthenticated]);
+
   // Combine businesses and sponsors for swiping
   const allProfiles = [...liveProfiles];
   
