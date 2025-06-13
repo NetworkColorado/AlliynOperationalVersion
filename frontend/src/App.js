@@ -380,27 +380,93 @@ function App() {
   // Admin user management functions
   const waivePremiumFee = (userId) => {
     if (confirm('Waive premium fee and upgrade this user to Premium?')) {
-      // In real app, this would make API call to backend
-      setAccountType('premium');
+      // Update the user in allUsers array
+      setAllUsers(prev => prev.map(user => 
+        user.id === userId 
+          ? { ...user, accountType: 'premium', premiumWaivedBy: 'admin', premiumWaivedDate: new Date().toISOString() }
+          : user
+      ));
       alert(`✅ User ${userId} has been upgraded to Premium (fee waived by admin).`);
     }
   };
 
   const deactivatePremiumAccount = (userId) => {
-    if (confirm('Deactivate premium account for this user?')) {
-      setAccountType('free');
-      alert(`⚠️ User ${userId} premium account has been deactivated.`);
+    if (confirm('Deactivate premium account for this user? They will be able to pay to regain premium access.')) {
+      setAllUsers(prev => prev.map(user => 
+        user.id === userId 
+          ? { ...user, accountType: 'free', premiumDeactivatedBy: 'admin', premiumDeactivatedDate: new Date().toISOString() }
+          : user
+      ));
+      alert(`⚠️ User ${userId} premium account has been deactivated. They can pay to regain premium access.`);
     }
   };
 
   const deleteAccount = (userId) => {
-    if (confirm('⚠️ DANGER: This will permanently delete the user account. This action cannot be undone!\n\nAre you sure?')) {
+    const user = allUsers.find(u => u.id === userId);
+    if (confirm(`⚠️ DANGER: This will permanently delete ${user?.name}'s account. This action cannot be undone!\n\nAre you sure?`)) {
       if (confirm('This is your final confirmation. Delete account?')) {
-        // In real app, this would delete from backend
-        alert(`🗑️ User ${userId} account has been permanently deleted.`);
+        setAllUsers(prev => prev.filter(user => user.id !== userId));
+        alert(`🗑️ User account has been permanently deleted.`);
       }
     }
   };
+
+  // Enhanced sponsorship management
+  const createSponsorship = async (sponsorshipData) => {
+    return new Promise((resolve) => {
+      const newSponsorship = {
+        id: Date.now(),
+        ...sponsorshipData,
+        createdDate: new Date().toISOString(),
+        expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+        status: 'active',
+        createdBy: 'admin'
+      };
+      
+      setAdminSponsorships(prev => [newSponsorship, ...prev]);
+      
+      // Add to live sponsors immediately
+      setSponsorProfiles(prev => [...prev, {
+        id: newSponsorship.id,
+        type: 'sponsor',
+        companyName: newSponsorship.companyName,
+        title: newSponsorship.offer,
+        description: `Special offer from ${newSponsorship.companyName}`,
+        website: newSponsorship.link,
+        placement: newSponsorship.placement,
+        expiryDate: newSponsorship.expiryDate
+      }]);
+      
+      resolve(newSponsorship);
+    });
+  };
+
+  // Auto-remove expired ads
+  const checkExpiredAds = () => {
+    const now = new Date();
+    setAdminSponsorships(prev => {
+      const updated = prev.map(ad => {
+        if (new Date(ad.expiryDate) <= now && ad.status === 'active') {
+          return { ...ad, status: 'expired' };
+        }
+        return ad;
+      });
+      return updated;
+    });
+    
+    setSponsorProfiles(prev => 
+      prev.filter(sponsor => {
+        const expiry = new Date(sponsor.expiryDate);
+        return expiry > now;
+      })
+    );
+  };
+
+  // Run expiry check every minute
+  React.useEffect(() => {
+    const interval = setInterval(checkExpiredAds, 60000);
+    return () => clearInterval(interval);
+  }, []);
   const handlePremiumUpgrade = () => {
     // In a real app, this would integrate with Stripe, PayPal, etc.
     if (confirm('Upgrade to Premium for $19.99/month?\n\n✓ Unlimited swipes and matches\n✓ No daily limits\n✓ Premium badge\n✓ Priority support')) {
