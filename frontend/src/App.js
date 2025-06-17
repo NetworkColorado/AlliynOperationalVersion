@@ -1127,46 +1127,6 @@ function App() {
   };
 
 
-  const fetchConversations = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/conversations?user_id=${userProfile?.id || 'user'}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      if (response.ok) {
-        const convs = await response.json();
-        setConversations(convs);
-      }
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
-    }
-  };
-
-  const fetchMessages = async (conversationId) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/messages/${conversationId}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      if (response.ok) {
-        const msgs = await response.json();
-        setMessages(msgs);
-      }
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
-
-  const sendMessage = async (recipientId, content) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/messages`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          recipient_id: recipientId,
-          content: content,
-          message_type: 'text'
-        })
       });
       
       if (response.ok) {
