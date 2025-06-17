@@ -1074,6 +1074,29 @@ function App() {
       sender: 'user'
     };
     setMessages(prev => [...prev, newMessage]);
+
+    // Simulate response from the match after a delay
+    setTimeout(() => {
+      const responses = [
+        "That sounds interesting! Tell me more.",
+        "I'd love to explore this partnership opportunity.",
+        "Great idea! When would be a good time to connect?",
+        "This aligns perfectly with our goals.",
+        "I'm excited about the potential collaboration.",
+        "Let's schedule a call to discuss further.",
+        "That's exactly what we've been looking for!",
+        "I think there's real synergy here."
+      ];
+      
+      const responseMessage = {
+        id: Date.now() + 1,
+        matchId,
+        message: responses[Math.floor(Math.random() * responses.length)],
+        timestamp: new Date().toISOString(),
+        sender: 'match'
+      };
+      setMessages(prev => [...prev, responseMessage]);
+    }, 1000 + Math.random() * 2000);
   };
 
   const addDeal = (dealDetails) => {
