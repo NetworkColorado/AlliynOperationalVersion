@@ -681,6 +681,24 @@ function App() {
     loadSponsorshipRequests();
   }, []);
 
+  // Initialize WebSocket and load conversations on component mount
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Initialize WebSocket connection
+      const ws = initializeWebSocket();
+      
+      // Load conversations
+      fetchConversations();
+      
+      // Cleanup WebSocket on unmount
+      return () => {
+        if (ws) {
+          ws.close();
+        }
+      };
+    }
+  }, [isAuthenticated, userProfile]);
+
   // Update filtered profiles when user preferences change
   useEffect(() => {
     const updateFilteredProfiles = async () => {
