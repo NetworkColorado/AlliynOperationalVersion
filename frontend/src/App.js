@@ -533,13 +533,7 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matches, setMatches] = useState([]);
   const [activeTab, setActiveTab] = useState('matchmaker');
-  // Enhanced messaging state for real-time chat
   const [messages, setMessages] = useState([]);
-  const [conversations, setConversations] = useState([]);
-  const [activeConversation, setActiveConversation] = useState(null);
-  const [messageInput, setMessageInput] = useState('');
-  const [websocket, setWebsocket] = useState(null);
-  const [isTyping, setIsTyping] = useState(false);
   const [deals, setDeals] = useState([]);
   const [swipeDirection, setSwipeDirection] = useState('');
   const [showAddDealModal, setShowAddDealModal] = useState(false);
@@ -680,24 +674,6 @@ function App() {
 
     loadSponsorshipRequests();
   }, []);
-
-  // Initialize WebSocket and load conversations on component mount
-  useEffect(() => {
-    if (isAuthenticated) {
-      // Initialize WebSocket connection
-      const ws = initializeWebSocket();
-      
-      // Load conversations
-      fetchConversations();
-      
-      // Cleanup WebSocket on unmount
-      return () => {
-        if (ws) {
-          ws.close();
-        }
-      };
-    }
-  }, [isAuthenticated, userProfile]);
 
   // Update filtered profiles when user preferences change
   useEffect(() => {
@@ -1022,108 +998,6 @@ function App() {
     setLastLockoutTime(null);
     setShowUpgradeModal(false);
     alert('🎉 Welcome to Premium! Enjoy unlimited matching!');
-  };
-
-  // Enhanced messaging functions for iPhone-style chat
-  const initializeWebSocket = () => {
-    const userId = userProfile?.id || 'user_' + Date.now();
-    const ws = new WebSocket(`ws://localhost:8001/ws/${userId}`);
-    
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-      setWebsocket(ws);
-    };
-    
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'new_message') {
-        setMessages(prev => [...prev, data.message]);
-        // Update conversation list
-        fetchConversations();
-      }
-    };
-    
-    ws.onclose = () => {
-      console.log('WebSocket disconnected');
-      setWebsocket(null);
-    };
-    
-    return ws;
-  };
-
-  const fetchConversations = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/conversations?user_id=${userProfile?.id || 'user'}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      if (response.ok) {
-        const convs = await response.json();
-        setConversations(convs);
-      }
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
-    }
-  };
-
-  const fetchMessages = async (conversationId) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/messages/${conversationId}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      if (response.ok) {
-        const msgs = await response.json();
-        setMessages(msgs);
-      }
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
-
-  const sendMessage = async (recipientId, content) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/messages`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          recipient_id: recipientId,
-          content: content,
-          message_type: 'text'
-        })
-      });
-      
-      if (response.ok) {
-        const newMessage = await response.json();
-        setMessages(prev => [...prev, newMessage]);
-        setMessageInput('');
-        fetchConversations(); // Refresh conversations list
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
-  };
-
-  const startConversation = async (matchId, recipientName) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/conversations`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          recipient_id: matchId,
-          recipient_name: recipientName
-        })
-      });
-      
-      if (response.ok) {
-        const conversation = await response.json();
-        setActiveConversation(conversation);
-        await fetchMessages(conversation.id);
-        fetchConversations();
-      }
-    } catch (error) {
-      console.error('Error starting conversation:', error);
-    }
   };
 
   const addMessage = (matchId, message) => {
@@ -1789,6 +1663,20 @@ function App() {
                 )}
               </div>
             </form>
+            
+            {/* Admin Access */}
+            <div className="mt-4 pt-4 border-t border-gray-200 text-center">
+              <button
+                onClick={enterAdminMode}
+                className={`text-xs transition-colors underline ${
+                  isAdminMode 
+                    ? 'text-red-600 hover:text-red-800' 
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                {isAdminMode ? '🔐 Admin Mode Active' : 'Admin Access'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -2090,8 +1978,7 @@ function App() {
     );
   };
 
-  const renderMessages = () => {
-    return (
+  const renderMessages = () => (
     <div className="flex-1 p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Messages</h2>
       {matches.length === 0 ? (
@@ -2147,11 +2034,11 @@ function App() {
           ))}
         </div>
       )}
-    </div>
-    );
-  };
 
-  const renderLeaderboard = () => {
+      {/* Enhanced Admin Panel - Separate Page */}
+      {showAdminPanel && isAdmin && (
+        <div className="fixed inset-0 bg-gray-100 z-50 overflow-y-auto">
+          <div className="min-h-screen">
             {/* Admin Header */}
             <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
               <div className="max-w-7xl mx-auto px-6 py-4">
