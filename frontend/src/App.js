@@ -351,6 +351,18 @@ function App() {
       alert(`✅ User ${user?.name} has been unbanned and can now access the platform.`);
     }
   };
+  
+  const waivePremiumFee = (userId) => {
+    const user = allUsers.find(u => u.id === userId);
+    if (confirm(`Waive premium fee for ${user?.name}?`)) {
+      setAllUsers(prev => prev.map(user => 
+        user.id === userId 
+          ? { ...user, accountType: 'premium', premiumWaived: true, waiveDate: new Date().toISOString() }
+          : user
+      ));
+      alert(`✅ Premium fee waived for ${user?.name}. They now have premium access at no cost.`);
+    }
+  };
 
   // Enhanced sponsorship management with backend integration
   const createSponsorship = async (sponsorshipData) => {
