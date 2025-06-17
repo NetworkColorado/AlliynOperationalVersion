@@ -1126,32 +1126,6 @@ function App() {
     }
   };
 
-  // Enhanced messaging functions for iPhone-style chat
-  const initializeWebSocket = () => {
-    const userId = userProfile?.id || 'user_' + Date.now();
-    const ws = new WebSocket(`ws://localhost:8001/ws/${userId}`);
-    
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-      setWebsocket(ws);
-    };
-    
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'new_message') {
-        setMessages(prev => [...prev, data.message]);
-        // Update conversation list
-        fetchConversations();
-      }
-    };
-    
-    ws.onclose = () => {
-      console.log('WebSocket disconnected');
-      setWebsocket(null);
-    };
-    
-    return ws;
-  };
 
   const fetchConversations = async () => {
     try {
