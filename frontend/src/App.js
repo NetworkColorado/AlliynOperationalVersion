@@ -2067,8 +2067,12 @@ function App() {
   };
 
   const renderMessages = () => (
-    <div className="flex-1 p-8">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Messages</h2>
+    <div className="flex-1 p-8 bg-gray-50 min-h-screen">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Messages</h2>
+          <p className="text-gray-600">Connect with your business matches</p>
+        </div>
       {matches.length === 0 ? (
         <div className="text-center text-gray-500 mt-12">
           <div className="text-6xl mb-4">💬</div>
