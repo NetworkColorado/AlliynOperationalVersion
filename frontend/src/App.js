@@ -1211,8 +1211,14 @@ function App() {
   };
 
   const addMessage = (matchId, message) => {
-    // For backward compatibility with existing code
-    sendMessage(matchId, message);
+    const newMessage = {
+      id: Date.now(),
+      matchId,
+      message,
+      timestamp: new Date().toISOString(),
+      sender: 'user'
+    };
+    setMessages(prev => [...prev, newMessage]);
   };
 
   const addDeal = (dealDetails) => {
