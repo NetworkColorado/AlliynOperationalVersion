@@ -1126,28 +1126,18 @@ function App() {
     }
   };
 
-
-      });
-      
-      if (response.ok) {
-        const newMessage = await response.json();
-        setMessages(prev => [...prev, newMessage]);
-        setMessageInput('');
-        fetchConversations(); // Refresh conversations list
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
+  const addMessage = (matchId, message) => {
+    const newMessage = {
+      id: Date.now(),
+      matchId,
+      message,
+      timestamp: new Date().toISOString(),
+      sender: 'user'
+    };
+    setMessages(prev => [...prev, newMessage]);
   };
 
-          return updatedProfiles;
-        } else {
-          // Add new profile (shouldn't happen in normal flow, but good fallback)
-          return [...prev, { ...userProfile, id: Date.now() }];
-        }
-      });
-
-      alert('✅ Profile saved successfully! Your updated information will be visible to other users.');
+  const addDeal = (dealDetails) => {
       
       // Optional: Switch to preview mode after saving
       setProfilePreviewMode(true);
