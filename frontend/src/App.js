@@ -1108,6 +1108,108 @@ function App() {
     }
   };
 
+  // Enhanced messaging functions for iPhone-style chat
+  const initializeWebSocket = () => {
+    const userId = userProfile?.id || 'user_' + Date.now();
+    const ws = new WebSocket(`ws://localhost:8001/ws/${userId}`);
+    
+    ws.onopen = () => {
+      console.log('WebSocket connected');
+      setWebsocket(ws);
+    };
+    
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'new_message') {
+        setMessages(prev => [...prev, data.message]);
+        // Update conversation list
+        fetchConversations();
+      }
+    };
+    
+    ws.onclose = () => {
+      console.log('WebSocket disconnected');
+      setWebsocket(null);
+    };
+    
+    return ws;
+  };
+
+  const fetchConversations = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/conversations?user_id=${userProfile?.id || 'user'}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        const convs = await response.json();
+        setConversations(convs);
+      }
+    } catch (error) {
+      console.error('Error fetching conversations:', error);
+    }
+  };
+
+  const fetchMessages = async (conversationId) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/messages/${conversationId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        const msgs = await response.json();
+        setMessages(msgs);
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  const sendMessage = async (recipientId, content) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipient_id: recipientId,
+          content: content,
+          message_type: 'text'
+        })
+      });
+      
+      if (response.ok) {
+        const newMessage = await response.json();
+        setMessages(prev => [...prev, newMessage]);
+        setMessageInput('');
+        fetchConversations(); // Refresh conversations list
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
+  const startConversation = async (matchId, recipientName) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/conversations`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipient_id: matchId,
+          recipient_name: recipientName
+        })
+      });
+      
+      if (response.ok) {
+        const conversation = await response.json();
+        setActiveConversation(conversation);
+        await fetchMessages(conversation.id);
+        fetchConversations();
+      }
+    } catch (error) {
+      console.error('Error starting conversation:', error);
+    }
+  };
+
   const addMessage = (matchId, message) => {
     // For backward compatibility with existing code
     sendMessage(matchId, message);
