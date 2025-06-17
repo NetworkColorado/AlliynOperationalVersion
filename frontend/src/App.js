@@ -1138,6 +1138,67 @@ function App() {
   };
 
   const addDeal = (dealDetails) => {
+    const newDeal = {
+      id: Date.now(),
+      ...dealDetails,
+      timestamp: new Date().toISOString()
+    };
+    setDeals(prev => [newDeal, ...prev]);
+    setShowAddDealModal(false);
+    setSelectedMatch(null);
+  };
+
+  const updateUserProfile = (updatedProfile) => {
+    setUserProfile(updatedProfile);
+  };
+
+  const saveProfile = () => {
+    // Validate required fields
+    const requiredFields = {
+      'Company Name': userProfile.companyName,
+      'Company Description': userProfile.companyDescription,
+      'Your Name': userProfile.ownerName,
+      'Job Title': userProfile.ownerTitle,
+      'Industry': userProfile.industry,
+    };
+
+    const missingFields = Object.entries(requiredFields)
+      .filter(([name, value]) => !value || value.trim() === '')
+      .map(([name]) => name);
+
+    if (missingFields.length > 0) {
+      alert(`❌ Please fill in the following required fields:\n• ${missingFields.join('\n• ')}`);
+      return;
+    }
+
+    // Validate service areas
+    if (!userProfile.serviceAreas || userProfile.serviceAreas.length === 0) {
+      alert('❌ Please add at least one service area.');
+      return;
+    }
+
+    // Validate partnership interests
+    if (!userProfile.partnerships || userProfile.partnerships.length === 0) {
+      alert('❌ Please select at least one partnership interest.');
+      return;
+    }
+
+    try {
+      // Update live profiles if this user exists in the system
+      setLiveProfiles(prev => {
+        const existingIndex = prev.findIndex(profile => profile.id === userProfile.id);
+        if (existingIndex >= 0) {
+          // Update existing profile
+          const updatedProfiles = [...prev];
+          updatedProfiles[existingIndex] = { ...userProfile };
+          return updatedProfiles;
+        } else {
+          // Add new profile (shouldn't happen in normal flow, but good fallback)
+          return [...prev, { ...userProfile, id: Date.now() }];
+        }
+      });
+
+      alert('✅ Profile saved successfully! Your updated information will be visible to other users.');
       
       // Optional: Switch to preview mode after saving
       setProfilePreviewMode(true);
