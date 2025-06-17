@@ -263,6 +263,140 @@ async def get_admin_stats():
         "free_users": 0     # Placeholder
     }
 
+# WebSocket Connection Manager for Real-time Messaging
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, WebSocket] = {}
+
+    async def connect(self, websocket: WebSocket, user_id: str):
+        await websocket.accept()
+        self.active_connections[user_id] = websocket
+
+    def disconnect(self, user_id: str):
+        if user_id in self.active_connections:
+            del self.active_connections[user_id]
+
+    async def send_personal_message(self, message: str, user_id: str):
+        if user_id in self.active_connections:
+            await self.active_connections[user_id].send_text(message)
+
+    async def broadcast(self, message: str):
+        for connection in self.active_connections.values():
+            await connection.send_text(message)
+
+manager = ConnectionManager()
+
+# Messaging Endpoints
+@api_router.post("/conversations", response_model=Conversation)
+async def create_conversation(conversation_data: ConversationCreate, sender_id: str = "user"):
+    # Check if conversation already exists between these users
+    existing_conversation = await db.conversations.find_one({
+        "participants": {"$all": [sender_id, conversation_data.recipient_id]}
+    })
+    
+    if existing_conversation:
+        return Conversation(**existing_conversation)
+    
+    # Create new conversation
+    conversation = Conversation(
+        participants=[sender_id, conversation_data.recipient_id],
+        participant_names=[sender_id, conversation_data.recipient_name]
+    )
+    
+    await db.conversations.insert_one(conversation.dict())
+    return conversation
+
+@api_router.get("/conversations", response_model=List[Conversation])
+async def get_conversations(user_id: str = "user"):
+    conversations = await db.conversations.find({
+        "participants": user_id
+    }).sort("updated_at", -1).to_list(100)
+    
+    return [Conversation(**conv) for conv in conversations]
+
+@api_router.post("/messages", response_model=Message)
+async def send_message(message_data: MessageCreate, sender_id: str = "user", sender_name: str = "User"):
+    # Get or create conversation
+    conversation = await db.conversations.find_one({
+        "participants": {"$all": [sender_id, message_data.recipient_id]}
+    })
+    
+    if not conversation:
+        # Create new conversation
+        new_conv = Conversation(
+            participants=[sender_id, message_data.recipient_id],
+            participant_names=[sender_name, message_data.recipient_id]
+        )
+        await db.conversations.insert_one(new_conv.dict())
+        conversation_id = new_conv.id
+    else:
+        conversation_id = conversation["id"]
+    
+    # Create message
+    message = Message(
+        conversation_id=conversation_id,
+        sender_id=sender_id,
+        sender_name=sender_name,
+        recipient_id=message_data.recipient_id,
+        recipient_name=message_data.recipient_id,
+        content=message_data.content,
+        message_type=message_data.message_type
+    )
+    
+    # Save message to database
+    await db.messages.insert_one(message.dict())
+    
+    # Update conversation with last message
+    await db.conversations.update_one(
+        {"id": conversation_id},
+        {
+            "$set": {
+                "last_message": message_data.content,
+                "last_message_timestamp": message.timestamp,
+                "updated_at": datetime.utcnow()
+            }
+        }
+    )
+    
+    # Send real-time message to recipient if they're online
+    message_data_json = json.dumps({
+        "type": "new_message",
+        "message": message.dict(),
+        "conversation_id": conversation_id
+    }, default=str)
+    
+    await manager.send_personal_message(message_data_json, message_data.recipient_id)
+    
+    return message
+
+@api_router.get("/messages/{conversation_id}", response_model=List[Message])
+async def get_messages(conversation_id: str, limit: int = 50):
+    messages = await db.messages.find({
+        "conversation_id": conversation_id
+    }).sort("timestamp", 1).limit(limit).to_list(limit)
+    
+    return [Message(**msg) for msg in messages]
+
+@api_router.put("/messages/{message_id}/read")
+async def mark_message_read(message_id: str):
+    await db.messages.update_one(
+        {"id": message_id},
+        {"$set": {"read": True}}
+    )
+    return {"status": "Message marked as read"}
+
+# WebSocket endpoint for real-time messaging
+@app.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+    await manager.connect(websocket, user_id)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Handle incoming WebSocket messages if needed
+            await manager.send_personal_message(f"Echo: {data}", user_id)
+    except WebSocketDisconnect:
+        manager.disconnect(user_id)
+
 # Include the router in the main app
 app.include_router(api_router)
 
