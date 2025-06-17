@@ -540,9 +540,6 @@ function App() {
   const [messageInput, setMessageInput] = useState('');
   const [websocket, setWebsocket] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
-  const [messageInput, setMessageInput] = useState('');
-  const [websocket, setWebsocket] = useState(null);
-  const [isTyping, setIsTyping] = useState(false);
   const [deals, setDeals] = useState([]);
   const [swipeDirection, setSwipeDirection] = useState('');
   const [showAddDealModal, setShowAddDealModal] = useState(false);
