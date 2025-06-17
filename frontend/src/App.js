@@ -3921,7 +3921,7 @@ function App() {
                       onClick={() => setActiveTab(tab.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all ${
                         activeTab === tab.id
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                          ? 'bg-gray-800 text-white shadow-lg'
                           : 'text-gray-700 hover:bg-gray-100'
                       }`}
                     >
