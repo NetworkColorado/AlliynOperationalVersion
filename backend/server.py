@@ -98,6 +98,38 @@ class UserAccount(BaseModel):
     industry: str = ""
     status: str = "active"  # active, suspended, deleted
     created_date: datetime = Field(default_factory=datetime.utcnow)
+
+# Messaging Models
+class Message(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    conversation_id: str
+    sender_id: str
+    sender_name: str
+    recipient_id: str
+    recipient_name: str
+    content: str
+    message_type: str = "text"  # text, image, file
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    read: bool = False
+    delivered: bool = False
+
+class MessageCreate(BaseModel):
+    recipient_id: str
+    content: str
+    message_type: str = "text"
+
+class Conversation(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    participants: List[str]  # List of user IDs
+    participant_names: List[str]  # List of user names
+    last_message: Optional[str] = ""
+    last_message_timestamp: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class ConversationCreate(BaseModel):
+    recipient_id: str
+    recipient_name: str
     premium_granted_by: str = ""
     premium_granted_date: datetime = None
 
