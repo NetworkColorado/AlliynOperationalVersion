@@ -3870,7 +3870,7 @@ function App() {
             </main>
           </div>
         </>
-      )}
+      )} */}
 
       {/* Popup Advertisement Modal */}
       {showAdPopup && currentAdPopup && (
