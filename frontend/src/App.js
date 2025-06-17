@@ -506,29 +506,6 @@ function App() {
     setIsAdminMode(false);
     alert('✅ You have been logged out of the admin panel.');
   };
-  
-  // Admin mode functions
-  const enterAdminMode = () => {
-    setIsAdminMode(true);
-  };
-  
-  const exitAdminMode = () => {
-    setIsAdminMode(false);
-    setAdminCredentials({ email: '', password: '' });
-  };
-  
-  const handleAdminLogin = () => {
-    // Check admin credentials
-    if (adminCredentials.email === 'thenetworkcolorado@gmail.com' && 
-        adminCredentials.password === 'SuccessS2289') {
-      setIsAdmin(true);
-      setShowAuthModal(false);
-      setShowAdminPanel(true);
-      alert('✅ Admin login successful. Welcome to the admin panel.');
-    } else {
-      alert('❌ Invalid admin credentials. Please try again.');
-    }
-  };
   const handlePremiumUpgrade = () => {
     // In a real app, this would integrate with Stripe, PayPal, etc.
     if (confirm('Upgrade to Premium for $19.99/month?\n\n✓ Unlimited swipes and matches\n✓ No daily limits\n✓ Premium badge\n✓ Priority support')) {
