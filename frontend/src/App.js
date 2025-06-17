@@ -2040,6 +2040,7 @@ function App() {
   };
 
   const renderMessages = () => {
+    return (
     <div className="flex-1 p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Messages</h2>
       {matches.length === 0 ? (
