@@ -363,6 +363,18 @@ function App() {
       alert(`✅ Premium fee waived for ${user?.name}. They now have premium access at no cost.`);
     }
   };
+  
+  const deactivatePremiumAccount = (userId) => {
+    const user = allUsers.find(u => u.id === userId);
+    if (confirm(`Deactivate premium account for ${user?.name}?`)) {
+      setAllUsers(prev => prev.map(user => 
+        user.id === userId 
+          ? { ...user, accountType: 'free', premiumWaived: false, deactivationDate: new Date().toISOString() }
+          : user
+      ));
+      alert(`✅ Premium account deactivated for ${user?.name}. They now have a free account.`);
+    }
+  };
 
   // Enhanced sponsorship management with backend integration
   const createSponsorship = async (sponsorshipData) => {
