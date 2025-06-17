@@ -534,7 +534,13 @@ function App() {
   const [matches, setMatches] = useState([]);
   const [activeTab, setActiveTab] = useState('matchmaker');
   // Enhanced messaging state for real-time chat
+  // Enhanced messaging state for real-time chat
   const [messages, setMessages] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [activeConversation, setActiveConversation] = useState(null);
+  const [messageInput, setMessageInput] = useState('');
+  const [websocket, setWebsocket] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
   const [messageInput, setMessageInput] = useState('');
