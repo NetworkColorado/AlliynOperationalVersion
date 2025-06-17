@@ -3864,7 +3864,7 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Authentication Modal */}
       {!isAuthenticated && showAuthModal && renderAuthModal()}
       
@@ -3876,26 +3876,26 @@ function App() {
             <div className="px-8 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold text-lg">A</span>
                   </div>
                   <div>
-                    <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                      Alliyn: Business Matchmaker
+                    <h1 className="text-2xl font-bold text-gray-800">
+                      Alliyn
                     </h1>
-                    <p className="text-sm text-gray-500">Obsidian Suites</p>
+                    <p className="text-sm text-gray-500">Business Networking</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   {accountType === 'premium' && (
-                    <span className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full text-xs font-bold flex items-center space-x-1">
+                    <span className="px-3 py-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-full text-xs font-bold flex items-center space-x-1">
                       <span>⭐</span>
                       <span>PREMIUM</span>
                     </span>
                   )}
-                  <div className="flex items-center space-x-2 bg-purple-100 px-4 py-2 rounded-full">
-                    <span className="text-purple-600 font-semibold">{matches.length}</span>
-                    <span className="text-purple-600 text-sm">Matches</span>
+                  <div className="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-full">
+                    <span className="text-gray-700 font-semibold">{matches.length}</span>
+                    <span className="text-gray-600 text-sm">Matches</span>
                   </div>
                 </div>
               </div>
