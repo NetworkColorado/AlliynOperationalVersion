@@ -2496,106 +2496,112 @@ function App() {
     const { matchLeaders, dealLeaders } = getLeaderboardStats();
     
     return (
-      <div className="flex-1 p-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Leaderboard</h2>
-        
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Match Leaders */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4">
-              <h3 className="text-xl font-semibold flex items-center">
-                <span className="mr-2">💝</span>
-                Top Matchers This Month
-              </h3>
+      <div className="flex-1 p-8 bg-gray-50 min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Leaderboard</h2>
+            <p className="text-gray-600">Top performers in business networking</p>
+          </div>
+          
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Match Leaders */}
+            <div className="leaderboard-container">
+              <div className="leaderboard-header">
+                <h3 className="leaderboard-title">Top Matchers</h3>
+                <p className="leaderboard-subtitle">Most connections this month</p>
+              </div>
+              <div className="leaderboard-list">
+                {matchLeaders.length === 0 ? (
+                  <div className="text-center text-gray-500 py-8">
+                    <div className="text-4xl mb-4">🤝</div>
+                    <p>Start matching to see rankings!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {matchLeaders.map((leader, index) => (
+                      <div key={leader.company} className="leaderboard-item">
+                        <div className={`leaderboard-rank ${
+                          index === 0 ? 'rank-1' : 
+                          index === 1 ? 'rank-2' : 
+                          index === 2 ? 'rank-3' : 'rank-other'
+                        }`}>
+                          {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
+                        </div>
+                        <div className="leaderboard-info">
+                          <div className="leaderboard-name">{leader.company}</div>
+                          <div className="leaderboard-details">
+                            {leader.count} successful {leader.count === 1 ? 'match' : 'matches'}
+                          </div>
+                        </div>
+                        <div className="leaderboard-score">{leader.count}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="p-6">
-              {matchLeaders.length === 0 ? (
-                <div className="text-center text-gray-500">
-                  <div className="text-4xl mb-4">🤝</div>
-                  <p>Start matching to see rankings!</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {matchLeaders.map((leader, index) => (
-                    <div key={leader.company} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                        index === 0 ? 'bg-yellow-500' : 
-                        index === 1 ? 'bg-gray-400' : 
-                        index === 2 ? 'bg-orange-600' : 'bg-blue-500'
-                      }`}>
-                        {index + 1}
+
+            {/* Deal Leaders */}
+            <div className="leaderboard-container">
+              <div className="leaderboard-header" style={{background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'}}>
+                <h3 className="leaderboard-title">Deal Makers</h3>
+                <p className="leaderboard-subtitle">Highest value partnerships</p>
+              </div>
+              <div className="leaderboard-list">
+                {dealLeaders.length === 0 ? (
+                  <div className="text-center text-gray-500 py-8">
+                    <div className="text-4xl mb-4">🏆</div>
+                    <p>Close your first deal to appear here!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {dealLeaders.map((leader, index) => (
+                      <div key={leader.company} className="leaderboard-item">
+                        <div className={`leaderboard-rank ${
+                          index === 0 ? 'rank-1' : 
+                          index === 1 ? 'rank-2' : 
+                          index === 2 ? 'rank-3' : 'rank-other'
+                        }`}>
+                          {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
+                        </div>
+                        <div className="leaderboard-info">
+                          <div className="leaderboard-name">{leader.company}</div>
+                          <div className="leaderboard-details">
+                            {leader.count} deals • ${leader.totalValue.toLocaleString()}
+                          </div>
+                        </div>
+                        <div className="leaderboard-score">${(leader.totalValue / 1000).toFixed(0)}K</div>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-semibold">{leader.company}</p>
-                        <p className="text-sm text-gray-600">{leader.count} matches</p>
-                      </div>
-                      <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
-                        {leader.count} 🤝
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Deal Leaders */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-4">
-              <h3 className="text-xl font-semibold flex items-center">
-                <span className="mr-2">💰</span>
-                Top Deal Closers
-              </h3>
+          {/* Overall Stats */}
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="profile-card text-center">
+              <div className="text-4xl font-bold text-gray-700 mb-2">{matches.length}</div>
+              <div className="text-gray-600 font-medium">Total Matches</div>
+              <div className="mt-2 text-sm text-gray-500">Connections made</div>
             </div>
-            <div className="p-6">
-              {dealLeaders.length === 0 ? (
-                <div className="text-center text-gray-500">
-                  <div className="text-4xl mb-4">🏆</div>
-                  <p>Close your first deal to appear here!</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {dealLeaders.map((leader, index) => (
-                    <div key={leader.company} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                        index === 0 ? 'bg-green-500' : 
-                        index === 1 ? 'bg-blue-400' : 
-                        index === 2 ? 'bg-indigo-600' : 'bg-teal-500'
-                      }`}>
-                        {index + 1}
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-semibold">{leader.company}</p>
-                        <p className="text-sm text-gray-600">{leader.count} deals • ${leader.totalValue.toLocaleString()}</p>
-                      </div>
-                      <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                        {leader.count} 💰
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="profile-card text-center">
+              <div className="text-4xl font-bold text-green-600 mb-2">{deals.length}</div>
+              <div className="text-gray-600 font-medium">Deals Closed</div>
+              <div className="mt-2 text-sm text-gray-500">Successful partnerships</div>
+            </div>
+            <div className="profile-card text-center">
+              <div className="text-4xl font-bold text-blue-600 mb-2">
+                ${deals.reduce((sum, deal) => sum + (parseFloat(deal.dealValue?.replace(/[$,]/g, '') || 0)), 0).toLocaleString()}
+              </div>
+              <div className="text-gray-600 font-medium">Total Deal Value</div>
+              <div className="mt-2 text-sm text-gray-500">Revenue generated</div>
             </div>
           </div>
         </div>
-
-        {/* Overall Stats */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-3xl font-bold text-purple-600">{matches.length}</div>
-            <div className="text-gray-600">Total Matches</div>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-3xl font-bold text-green-600">{deals.length}</div>
-            <div className="text-gray-600">Deals Closed</div>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-3xl font-bold text-blue-600">
-              ${deals.reduce((sum, deal) => sum + (parseFloat(deal.dealValue?.replace(/[$,]/g, '') || 0)), 0).toLocaleString()}
-            </div>
-            <div className="text-gray-600">Total Deal Value</div>
-          </div>
-        </div>
+      </div>
+    );
 
         {/* Featured Advertisement */}
         <div className="mt-8 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-lg shadow-lg overflow-hidden">
