@@ -2021,7 +2021,7 @@ function App() {
         </div>
       )}
 
-      {/* ADMIN PANEL DISABLED - Using Airtable backend instead */}
+      {/* ADMIN PANEL DISABLED - Using Airtable backend instead 
       {showAdminPanel && isAdmin && (
         <div className="fixed inset-0 bg-gray-100 z-50 overflow-y-auto">
           <div className="min-h-screen">
