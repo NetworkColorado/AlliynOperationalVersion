@@ -2147,12 +2147,11 @@ function App() {
           ))}
         </div>
       )}
+    </div>
+    );
+  };
 
-      {/* ADMIN PANEL REMOVED - Using Airtable backend instead */}
-
-      {/* Popup Advertisement Modal */}
-        <div className="fixed inset-0 bg-gray-100 z-50 overflow-y-auto">
-          <div className="min-h-screen">
+  const renderLeaderboard = () => {
             {/* Admin Header */}
             <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
               <div className="max-w-7xl mx-auto px-6 py-4">
