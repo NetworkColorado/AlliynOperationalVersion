@@ -375,6 +375,16 @@ function App() {
       alert(`✅ Premium account deactivated for ${user?.name}. They now have a free account.`);
     }
   };
+  
+  const deleteAccount = (userId) => {
+    const user = allUsers.find(u => u.id === userId);
+    if (confirm(`⚠️ WARNING: This will permanently delete ${user?.name}'s account. This action cannot be undone. Continue?`)) {
+      if (confirm(`⚠️ FINAL WARNING: Are you absolutely sure you want to delete ${user?.name}'s account? All their data will be lost forever.`)) {
+        setAllUsers(prev => prev.filter(user => user.id !== userId));
+        alert(`✅ Account for ${user?.name} has been permanently deleted.`);
+      }
+    }
+  };
 
   // Enhanced sponsorship management with backend integration
   const createSponsorship = async (sponsorshipData) => {
