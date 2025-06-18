@@ -85,7 +85,7 @@ h4, .heading-sm { font-size: 1.75rem; }
 h5, .heading-xs { font-size: 1.5rem; }
 h6, .heading-xxs { font-size: 1.25rem; }
 
-/* Titles and Subtitles - Archivo Narrow */
+/* Titles and Subtitles - Archivo Narrow with Enhanced Spacing */
 .title,
 .subtitle,
 .card-title,
@@ -96,6 +96,46 @@ h6, .heading-xxs { font-size: 1.25rem; }
 .modal-title {
   font-family: var(--font-titles);
   font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.02em; /* Enhanced letter spacing for better readability */
+}
+
+/* Enhanced Name Styling for Better Legibility */
+.profile-name,
+.profile-name-modern,
+.leaderboard-name,
+.conversation-name {
+  font-family: var(--font-titles);
+  font-weight: 600;
+  letter-spacing: 0.025em; /* More generous spacing like message names */
+  line-height: 1.3;
+}
+
+/* Company Names - Professional Spacing */
+.company-name,
+.company-name-modern,
+.company-name-enhanced {
+  font-family: var(--font-titles);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+/* Advertising Headers - Archivo Narrow Bold */
+.ad-header,
+.ad-title,
+.sponsored-title {
+  font-family: var(--font-titles);
+  font-weight: 700; /* Bold for advertising */
+  letter-spacing: 0.03em; /* More spacing for advertising headers */
+  line-height: 1.2;
+}
+
+/* Message Names - Reference spacing */
+.message-sender-name {
+  font-family: var(--font-titles);
+  font-weight: 600;
+  letter-spacing: 0.025em;
   line-height: 1.3;
 }
 
