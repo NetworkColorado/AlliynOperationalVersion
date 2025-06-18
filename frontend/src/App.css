@@ -462,10 +462,12 @@ button {
 /* Profile Name */
 .profile-name-modern {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   color: #262E3A;
   margin: 0 0 4px 0;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.025em; /* Enhanced spacing for better readability */
+  font-family: var(--font-titles);
+  line-height: 1.3;
 }
 
 /* Profile Title/Status */
@@ -474,6 +476,8 @@ button {
   color: #727F8B;
   margin: 0 0 16px 0;
   font-weight: 500;
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
 }
 
 /* Company Information Section */
@@ -490,12 +494,17 @@ button {
   font-weight: 600;
   color: #0B9BD6;
   margin: 0 0 4px 0;
+  font-family: var(--font-titles);
+  letter-spacing: 0.02em; /* Better spacing for company names */
+  line-height: 1.3;
 }
 
 .company-industry-modern {
   font-size: 13px;
   color: #727F8B;
   margin: 0 0 8px 0;
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
 }
 
 .company-description-modern {
@@ -503,6 +512,7 @@ button {
   color: #B2B7BE;
   line-height: 1.4;
   margin: 0;
+  font-family: var(--font-body);
 }
 
 /* Info Grid - Clean Layout */
