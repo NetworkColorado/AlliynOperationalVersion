@@ -1955,16 +1955,18 @@ function App() {
               </div>
 
               {/* Owner Profile */}
-              <div className="p-6 border-b border-gray-100">
-                <div className="flex items-center space-x-4">
-                  <img 
-                    src={currentProfile.profileImage} 
-                    alt={currentProfile.ownerName}
-                    className="profile-image-large"
-                  />
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800">{currentProfile.ownerName}</h3>
-                    <p className="text-purple-600 font-medium">{currentProfile.ownerTitle}</p>
+              <div className="profile-header-enhanced">
+                <img 
+                  src={currentProfile.profileImage} 
+                  alt={currentProfile.ownerName}
+                  className="profile-image-large"
+                />
+                <div className="text-center">
+                  <h3 className="profile-name-enhanced">{currentProfile.ownerName}</h3>
+                  <p className="profile-title-enhanced">{currentProfile.ownerTitle}</p>
+                  <div className="company-info-enhanced">
+                    <div className="company-name-enhanced">{currentProfile.companyName}</div>
+                    <div className="company-role-enhanced">{currentProfile.industry}</div>
                   </div>
                 </div>
               </div>
