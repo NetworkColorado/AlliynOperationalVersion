@@ -1936,89 +1936,76 @@ function App() {
             /* Regular Business Card */
             <div 
               ref={cardRef}
-              className={`profile-card-enhanced ${swipeDirection ? `swipe-${swipeDirection}` : ''} 
+              className={`profile-card-modern ${swipeDirection ? `swipe-${swipeDirection}` : ''} 
                 transform transition-all duration-300 hover:scale-105`}
             >
-              {/* Header with Company Logo and Info */}
-              <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
-                <div className="flex items-start justify-between text-white">
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold mb-1">{currentProfile.companyName}</h2>
-                    <p className="text-sm opacity-90 leading-relaxed">{currentProfile.companyDescription}</p>
-                  </div>
-                  <img 
-                    src={currentProfile.logo} 
-                    alt="Company Logo"
-                    className="company-logo"
-                  />
+              <div className="status-indicator-modern"></div>
+              
+              {/* Profile Avatar */}
+              <img 
+                src={currentProfile.profileImage} 
+                alt={currentProfile.ownerName}
+                className="profile-avatar-modern"
+              />
+              
+              {/* Profile Info */}
+              <h3 className="profile-name-modern">{currentProfile.ownerName}</h3>
+              <p className="profile-status-modern">{currentProfile.ownerTitle}</p>
+              
+              {/* Match Probability */}
+              <div className="match-indicator-modern">
+                {calculateAdvancedMatchProbability(userProfile, currentProfile)}% Match
+              </div>
+              
+              {/* Company Section */}
+              <div className="company-section-modern">
+                <div className="company-name-modern">{currentProfile.companyName}</div>
+                <div className="company-industry-modern">{currentProfile.industry}</div>
+                <div className="company-description-modern">{currentProfile.companyDescription}</div>
+              </div>
+              
+              {/* Info Grid */}
+              <div className="info-grid-modern">
+                <div className="info-item-modern">
+                  <div className="info-label-modern">Experience</div>
+                  <div className="info-value-modern">{currentProfile.yearsInBusiness}y</div>
+                </div>
+                <div className="info-item-modern">
+                  <div className="info-label-modern">Scope</div>
+                  <div className="info-value-modern">{currentProfile.seekingPartnership}</div>
                 </div>
               </div>
-
-              {/* Owner Profile */}
-              <div className="profile-header-enhanced">
-                <img 
-                  src={currentProfile.profileImage} 
-                  alt={currentProfile.ownerName}
-                  className="profile-image-large"
-                />
-                <div className="text-center">
-                  <h3 className="profile-name-enhanced">{currentProfile.ownerName}</h3>
-                  <p className="profile-title-enhanced">{currentProfile.ownerTitle}</p>
-                  
-                  {/* Social Media Icons like reference */}
-                  <div className="social-icons">
-                    <div className="social-icon">
-                      <span>💼</span>
-                    </div>
-                    <div className="social-icon">
-                      <span>🌐</span>
-                    </div>
-                    <div className="social-icon">
-                      <span>📧</span>
-                    </div>
-                    <div className="social-icon">
-                      <span>📱</span>
-                    </div>
-                  </div>
-                  
-                  <div className="profile-description-enhanced">
-                    {currentProfile.companyDescription}
-                  </div>
-                  
-                  <div className="company-info-enhanced">
-                    <div className="company-name-enhanced">{currentProfile.companyName}</div>
-                    <div className="company-role-enhanced">{currentProfile.industry}</div>
-                  </div>
-                </div>
+              
+              {/* Service Areas */}
+              <div className="service-areas-modern">
+                {currentProfile.serviceAreas?.slice(0, 3).map((area, index) => (
+                  <span key={index} className="service-area-modern">
+                    {area}
+                  </span>
+                ))}
               </div>
-
-              {/* Business Details */}
-              <div className="p-6 space-y-4">
-                {/* Industry & Experience */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Industry</p>
-                    <p className="text-sm font-semibold text-gray-800">{currentProfile.industry}</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Experience</p>
-                    <p className="text-sm font-semibold text-gray-800">{currentProfile.yearsInBusiness} years</p>
-                  </div>
-                </div>
-
-                {/* Service Areas */}
-                <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Service Areas</p>
-                  <div className="flex flex-wrap gap-2">
-                    {currentProfile.serviceAreas?.map((area, index) => (
-                      <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Partnership Scope */}
+              
+              {/* Partnership Tags */}
+              <div className="tags-section-modern">
+                {currentProfile.partnerships?.slice(0, 2).map((partnership, index) => (
+                  <span key={index} className={`tag-modern ${index === 0 ? 'primary' : ''}`}>
+                    {partnership}
+                  </span>
+                ))}
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="actions-modern">
+                <button className="btn-modern primary">
+                  <span>💬</span>
+                  Connect
+                </button>
+                <button className="btn-modern secondary">
+                  <span>👍</span>
+                  Like
+                </button>
+              </div>
+            </div>
                 <div>
                   <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Scope</p>
                   <span className={`px-3 py-1 text-sm rounded-full ${
