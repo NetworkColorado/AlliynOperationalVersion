@@ -1,5 +1,6 @@
-/* Professional Typography System - Six Caps, Archivo Narrow, Source Sans Pro */
-@import url('https://fonts.googleapis.com/css2?family=Six+Caps&family=Archivo+Narrow:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap');
+/* Professional Typography System - Sifonn, Archivo Narrow, Source Sans Pro */
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/sifonn');
 
 :root {
   /* Color Palette - Sophisticated Neutrals */
@@ -25,10 +26,10 @@
   --color-message-text-received: #1c1c1e;
   
   /* Professional Typography */
-  --font-headings: 'Six Caps', sans-serif;           /* For main headings */
-  --font-titles: 'Archivo Narrow', sans-serif;       /* For titles and subtitles */
-  --font-body: 'Source Sans Pro', sans-serif;        /* For body text */
-  --font-ui: 'Source Sans Pro', sans-serif;          /* For UI elements */
+  --font-headings: 'Sifonn', 'Archivo Narrow', sans-serif;    /* For main headings - more legible than Six Caps */
+  --font-titles: 'Archivo Narrow', sans-serif;                /* For titles and subtitles */
+  --font-body: 'Source Sans Pro', sans-serif;                 /* For body text */
+  --font-ui: 'Source Sans Pro', sans-serif;                   /* For UI elements */
   
   /* Spacing */
   --spacing-xs: 4px;
