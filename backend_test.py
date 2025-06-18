@@ -580,6 +580,73 @@ def test_mark_message_read():
     print(f"Marked message {message_id} as read")
     return True
 
+import websocket
+import threading
+import time
+
+def test_websocket_connection():
+    """Test WebSocket connection"""
+    try:
+        # Generate a unique user ID
+        user_id = f"ws-user-{uuid.uuid4()}"
+        
+        # Create a WebSocket connection
+        ws_url = f"ws://localhost:8001/ws/{user_id}"
+        
+        # Flag to track if we received a message
+        received_message = False
+        
+        def on_message(ws, message):
+            nonlocal received_message
+            print(f"Received message: {message}")
+            assert "Echo:" in message, f"Expected 'Echo:' in message, got '{message}'"
+            received_message = True
+        
+        def on_error(ws, error):
+            print(f"WebSocket error: {error}")
+        
+        def on_close(ws, close_status_code, close_msg):
+            print(f"WebSocket closed: {close_status_code} - {close_msg}")
+        
+        def on_open(ws):
+            print(f"WebSocket connection opened for user {user_id}")
+            # Send a test message
+            test_message = f"Test message {uuid.uuid4()}"
+            print(f"Sending message: {test_message}")
+            ws.send(test_message)
+        
+        # Create WebSocket connection
+        ws = websocket.WebSocketApp(ws_url,
+                                  on_open=on_open,
+                                  on_message=on_message,
+                                  on_error=on_error,
+                                  on_close=on_close)
+        
+        # Start WebSocket connection in a separate thread
+        wst = threading.Thread(target=ws.run_forever)
+        wst.daemon = True
+        wst.start()
+        
+        # Wait for the message to be received
+        timeout = 5  # seconds
+        start_time = time.time()
+        while not received_message and time.time() - start_time < timeout:
+            time.sleep(0.1)
+        
+        # Close the WebSocket connection
+        ws.close()
+        
+        # Wait for the thread to finish
+        wst.join(timeout=1)
+        
+        assert received_message, "Did not receive echo message from WebSocket"
+        
+        print("WebSocket connection test passed")
+        return True
+    except Exception as e:
+        print(f"WebSocket test failed: {str(e)}")
+        return False
+
 def run_all_tests():
     """Run all tests"""
     tests = [
@@ -600,6 +667,7 @@ def run_all_tests():
         ("Send Message", lambda: test_send_message()[0]),
         ("Get Messages", test_get_messages),
         ("Mark Message Read", test_mark_message_read),
+        ("WebSocket Connection", test_websocket_connection),
     ]
     
     for test_name, test_func in tests:
