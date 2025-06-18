@@ -2096,37 +2096,35 @@ function App() {
               const matchMessages = messages.filter(msg => msg.matchId === match.id);
               
               return (
-                <div key={match.id} className="profile-card">
-                  <div className="profile-card-horizontal">
-                    <div className="profile-image-section">
-                      <img 
-                        src={match.business.profileImage} 
-                        alt={match.business.ownerName}
-                        className="profile-image"
-                      />
-                      <div className="status-online"></div>
-                    </div>
-                    
-                    <div className="profile-content-section">
-                      <h3 className="profile-name">{match.business.companyName}</h3>
-                      <p className="profile-title">{match.business.ownerName} • {match.business.ownerTitle}</p>
-                      <p className="profile-company">{match.business.industry}</p>
-                      
-                      <div className="profile-tags">
-                        <span className={`profile-tag ${
-                          match.badge.name === 'Boss Babies' ? 'bg-yellow-100 text-yellow-800' :
-                          match.badge.name === 'Power Titans' ? 'bg-purple-100 text-purple-800' :
-                          match.badge.name === 'Dream Builders' ? 'bg-blue-100 text-blue-800' :
-                          match.badge.name === 'National Champions' ? 'bg-green-100 text-green-800' :
-                          match.badge.name === 'Local Heroes' ? 'bg-orange-100 text-orange-800' :
-                          'bg-indigo-100 text-indigo-800'
-                        }`}>
-                          {match.badge.name}
-                        </span>
-                        <span className="profile-tag">
-                          {match.probability}% Match
-                        </span>
-                      </div>
+                <div key={match.id} className="profile-card-modern">
+                  <div className="status-indicator-modern"></div>
+                  
+                  {/* Profile Avatar */}
+                  <img 
+                    src={match.business.profileImage} 
+                    alt={match.business.ownerName}
+                    className="profile-avatar-modern"
+                  />
+                  
+                  {/* Profile Info */}
+                  <h3 className="profile-name-modern">{match.business.companyName}</h3>
+                  <p className="profile-status-modern">{match.business.ownerName} • {match.business.ownerTitle}</p>
+                  
+                  {/* Match Probability */}
+                  <div className="match-indicator-modern">
+                    {match.probability}% Match
+                  </div>
+                  
+                  {/* Company Section */}
+                  <div className="company-section-modern">
+                    <div className="company-name-modern">{match.business.companyName}</div>
+                    <div className="company-industry-modern">{match.business.industry}</div>
+                  </div>
+                  
+                  {/* Partnership Tags */}
+                  <div className="tags-section-modern">
+                    <span className="tag-modern primary">{match.badge.name}</span>
+                  </div>
                       
                       <div className="messages-container mt-4">
                         <div className="message-thread" style={{maxHeight: '200px'}}>
