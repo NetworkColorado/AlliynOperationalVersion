@@ -2184,8 +2184,8 @@ function App() {
       <div className="flex-1 p-8 bg-gray-50 min-h-screen">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Leaderboard</h2>
-            <p className="text-gray-600">Top performers in business networking</p>
+            <h2 className="heading-lg text-gray-800 mb-2">Leaderboard</h2>
+            <p className="body-text text-gray-600">Top performers in business networking</p>
           </div>
           
           <div className="grid lg:grid-cols-2 gap-8">
