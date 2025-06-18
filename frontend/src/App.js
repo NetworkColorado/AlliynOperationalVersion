@@ -2033,7 +2033,7 @@ function App() {
           <div className="mt-8 bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-800 text-sm">Sponsored by TechCorp Solutions</h4>
+                <h4 className="ad-header text-sm text-gray-800">Sponsored by TechCorp Solutions</h4>
                 <p className="text-xs text-gray-600">Enterprise software solutions for growing businesses</p>
               </div>
               <button className="bg-blue-500 text-white px-4 py-2 rounded text-xs hover:bg-blue-600 transition-colors">
