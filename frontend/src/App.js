@@ -1964,6 +1964,27 @@ function App() {
                 <div className="text-center">
                   <h3 className="profile-name-enhanced">{currentProfile.ownerName}</h3>
                   <p className="profile-title-enhanced">{currentProfile.ownerTitle}</p>
+                  
+                  {/* Social Media Icons like reference */}
+                  <div className="social-icons">
+                    <div className="social-icon">
+                      <span>💼</span>
+                    </div>
+                    <div className="social-icon">
+                      <span>🌐</span>
+                    </div>
+                    <div className="social-icon">
+                      <span>📧</span>
+                    </div>
+                    <div className="social-icon">
+                      <span>📱</span>
+                    </div>
+                  </div>
+                  
+                  <div className="profile-description-enhanced">
+                    {currentProfile.companyDescription}
+                  </div>
+                  
                   <div className="company-info-enhanced">
                     <div className="company-name-enhanced">{currentProfile.companyName}</div>
                     <div className="company-role-enhanced">{currentProfile.industry}</div>
