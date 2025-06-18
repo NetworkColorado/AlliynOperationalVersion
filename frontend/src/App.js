@@ -3534,10 +3534,10 @@ function App() {
                     <span className="text-white font-bold text-lg">A</span>
                   </div>
                   <div>
-                    <h1 className="text-2xl font-bold text-gray-800">
+                    <h1 className="heading-md text-gray-800">
                       Alliyn
                     </h1>
-                    <p className="text-sm text-gray-500">Business Networking</p>
+                    <p className="body-text text-gray-500">Business Networking</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
