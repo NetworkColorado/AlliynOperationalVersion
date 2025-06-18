@@ -188,7 +188,7 @@ backend:
         agent: "testing"
         comment: "Verified CORS headers are properly configured. The backend correctly returns Access-Control-Allow-Origin and Access-Control-Allow-Credentials headers, allowing cross-origin requests from the frontend. CORS configuration is working as expected."
 
-  - task: "Error handling"
+  - task: "Messaging system API endpoints"
     implemented: true
     working: true
     file: "/app/backend/server.py"
@@ -198,7 +198,19 @@ backend:
     status_history:
       - working: true
         agent: "testing"
-        comment: "Tested error handling for invalid inputs. The API correctly returns appropriate error codes (400 or 422) for missing required fields and invalid JSON. Error handling is implemented properly."
+        comment: "Tested all messaging system API endpoints. Successfully created conversations via POST /api/conversations and retrieved them via GET /api/conversations. Sent messages using POST /api/messages and retrieved them with GET /api/messages/{conversation_id}. Also tested marking messages as read with PUT /api/messages/{message_id}/read. All messaging system API tests passed successfully."
+
+  - task: "WebSocket endpoint for real-time messaging"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Tested WebSocket endpoint at /ws/{user_id}. Successfully established WebSocket connection, sent messages, and received echo responses. The WebSocket connection is working correctly for real-time messaging."
 
 frontend:
   - task: "Environment variables setup"
