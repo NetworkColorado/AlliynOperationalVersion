@@ -2183,6 +2183,11 @@ function App() {
                         }`}>
                           {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
                         </div>
+                        <img 
+                          src={leader.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(leader.company)}&background=random`}
+                          alt={leader.company}
+                          className="w-10 h-10 rounded-full object-cover ml-3"
+                        />
                         <div className="leaderboard-info">
                           <div className="leaderboard-name">{leader.company}</div>
                           <div className="leaderboard-details">
