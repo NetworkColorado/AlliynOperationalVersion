@@ -2522,32 +2522,80 @@ function App() {
       
       {profilePreviewMode ? (
         <div className="max-w-md mx-auto">
-          <h3 className="text-xl font-bold text-center mb-6 text-purple-600">
+          <h3 className="text-xl font-bold text-center mb-6 text-gray-700">
             How others see your profile:
           </h3>
-          <div className="business-card bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <div className="relative h-48 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
-              <div className="flex items-start justify-between text-white">
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold mb-1">{userProfile.companyName}</h2>
-                  <p className="text-sm opacity-90 leading-relaxed">{userProfile.companyDescription}</p>
-                </div>
-                {userProfile.logo ? (
-                  <img 
-                    src={userProfile.logo} 
-                    alt="Company Logo"
-                    className="w-16 h-16 rounded-xl bg-white/20 object-cover ml-4"
-                  />
-                ) : (
-                  <div className="w-16 h-16 rounded-xl bg-white/20 ml-4 flex items-center justify-center">
-                    <span className="text-white">🏢</span>
-                  </div>
-                )}
+          
+          {/* Modern Profile Card - Matching Matchmaker Design */}
+          <div className="profile-card-modern">
+            <div className="status-indicator-modern"></div>
+            
+            {/* Profile Avatar */}
+            <img 
+              src={userProfile.profileImage || 'https://via.placeholder.com/80x80?text=👤'} 
+              alt={userProfile.ownerName}
+              className="profile-avatar-modern"
+            />
+            
+            {/* Profile Info */}
+            <h3 className="profile-name-modern">{userProfile.ownerName}</h3>
+            <p className="profile-status-modern">{userProfile.ownerTitle}</p>
+            
+            {/* Match Probability */}
+            <div className="match-indicator-modern">
+              95% Match Example
+            </div>
+            
+            {/* Company Section */}
+            <div className="company-section-modern">
+              <div className="company-name-modern">{userProfile.companyName}</div>
+              <div className="company-industry-modern">{userProfile.industry}</div>
+              <div className="company-description-modern">{userProfile.companyDescription}</div>
+            </div>
+            
+            {/* Info Grid */}
+            <div className="info-grid-modern">
+              <div className="info-item-modern">
+                <div className="info-label-modern">Experience</div>
+                <div className="info-value-modern">{userProfile.yearsInBusiness}y</div>
+              </div>
+              <div className="info-item-modern">
+                <div className="info-label-modern">Scope</div>
+                <div className="info-value-modern">{userProfile.seekingPartnership}</div>
               </div>
             </div>
-
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center space-x-4">
+            
+            {/* Service Areas */}
+            <div className="service-areas-modern">
+              {userProfile.serviceAreas?.slice(0, 3).map((area, index) => (
+                <span key={index} className="service-area-modern">
+                  {area}
+                </span>
+              ))}
+            </div>
+            
+            {/* Partnership Tags */}
+            <div className="tags-section-modern">
+              {userProfile.partnerships?.slice(0, 2).map((partnership, index) => (
+                <span key={index} className={`tag-modern ${index === 0 ? 'primary' : ''}`}>
+                  {partnership}
+                </span>
+              ))}
+            </div>
+            
+            {/* Action Buttons */}
+            <div className="actions-modern">
+              <button className="btn-modern primary">
+                <span>💬</span>
+                Connect
+              </button>
+              <button className="btn-modern secondary">
+                <span>👍</span>
+                Like
+              </button>
+            </div>
+          </div>
+        </div>
                 {userProfile.profileImage ? (
                   <img 
                     src={userProfile.profileImage} 
