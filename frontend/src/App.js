@@ -2290,30 +2290,6 @@ function App() {
         </div>
       </div>
     );
-
-        {/* Featured Advertisement */}
-        <div className="mt-8 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-lg shadow-lg overflow-hidden">
-          <div className="p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-2">🎯 Business Coaching Platform</h3>
-                <p className="mb-4">Join 50,000+ entrepreneurs who've scaled their businesses with our proven methods</p>
-                <div className="flex items-center space-x-4">
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">⭐ 4.9/5 Rating</span>
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">💰 Average 3x Revenue Growth</span>
-                </div>
-              </div>
-              <div className="ml-6">
-                <button className="bg-white text-orange-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors">
-                  Start Free Trial
-                </button>
-                <p className="text-xs opacity-75 mt-2 text-center">Sponsored Content</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
   };
 
   const renderDeals = () => (
