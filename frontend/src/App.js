@@ -2006,6 +2006,7 @@ function App() {
                 </button>
               </div>
             </div>
+          )}
 
           {/* Swipe Buttons */}
           <div className="flex justify-center space-x-8 mt-8">
