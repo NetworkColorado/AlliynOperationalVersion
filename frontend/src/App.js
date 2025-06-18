@@ -2066,56 +2066,38 @@ function App() {
               const matchMessages = messages.filter(msg => msg.matchId === match.id);
               
               return (
-                <div key={match.id} className="profile-card-modern">
-                  <div className="status-indicator-modern"></div>
-                  
-                  {/* Profile Avatar */}
-                  <img 
-                    src={match.business.profileImage} 
-                    alt={match.business.ownerName}
-                    className="profile-avatar-modern"
-                  />
-                  
-                  {/* Profile Info */}
-                  <h3 className="profile-name-modern">{match.business.companyName}</h3>
-                  <p className="profile-status-modern">{match.business.ownerName} • {match.business.ownerTitle}</p>
-                  
-                  {/* Match Probability */}
-                  <div className="match-indicator-modern">
-                    {match.probability}% Match
-                  </div>
-                  
-                  {/* Company Section */}
-                  <div className="company-section-modern">
-                    <div className="company-name-modern">{match.business.companyName}</div>
-                    <div className="company-industry-modern">{match.business.industry}</div>
-                  </div>
-                  
-                  {/* Partnership Tags */}
-                  <div className="tags-section-modern">
-                    <span className="tag-modern primary">{match.badge.name}</span>
-                  </div>
-                  
-                  {/* iPhone-Style Messaging Section */}
-                  <div className="messages-container mt-4">
-                    {/* Conversation Header */}
-                    <div className="conversation-header">
-                      <img 
-                        src={match.business.profileImage} 
-                        alt={match.business.ownerName}
-                        className="conversation-avatar"
-                      />
-                      <div className="conversation-info">
-                        <div className="conversation-name">{match.business.companyName}</div>
-                        <div className="conversation-status">Active now</div>
+                <div key={match.id} className="bg-white rounded-lg shadow-sm border p-4 mb-4">
+                  {/* Compact Profile Header */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <img 
+                      src={match.business.profileImage} 
+                      alt={match.business.ownerName}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div className="flex-1">
+                      <div className="font-semibold text-gray-900">{match.business.ownerName}</div>
+                      <div className="text-sm text-gray-600">{match.business.ownerTitle}</div>
+                      <div className="text-sm text-blue-600 font-medium flex items-center gap-1">
+                        <img 
+                          src={match.business.logo || 'https://via.placeholder.com/16x16?text=🏢'} 
+                          alt="Company Logo"
+                          className="w-4 h-4 rounded"
+                        />
+                        {match.business.companyName}
                       </div>
                     </div>
-                    
-                    <div className="message-thread">
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-xs text-gray-500">Active</span>
+                    </div>
+                  </div>
+                  
+                  {/* Compact Message Thread */}
+                  <div className="messages-container">
+                    <div className="message-thread" style={{maxHeight: '150px'}}>
                       {matchMessages.length === 0 ? (
-                        <div className="text-center text-gray-400 py-4">
-                          <div className="text-2xl mb-1">👋</div>
-                          <p className="text-sm">Say hello to start the conversation!</p>
+                        <div className="text-center text-gray-400 py-3">
+                          <p className="text-sm">👋 Say hello!</p>
                         </div>
                       ) : (
                         matchMessages.map((msg) => {
@@ -2123,12 +2105,6 @@ function App() {
                           return (
                             <div key={msg.id} className={`message-bubble ${isUserMessage ? 'message-sent' : 'message-received'}`}>
                               <div>{msg.message}</div>
-                              <div className="message-time">
-                                {new Date(msg.timestamp).toLocaleTimeString([], { 
-                                  hour: '2-digit', 
-                                  minute: '2-digit' 
-                                })}
-                              </div>
                             </div>
                           );
                         })
@@ -2161,7 +2137,7 @@ function App() {
                       </button>
                     </div>
                   </div>
-                  
+                </div>
 
                 </div>
               );
