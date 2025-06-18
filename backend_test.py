@@ -441,6 +441,145 @@ def test_admin_stats():
     print("Admin stats:", data)
     return True
 
+def test_create_conversation():
+    """Test creating a conversation"""
+    # Generate unique user IDs
+    sender_id = "user"
+    recipient_id = f"recipient-{uuid.uuid4()}"
+    
+    payload = {
+        "recipient_id": recipient_id,
+        "recipient_name": "Test Recipient"
+    }
+    
+    response = requests.post(f"{BACKEND_URL}/conversations", json=payload)
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "id" in data, "Response missing 'id' field"
+    assert "participants" in data, "Response missing 'participants' field"
+    assert "participant_names" in data, "Response missing 'participant_names' field"
+    
+    # Verify participants
+    assert sender_id in data["participants"], f"Sender ID '{sender_id}' not in participants"
+    assert recipient_id in data["participants"], f"Recipient ID '{recipient_id}' not in participants"
+    
+    # Store conversation ID for later tests
+    conversation_id = data["id"]
+    print(f"Created conversation with ID: {conversation_id}")
+    return True, conversation_id
+
+def test_get_conversations():
+    """Test retrieving all conversations for a user"""
+    # First create a new conversation to ensure there's at least one
+    success, _ = test_create_conversation()
+    assert success, "Failed to create test conversation"
+    
+    # Now get all conversations
+    response = requests.get(f"{BACKEND_URL}/conversations?user_id=user")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert isinstance(data, list), "Response is not a list"
+    assert len(data) > 0, "Expected at least one conversation"
+    
+    # Verify structure of each conversation
+    for conversation in data:
+        assert "id" in conversation, "Conversation missing 'id' field"
+        assert "participants" in conversation, "Conversation missing 'participants' field"
+        assert "participant_names" in conversation, "Conversation missing 'participant_names' field"
+        assert "user" in conversation["participants"], "User not in participants"
+    
+    print(f"Retrieved {len(data)} conversations")
+    return True
+
+def test_send_message():
+    """Test sending a message"""
+    # First create a new conversation
+    success, conversation_id = test_create_conversation()
+    assert success, "Failed to create test conversation"
+    
+    # Now send a message
+    message_content = f"Test message {uuid.uuid4()}"
+    payload = {
+        "recipient_id": "recipient",
+        "content": message_content,
+        "message_type": "text"
+    }
+    
+    response = requests.post(f"{BACKEND_URL}/messages", json=payload)
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "id" in data, "Response missing 'id' field"
+    assert "conversation_id" in data, "Response missing 'conversation_id' field"
+    assert "sender_id" in data, "Response missing 'sender_id' field"
+    assert "content" in data, "Response missing 'content' field"
+    assert data["content"] == message_content, f"Expected content '{message_content}', got '{data['content']}'"
+    
+    # Store message ID and conversation ID for later tests
+    message_id = data["id"]
+    conversation_id = data["conversation_id"]
+    print(f"Sent message with ID: {message_id} in conversation: {conversation_id}")
+    return True, message_id, conversation_id
+
+def test_get_messages():
+    """Test retrieving messages for a conversation"""
+    # First send a message to ensure there's at least one
+    success, _, conversation_id = test_send_message()
+    assert success, "Failed to send test message"
+    
+    # Now get all messages for the conversation
+    response = requests.get(f"{BACKEND_URL}/messages/{conversation_id}")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert isinstance(data, list), "Response is not a list"
+    assert len(data) > 0, "Expected at least one message"
+    
+    # Verify structure of each message
+    for message in data:
+        assert "id" in message, "Message missing 'id' field"
+        assert "conversation_id" in message, "Message missing 'conversation_id' field"
+        assert "sender_id" in message, "Message missing 'sender_id' field"
+        assert "content" in message, "Message missing 'content' field"
+        assert message["conversation_id"] == conversation_id, f"Expected conversation_id '{conversation_id}', got '{message['conversation_id']}'"
+    
+    print(f"Retrieved {len(data)} messages for conversation {conversation_id}")
+    return True
+
+def test_mark_message_read():
+    """Test marking a message as read"""
+    # First send a message to get a message ID
+    success, message_id, _ = test_send_message()
+    assert success, "Failed to send test message"
+    
+    # Now mark the message as read
+    response = requests.put(f"{BACKEND_URL}/messages/{message_id}/read")
+    
+    # Verify status code
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Verify response content
+    data = response.json()
+    assert "status" in data, "Response missing 'status' field"
+    assert data["status"] == "Message marked as read", f"Expected status 'Message marked as read', got '{data['status']}'"
+    
+    print(f"Marked message {message_id} as read")
+    return True
+
 def run_all_tests():
     """Run all tests"""
     tests = [
@@ -456,6 +595,11 @@ def run_all_tests():
         ("Admin Sponsorship", test_admin_sponsorship),
         ("Admin User Management", test_admin_user_management),
         ("Admin Stats", test_admin_stats),
+        ("Create Conversation", lambda: test_create_conversation()[0]),
+        ("Get Conversations", test_get_conversations),
+        ("Send Message", lambda: test_send_message()[0]),
+        ("Get Messages", test_get_messages),
+        ("Mark Message Read", test_mark_message_read),
     ]
     
     for test_name, test_func in tests:
