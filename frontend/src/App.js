@@ -3594,7 +3594,7 @@ function App() {
                 <div className="mt-8 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg p-4 border border-green-200">
                   <div className="text-center">
                     <div className="text-2xl mb-2">💼</div>
-                    <h4 className="font-bold text-sm text-gray-800 mb-2">Business Accelerator</h4>
+                    <h4 className="ad-header text-sm text-gray-800 mb-2">Business Accelerator</h4>
                     <p className="text-xs text-gray-600 mb-3">Join our 12-week program and scale your business 10x</p>
                     <button className="w-full bg-green-500 text-white py-2 px-3 rounded text-xs font-medium hover:bg-green-600 transition-colors">
                       Apply Now
