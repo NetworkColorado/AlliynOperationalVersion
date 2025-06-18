@@ -1949,7 +1949,7 @@ function App() {
                   <img 
                     src={currentProfile.logo} 
                     alt="Company Logo"
-                    className="w-16 h-16 rounded-xl bg-white/20 object-cover ml-4"
+                    className="company-logo"
                   />
                 </div>
               </div>
