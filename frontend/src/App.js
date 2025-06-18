@@ -2073,59 +2073,112 @@ function App() {
           <h2 className="text-3xl font-bold text-gray-800 mb-2">Messages</h2>
           <p className="text-gray-600">Connect with your business matches</p>
         </div>
-      {matches.length === 0 ? (
-        <div className="text-center text-gray-500 mt-12">
-          <div className="text-6xl mb-4">💬</div>
-          <p>No matches yet. Start swiping to find potential partners!</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {matches.map((match) => (
-            <div key={match.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center space-x-4 mb-4">
-                <img 
-                  src={match.business.profileImage} 
-                  alt={match.business.ownerName}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <h3 className="font-semibold">{match.business.companyName}</h3>
-                  <p className="text-sm text-gray-600">{match.business.ownerName}</p>
+        
+        {matches.length === 0 ? (
+          <div className="text-center text-gray-500 mt-12 bg-white rounded-2xl p-12 shadow-sm">
+            <div className="text-6xl mb-4">💬</div>
+            <h3 className="text-xl font-semibold mb-2">No conversations yet</h3>
+            <p>Start swiping to find potential partners and begin meaningful conversations!</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {matches.map((match) => {
+              const matchMessages = messages.filter(msg => msg.matchId === match.id);
+              
+              return (
+                <div key={match.id} className="profile-card">
+                  <div className="profile-card-horizontal">
+                    <div className="profile-image-section">
+                      <img 
+                        src={match.business.profileImage} 
+                        alt={match.business.ownerName}
+                        className="profile-image"
+                      />
+                      <div className="status-online"></div>
+                    </div>
+                    
+                    <div className="profile-content-section">
+                      <h3 className="profile-name">{match.business.companyName}</h3>
+                      <p className="profile-title">{match.business.ownerName} • {match.business.ownerTitle}</p>
+                      <p className="profile-company">{match.business.industry}</p>
+                      
+                      <div className="profile-tags">
+                        <span className={`profile-tag ${
+                          match.badge.name === 'Boss Babies' ? 'bg-yellow-100 text-yellow-800' :
+                          match.badge.name === 'Power Titans' ? 'bg-purple-100 text-purple-800' :
+                          match.badge.name === 'Dream Builders' ? 'bg-blue-100 text-blue-800' :
+                          match.badge.name === 'National Champions' ? 'bg-green-100 text-green-800' :
+                          match.badge.name === 'Local Heroes' ? 'bg-orange-100 text-orange-800' :
+                          'bg-indigo-100 text-indigo-800'
+                        }`}>
+                          {match.badge.name}
+                        </span>
+                        <span className="profile-tag">
+                          {match.probability}% Match
+                        </span>
+                      </div>
+                      
+                      <div className="messages-container mt-4">
+                        <div className="message-thread" style={{maxHeight: '200px'}}>
+                          {matchMessages.length === 0 ? (
+                            <div className="text-center text-gray-400 py-4">
+                              <div className="text-2xl mb-1">👋</div>
+                              <p className="text-sm">Start the conversation!</p>
+                            </div>
+                          ) : (
+                            matchMessages.map((msg) => {
+                              const isUserMessage = msg.sender === 'user';
+                              return (
+                                <div key={msg.id} className={`message-bubble ${isUserMessage ? 'message-sent' : 'message-received'}`}>
+                                  <div>{msg.message}</div>
+                                  <div className="message-time">
+                                    {new Date(msg.timestamp).toLocaleTimeString([], { 
+                                      hour: '2-digit', 
+                                      minute: '2-digit' 
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })
+                          )}
+                        </div>
+                        
+                        <div className="message-input-container">
+                          <input 
+                            type="text" 
+                            placeholder="Message..."
+                            className="message-input"
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter' && e.target.value.trim()) {
+                                addMessage(match.id, e.target.value);
+                                e.target.value = '';
+                              }
+                            }}
+                          />
+                          <button 
+                            className="send-button"
+                            onClick={(e) => {
+                              const input = e.target.parentElement.querySelector('.message-input');
+                              if (input.value.trim()) {
+                                addMessage(match.id, input.value);
+                                input.value = '';
+                              }
+                            }}
+                          >
+                            <span>↗️</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="ml-auto">
-                  <span className={`px-3 py-1 rounded-full text-sm ${
-                    match.badge.name === 'Boss Babies' ? 'bg-yellow-100 text-yellow-800' :
-                    match.badge.name === 'Power Titans' ? 'bg-purple-100 text-purple-800' :
-                    match.badge.name === 'Dream Builders' ? 'bg-blue-100 text-blue-800' :
-                    match.badge.name === 'National Champions' ? 'bg-green-100 text-green-800' :
-                    match.badge.name === 'Local Heroes' ? 'bg-orange-100 text-orange-800' :
-                    'bg-indigo-100 text-indigo-800'
-                  }`}>
-                    {match.badge.name}
-                  </span>
-                </div>
-              </div>
-              <div className="text-sm text-gray-700">
-                <p>Match Probability: <span className="font-semibold text-green-600">{match.probability}%</span></p>
-                <p className="mt-1">{match.badge.description}</p>
-              </div>
-              <div className="mt-4">
-                <input 
-                  type="text" 
-                  placeholder="Send a message..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' && e.target.value.trim()) {
-                      addMessage(match.id, e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
       {/* Enhanced Admin Panel - Separate Page */}
       {showAdminPanel && isAdmin && (
