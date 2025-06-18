@@ -2050,8 +2050,8 @@ function App() {
     <div className="flex-1 p-8 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Messages</h2>
-          <p className="text-gray-600">Connect with your business matches</p>
+          <h2 className="heading-lg text-gray-800 mb-2">Messages</h2>
+          <p className="body-text text-gray-600">Connect with your business matches</p>
         </div>
         
         {matches.length === 0 ? (
