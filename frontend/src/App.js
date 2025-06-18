@@ -2569,18 +2569,6 @@ function App() {
                 </span>
               ))}
             </div>
-            
-            {/* Action Buttons */}
-            <div className="actions-modern">
-              <button className="btn-modern primary">
-                <span>💬</span>
-                Connect
-              </button>
-              <button className="btn-modern secondary">
-                <span>👍</span>
-                Like
-              </button>
-            </div>
           </div>
         </div>
       ) : (
