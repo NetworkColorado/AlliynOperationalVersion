@@ -194,190 +194,241 @@ body {
   flex-shrink: 0;
 }
 
-/* Profile Images - Elegant Design Inspired by Reference */
-.profile-image {
+/* Profile Cards - Clean Modern Design Inspired by New Reference */
+.profile-card-modern {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #E3EBEC;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.profile-card-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Profile Avatar - Centered Circular */
+.profile-avatar-modern {
   width: 80px;
   height: 80px;
-  border-radius: 20px; /* Rounded square like reference */
+  border-radius: 50%;
   object-fit: cover;
-  border: 3px solid white;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: linear-gradient(145deg, #f0f0f0, #ffffff);
-}
-
-.profile-image:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Large profile images for business cards */
-.owner-image {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px; /* Proportionally rounded */
-  object-fit: cover;
-  border: 2px solid white;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 3px 8px rgba(0, 0, 0, 0.08);
+  border: 3px solid #E3EBEC;
+  margin: 0 auto 16px auto;
+  display: block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
-.owner-image:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+.profile-avatar-modern:hover {
+  transform: scale(1.05);
+  border-color: #0B9BD6;
 }
 
-/* Company logo styling to match */
-.company-logo {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px; /* Rounded square */
-  object-fit: cover;
-  margin: 0 auto var(--spacing-md);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 3px 8px rgba(0, 0, 0, 0.06);
-  border: 3px solid white;
-  background: white;
-  transition: all 0.3s ease;
-}
-
-.company-logo:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Enhanced profile card styling to match reference */
-.profile-card-enhanced {
-  background: white;
-  border-radius: 24px; /* More rounded like reference */
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
-  padding: var(--spacing-xl);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  position: relative;
-  overflow: hidden;
-}
-
-.profile-card-enhanced::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light), var(--color-success));
-  border-radius: 24px 24px 0 0;
-}
-
-.profile-card-enhanced:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-/* Profile header with enhanced styling */
-.profile-header-enhanced {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-primary));
-  border-radius: var(--radius-lg);
-  position: relative;
-}
-
-.profile-image-large {
-  width: 120px;
-  height: 120px;
-  border-radius: 30px; /* Elegant rounded square */
-  object-fit: cover;
-  border: 4px solid white;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 6px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: var(--spacing-md);
-  transition: all 0.3s ease;
-  background: linear-gradient(145deg, #f8f9fa, #ffffff);
-}
-
-.profile-image-large:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.2), 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* Social media icons styling like reference */
-.social-icons {
-  display: flex;
-  gap: var(--spacing-md);
-  margin: var(--spacing-lg) 0;
-  justify-content: center;
-}
-
-.social-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--color-bg-tertiary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.social-icon:hover {
-  background: var(--color-accent);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Enhanced name and title styling */
-.profile-name-enhanced {
-  font-size: 24px;
+/* Profile Name */
+.profile-name-modern {
+  font-size: 20px;
   font-weight: 700;
-  color: var(--color-text-primary);
-  margin: var(--spacing-sm) 0;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  color: #262E3A;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.01em;
 }
 
-.profile-title-enhanced {
-  font-size: 16px;
-  color: var(--color-text-secondary);
+/* Profile Title/Status */
+.profile-status-modern {
+  font-size: 14px;
+  color: #727F8B;
+  margin: 0 0 16px 0;
   font-weight: 500;
-  margin-bottom: var(--spacing-md);
-  opacity: 0.8;
 }
 
-.profile-description-enhanced {
-  font-size: 14px;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-  text-align: center;
-  margin: var(--spacing-md) 0;
-  max-width: 300px;
+/* Company Information Section */
+.company-section-modern {
+  background: #F8FAFB;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid #E3EBEC;
 }
 
-/* Enhanced company info styling */
-.company-info-enhanced {
-  text-align: center;
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-md);
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-}
-
-.company-name-enhanced {
-  font-size: 18px;
+.company-name-modern {
+  font-size: 16px;
   font-weight: 600;
-  color: var(--color-accent);
-  margin-bottom: var(--spacing-xs);
+  color: #0B9BD6;
+  margin: 0 0 4px 0;
 }
 
-.company-role-enhanced {
+.company-industry-modern {
+  font-size: 13px;
+  color: #727F8B;
+  margin: 0 0 8px 0;
+}
+
+.company-description-modern {
+  font-size: 12px;
+  color: #B2B7BE;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Info Grid - Clean Layout */
+.info-grid-modern {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.info-item-modern {
+  background: white;
+  border: 1px solid #E3EBEC;
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.info-label-modern {
+  font-size: 10px;
+  color: #B2B7BE;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.info-value-modern {
   font-size: 14px;
-  color: var(--color-text-secondary);
-  font-style: italic;
+  color: #262E3A;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Partnership Tags */
+.tags-section-modern {
+  margin: 16px 0;
+}
+
+.tag-modern {
+  display: inline-block;
+  background: #E3EBEC;
+  color: #727F8B;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  margin: 2px;
+}
+
+.tag-modern.primary {
+  background: #0B9BD6;
+  color: white;
+}
+
+/* Action Buttons - Modern Design */
+.actions-modern {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.btn-modern {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-modern.primary {
+  background: #0B9BD6;
+  color: white;
+}
+
+.btn-modern.primary:hover {
+  background: #0F1BD7;
+  transform: translateY(-1px);
+}
+
+.btn-modern.secondary {
+  background: #E3EBEC;
+  color: #727F8B;
+  border: 1px solid #B2B7BE;
+}
+
+.btn-modern.secondary:hover {
+  background: #B2B7BE;
+  color: white;
+}
+
+/* Match Probability Indicator */
+.match-indicator-modern {
+  background: linear-gradient(90deg, #0B9BD6, #0F1BD7);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 12px 0;
+  display: inline-block;
+}
+
+/* Service Areas List */
+.service-areas-modern {
+  margin: 12px 0;
+}
+
+.service-area-modern {
+  display: inline-block;
+  background: white;
+  border: 1px solid #0B9BD6;
+  color: #0B9BD6;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  margin: 2px;
+}
+
+/* Online Status Indicator */
+.status-indicator-modern {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 12px;
+  height: 12px;
+  background: #22c55e;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .profile-card-modern {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .actions-modern {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .btn-modern {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .profile-content-section {
