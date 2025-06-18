@@ -1891,8 +1891,8 @@ function App() {
           {isCurrentSponsor ? (
             <div 
               ref={cardRef}
-              className={`business-card ${swipeDirection ? `swipe-${swipeDirection}` : ''} 
-                bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-105`}
+              className={`profile-card-enhanced ${swipeDirection ? `swipe-${swipeDirection}` : ''} 
+                transform transition-all duration-300 hover:scale-105`}
             >
               {/* Sponsor Header */}
               <div className={`relative h-48 bg-gradient-to-br ${currentProfile.backgroundColor} p-6`}>
