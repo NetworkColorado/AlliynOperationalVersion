@@ -3607,7 +3607,7 @@ function App() {
                 <div className="mt-4 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg p-4 border border-purple-200">
                   <div className="text-center">
                     <div className="text-2xl mb-2">🚀</div>
-                    <h4 className="font-bold text-sm text-gray-800 mb-2">Startup Funding</h4>
+                    <h4 className="ad-header text-sm text-gray-800 mb-2">Startup Funding</h4>
                     <p className="text-xs text-gray-600 mb-3">Get connected with investors looking for your business</p>
                     <button className="w-full bg-purple-500 text-white py-2 px-3 rounded text-xs font-medium hover:bg-purple-600 transition-colors">
                       Get Funding
