@@ -2205,19 +2205,6 @@ function App() {
                     </button>
                   </div>
                 </div>
-                  
-                  {/* Action Buttons */}
-                  <div className="actions-modern">
-                    <button className="btn-modern primary">
-                      <span>💬</span>
-                      Message
-                    </button>
-                    <button className="btn-modern secondary">
-                      <span>📞</span>
-                      Call
-                    </button>
-                  </div>
-                </div>
               );
             })}
           </div>
