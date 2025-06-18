@@ -2006,32 +2006,6 @@ function App() {
                 </button>
               </div>
             </div>
-                <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Scope</p>
-                  <span className={`px-3 py-1 text-sm rounded-full ${
-                    currentProfile.seekingPartnership === 'National' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-orange-100 text-orange-800'
-                  }`}>
-                    {currentProfile.seekingPartnership}
-                  </span>
-                </div>
-
-                {/* Partnership Interests */}
-                <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Partnership Interests</p>
-                  <div className="grid grid-cols-1 gap-2">
-                    {currentProfile.partnerships?.map((partnership, index) => (
-                      <div key={index} className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span className="text-sm text-gray-700">{partnership}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Swipe Buttons */}
           <div className="flex justify-center space-x-8 mt-8">
