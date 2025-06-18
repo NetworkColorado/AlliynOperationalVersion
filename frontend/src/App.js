@@ -2125,59 +2125,70 @@ function App() {
                   <div className="tags-section-modern">
                     <span className="tag-modern primary">{match.badge.name}</span>
                   </div>
-                      
-                      <div className="messages-container mt-4">
-                        <div className="message-thread" style={{maxHeight: '200px'}}>
-                          {matchMessages.length === 0 ? (
-                            <div className="text-center text-gray-400 py-4">
-                              <div className="text-2xl mb-1">👋</div>
-                              <p className="text-sm">Start the conversation!</p>
+                  
+                  {/* Messaging Section */}
+                  <div className="messages-container mt-4">
+                    <div className="message-thread" style={{maxHeight: '200px'}}>
+                      {matchMessages.length === 0 ? (
+                        <div className="text-center text-gray-400 py-4">
+                          <div className="text-2xl mb-1">👋</div>
+                          <p className="text-sm">Start the conversation!</p>
+                        </div>
+                      ) : (
+                        matchMessages.map((msg) => {
+                          const isUserMessage = msg.sender === 'user';
+                          return (
+                            <div key={msg.id} className={`message-bubble ${isUserMessage ? 'message-sent' : 'message-received'}`}>
+                              <div>{msg.message}</div>
+                              <div className="message-time">
+                                {new Date(msg.timestamp).toLocaleTimeString([], { 
+                                  hour: '2-digit', 
+                                  minute: '2-digit' 
+                                })}
+                              </div>
                             </div>
-                          ) : (
-                            matchMessages.map((msg) => {
-                              const isUserMessage = msg.sender === 'user';
-                              return (
-                                <div key={msg.id} className={`message-bubble ${isUserMessage ? 'message-sent' : 'message-received'}`}>
-                                  <div>{msg.message}</div>
-                                  <div className="message-time">
-                                    {new Date(msg.timestamp).toLocaleTimeString([], { 
-                                      hour: '2-digit', 
-                                      minute: '2-digit' 
-                                    })}
-                                  </div>
-                                </div>
-                              );
-                            })
-                          )}
-                        </div>
-                        
-                        <div className="message-input-container">
-                          <input 
-                            type="text" 
-                            placeholder="Message..."
-                            className="message-input"
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter' && e.target.value.trim()) {
-                                addMessage(match.id, e.target.value);
-                                e.target.value = '';
-                              }
-                            }}
-                          />
-                          <button 
-                            className="send-button"
-                            onClick={(e) => {
-                              const input = e.target.parentElement.querySelector('.message-input');
-                              if (input.value.trim()) {
-                                addMessage(match.id, input.value);
-                                input.value = '';
-                              }
-                            }}
-                          >
-                            <span>↗️</span>
-                          </button>
-                        </div>
-                      </div>
+                          );
+                        })
+                      )}
                     </div>
+                    
+                    <div className="message-input-container">
+                      <input 
+                        type="text" 
+                        placeholder="Message..."
+                        className="message-input"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && e.target.value.trim()) {
+                            addMessage(match.id, e.target.value);
+                            e.target.value = '';
+                          }
+                        }}
+                      />
+                      <button 
+                        className="send-button"
+                        onClick={(e) => {
+                          const input = e.target.parentElement.querySelector('.message-input');
+                          if (input.value.trim()) {
+                            addMessage(match.id, input.value);
+                            input.value = '';
+                          }
+                        }}
+                      >
+                        <span>↗️</span>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Action Buttons */}
+                  <div className="actions-modern">
+                    <button className="btn-modern primary">
+                      <span>💬</span>
+                      Message
+                    </button>
+                    <button className="btn-modern secondary">
+                      <span>📞</span>
+                      Call
+                    </button>
                   </div>
                 </div>
               );
