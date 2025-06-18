@@ -1959,7 +1959,14 @@ function App() {
               
               {/* Company Section */}
               <div className="company-section-modern">
-                <div className="company-name-modern">{currentProfile.companyName}</div>
+                <div className="company-name-modern flex items-center gap-2">
+                  <img 
+                    src={currentProfile.logo || 'https://via.placeholder.com/20x20?text=🏢'} 
+                    alt="Company Logo"
+                    className="w-5 h-5 rounded object-fit-cover"
+                  />
+                  {currentProfile.companyName}
+                </div>
                 <div className="company-industry-modern">{currentProfile.industry}</div>
                 <div className="company-description-modern">{currentProfile.companyDescription}</div>
               </div>
