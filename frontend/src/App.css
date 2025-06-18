@@ -1,4 +1,6 @@
-/* Charlie Horner Design Inspired - Sophisticated, Clean Aesthetic */
+/* Professional Typography System - Six Caps, Archivo Narrow, Source Sans Pro */
+@import url('https://fonts.googleapis.com/css2?family=Six+Caps&family=Archivo+Narrow:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap');
+
 :root {
   /* Color Palette - Sophisticated Neutrals */
   --color-primary: #2c2c2c;
@@ -22,9 +24,11 @@
   --color-message-text-sent: white;
   --color-message-text-received: #1c1c1e;
   
-  /* Typography */
-  --font-primary: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Professional Typography */
+  --font-headings: 'Six Caps', sans-serif;           /* For main headings */
+  --font-titles: 'Archivo Narrow', sans-serif;       /* For titles and subtitles */
+  --font-body: 'Source Sans Pro', sans-serif;        /* For body text */
+  --font-ui: 'Source Sans Pro', sans-serif;          /* For UI elements */
   
   /* Spacing */
   --spacing-xs: 4px;
@@ -47,18 +51,77 @@
   --radius-xl: 24px;
 }
 
-/* Global Styles */
+/* Global Typography System */
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: var(--font-primary);
+  font-family: var(--font-body);
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings - Six Caps */
+h1, h2, h3, h4, h5, h6,
+.heading,
+.app-title,
+.page-title,
+.section-heading {
+  font-family: var(--font-headings);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+h1, .heading-xl { font-size: 3.5rem; }
+h2, .heading-lg { font-size: 2.5rem; }
+h3, .heading-md { font-size: 2rem; }
+h4, .heading-sm { font-size: 1.75rem; }
+h5, .heading-xs { font-size: 1.5rem; }
+h6, .heading-xxs { font-size: 1.25rem; }
+
+/* Titles and Subtitles - Archivo Narrow */
+.title,
+.subtitle,
+.card-title,
+.profile-name,
+.company-name,
+.nav-title,
+.tab-title,
+.modal-title {
+  font-family: var(--font-titles);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Body Text - Source Sans Pro */
+p, 
+.body-text,
+.description,
+.content,
+.message-text,
+.form-text,
+input,
+textarea,
+button {
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+/* UI Elements - Source Sans Pro */
+.btn,
+.nav-item,
+.menu-item,
+.form-label,
+.input-field,
+.status-text {
+  font-family: var(--font-ui);
+  font-weight: 500;
 }
 
 /* iPhone-Style Messaging System - Exact iOS Look */
