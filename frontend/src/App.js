@@ -2062,7 +2062,16 @@ function App() {
           </div>
         ) : (
           <div className="space-y-6">
-            {matches.map((match) => {
+            {matches
+              .sort((a, b) => {
+                // Sort by latest message activity
+                const aMessages = messages.filter(msg => msg.matchId === a.id);
+                const bMessages = messages.filter(msg => msg.matchId === b.id);
+                const aLatest = aMessages.length > 0 ? new Date(aMessages[aMessages.length - 1].timestamp) : new Date(a.matchDate || 0);
+                const bLatest = bMessages.length > 0 ? new Date(bMessages[bMessages.length - 1].timestamp) : new Date(b.matchDate || 0);
+                return bLatest - aLatest; // Newest first
+              })
+              .map((match) => {
               const matchMessages = messages.filter(msg => msg.matchId === match.id);
               
               return (
@@ -2075,20 +2084,20 @@ function App() {
                       className="w-12 h-12 rounded-full object-cover"
                     />
                     <div className="flex-1">
-                      <div className="font-semibold text-gray-900">{match.business.ownerName}</div>
-                      <div className="text-sm text-gray-600">{match.business.ownerTitle}</div>
+                      <div className="font-semibold text-gray-900 title">{match.business.ownerName}</div>
+                      <div className="text-sm text-gray-600 body-text">{match.business.ownerTitle}</div>
                       <div className="text-sm text-blue-600 font-medium flex items-center gap-1">
                         <img 
                           src={match.business.logo || 'https://via.placeholder.com/16x16?text=🏢'} 
                           alt="Company Logo"
                           className="w-4 h-4 rounded"
                         />
-                        {match.business.companyName}
+                        <span className="title">{match.business.companyName}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-xs text-gray-500">Active</span>
+                      <span className="text-xs text-gray-500 body-text">Active</span>
                     </div>
                   </div>
                   
@@ -2097,14 +2106,36 @@ function App() {
                     <div className="message-thread" style={{maxHeight: '150px'}}>
                       {matchMessages.length === 0 ? (
                         <div className="text-center text-gray-400 py-3">
-                          <p className="text-sm">👋 Say hello!</p>
+                          <p className="text-sm body-text">👋 Say hello!</p>
                         </div>
                       ) : (
                         matchMessages.map((msg) => {
                           const isUserMessage = msg.sender === 'user';
+                          const messageDate = new Date(msg.timestamp);
+                          const now = new Date();
+                          const isToday = messageDate.toDateString() === now.toDateString();
+                          const isYesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toDateString() === messageDate.toDateString();
+                          
+                          let dateDisplay;
+                          if (isToday) {
+                            dateDisplay = messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                          } else if (isYesterday) {
+                            dateDisplay = 'Yesterday ' + messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                          } else {
+                            dateDisplay = messageDate.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + 
+                                         messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                          }
+                          
                           return (
-                            <div key={msg.id} className={`message-bubble ${isUserMessage ? 'message-sent' : 'message-received'}`}>
-                              <div>{msg.message}</div>
+                            <div key={msg.id} className="mb-3">
+                              {/* Message Timestamp */}
+                              <div className="text-xs text-gray-400 mb-1 text-center body-text" style={{color: '#6b7280'}}>
+                                {dateDisplay}
+                              </div>
+                              {/* Message Bubble */}
+                              <div className={`message-bubble ${isUserMessage ? 'message-sent' : 'message-received'}`}>
+                                <div className="message-text">{msg.message}</div>
+                              </div>
                             </div>
                           );
                         })
@@ -2115,7 +2146,7 @@ function App() {
                       <input 
                         type="text" 
                         placeholder="iMessage"
-                        className="message-input"
+                        className="message-input body-text"
                         onKeyPress={(e) => {
                           if (e.key === 'Enter' && e.target.value.trim()) {
                             addMessage(match.id, e.target.value);
