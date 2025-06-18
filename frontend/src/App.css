@@ -66,7 +66,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Headings - Six Caps */
+/* Headings - Sifonn for Better Legibility */
 h1, h2, h3, h4, h5, h6,
 .heading,
 .app-title,
@@ -74,17 +74,16 @@ h1, h2, h3, h4, h5, h6,
 .section-heading {
   font-family: var(--font-headings);
   font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em; /* Reduced from 0.1em for better readability */
   line-height: 1.2;
 }
 
-h1, .heading-xl { font-size: 3.5rem; }
-h2, .heading-lg { font-size: 2.5rem; }
-h3, .heading-md { font-size: 2rem; }
-h4, .heading-sm { font-size: 1.75rem; }
-h5, .heading-xs { font-size: 1.5rem; }
-h6, .heading-xxs { font-size: 1.25rem; }
+h1, .heading-xl { font-size: 3rem; }      /* Slightly reduced from 3.5rem */
+h2, .heading-lg { font-size: 2.25rem; }   /* Reduced from 2.5rem */
+h3, .heading-md { font-size: 1.875rem; }  /* Reduced from 2rem */
+h4, .heading-sm { font-size: 1.625rem; }  /* Reduced from 1.75rem */
+h5, .heading-xs { font-size: 1.375rem; }  /* Reduced from 1.5rem */
+h6, .heading-xxs { font-size: 1.125rem; } /* Reduced from 1.25rem */
 
 /* Titles and Subtitles - Archivo Narrow with Enhanced Spacing */
 .title,
