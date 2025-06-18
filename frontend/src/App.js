@@ -2057,8 +2057,8 @@ function App() {
         {matches.length === 0 ? (
           <div className="text-center text-gray-500 mt-12 bg-white rounded-2xl p-12 shadow-sm">
             <div className="text-6xl mb-4">💬</div>
-            <h3 className="text-xl font-semibold mb-2">No conversations yet</h3>
-            <p>Start swiping to find potential partners and begin meaningful conversations!</p>
+            <h3 className="title text-xl mb-2">No conversations yet</h3>
+            <p className="body-text">Start swiping to find potential partners and begin meaningful conversations!</p>
           </div>
         ) : (
           <div className="space-y-6">
