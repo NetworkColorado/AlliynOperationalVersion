@@ -852,11 +852,16 @@ button {
   font-weight: 600;
   color: var(--color-text-primary);
   font-size: 15px;
+  font-family: var(--font-titles);
+  letter-spacing: 0.025em; /* Enhanced spacing for better readability */
+  line-height: 1.3;
 }
 
 .leaderboard-details {
   font-size: 13px;
   color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
 }
 
 .leaderboard-score {
